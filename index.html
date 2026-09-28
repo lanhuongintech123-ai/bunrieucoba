@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Tiệm Bún Riêu & Bánh Đa Cua Cô Ba</title>
+  <title>Tiệm Bún Riêu & Bánh Đa Cua Cô Ba - Game Art Edition</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
@@ -20,23 +20,23 @@
     .brand-font { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 900; }
 
     @keyframes smokeFlow {
-      0% { transform: translateY(0) scaleX(0.8) scaleY(1); opacity: 0; }
-      20% { opacity: 0.6; }
-      50% { transform: translateY(-16px) scaleX(1.3) scaleY(1.2); opacity: 0.4; }
-      100% { transform: translateY(-32px) scaleX(1.7) scaleY(1.5); opacity: 0; }
+      0% { transform: translateY(0) scaleX(0.7) scaleY(0.9); opacity: 0; }
+      25% { opacity: 0.55; }
+      50% { transform: translateY(-16px) scaleX(1.2) scaleY(1.1); opacity: 0.35; }
+      100% { transform: translateY(-34px) scaleX(1.6) scaleY(1.4); opacity: 0; }
     }
-    .steam-soft { animation: smokeFlow 2.6s infinite ease-out; }
-    .steam-soft:nth-child(2) { animation-delay: 0.9s; }
+    .steam-soft { animation: smokeFlow 2.8s infinite ease-out; }
+    .steam-soft:nth-child(2) { animation-delay: 1s; }
 
     @keyframes bobbing {
       0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-3px) rotate(1.5deg); }
+      50% { transform: translateY(-3px) rotate(1.2deg); }
     }
-    .float-broth { animation: bobbing 3s infinite ease-in-out; }
-    .float-broth:nth-child(even) { animation-delay: 1.2s; animation-direction: reverse; }
+    .float-broth { animation: bobbing 3.2s infinite ease-in-out; }
+    .float-broth:nth-child(even) { animation-delay: 1.4s; animation-direction: reverse; }
 
     @keyframes dropIn {
-      0% { transform: scale(0.3) translateY(-20px); opacity: 0; }
+      0% { transform: scale(0.3) translateY(-25px); opacity: 0; }
       65% { transform: scale(1.12) translateY(3px); opacity: 1; }
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
@@ -44,12 +44,15 @@
 
     @keyframes drawBowl {
       0% { transform: scale(0.6) translateY(20px); opacity: 0; }
-      70% { transform: scale(1.08) translateY(-4px); opacity: 1; }
+      70% { transform: scale(1.06) translateY(-4px); opacity: 1; }
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
     .animate-bowl-spawn { animation: drawBowl 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     
-    .food-glow { filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
+    .food-glow { filter: drop-shadow(0 3px 5px rgba(0,0,0,0.35)); }
+    .bowl-depth {
+      box-shadow: inset 0 8px 18px rgba(0,0,0,0.45), 0 12px 28px rgba(0,0,0,0.7);
+    }
     .no-scrollbar::-webkit-scrollbar { display: none; }
   </style>
 </head>
@@ -58,55 +61,53 @@
   <div id="game-app" class="w-full max-w-[430px] h-[100dvh] sm:h-[860px] bg-stone-900 flex flex-col justify-between shadow-2xl relative overflow-hidden sm:rounded-[36px] sm:border-[6px] sm:border-stone-800">
     
     <!-- 1. TOP STATUS BAR -->
-    <header class="bg-stone-900/95 pt-3.5 px-3.5 pb-2.5 z-20 flex flex-col gap-2 border-b border-stone-800">
+    <header class="bg-stone-900/95 pt-3 px-3 pb-2 z-20 flex flex-col gap-1.5 border-b border-stone-800">
       <div class="flex items-center justify-between">
-        <!-- Profile / Level Quán -->
-        <div class="flex items-center gap-2.5 bg-stone-800 border border-stone-700 pl-1.5 pr-3.5 py-1.5 rounded-full shadow-sm">
-          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-red-500 to-amber-600 flex items-center justify-center text-white text-lg shadow">
+        <div class="flex items-center gap-2 bg-stone-800 border border-stone-700 pl-1 pr-3 py-1 rounded-full shadow-sm">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-amber-600 flex items-center justify-center text-white text-base shadow">
             🦀
           </div>
           <div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-sm font-black text-white tracking-tight">CÔ BA</span>
-              <span id="hud-day" class="text-xs font-black bg-amber-400 text-stone-950 px-2 py-0.5 rounded-full">Ngày 1</span>
+            <div class="flex items-center gap-1">
+              <span class="text-xs font-black text-white tracking-tight">CÔ BA</span>
+              <span id="hud-day" class="text-[10px] font-black bg-amber-400 text-stone-950 px-1.5 py-0.2 rounded-full">Ngày 1</span>
             </div>
-            <div class="text-[11px] text-stone-300 font-semibold" id="shop-title-sub">Gánh Vỉa Hè</div>
+            <div class="text-[10px] text-stone-300 font-semibold" id="shop-title-sub">Gánh Vỉa Hè</div>
           </div>
         </div>
 
-        <!-- Khối Tiền & Tiết Kiệm -->
-        <div class="flex items-center gap-2">
-          <div class="flex items-center gap-1.5 bg-stone-800 border border-amber-500/40 px-3 py-1.5 rounded-full shadow-inner">
-            <span class="text-sm">💵</span>
-            <span id="hud-money" class="font-mono text-xs sm:text-sm font-black text-amber-300">300.000đ</span>
+        <div class="flex items-center gap-1.5">
+          <div class="flex items-center gap-1 bg-stone-800 border border-amber-500/40 px-2.5 py-1 rounded-full shadow-inner">
+            <span class="text-xs">💵</span>
+            <span id="hud-money" class="font-mono text-xs font-black text-amber-300">300.000đ</span>
           </div>
-          <div class="flex items-center gap-1.5 bg-stone-800 border border-pink-500/40 px-3 py-1.5 rounded-full shadow-inner">
-            <span class="text-sm">🐷</span>
-            <span id="hud-piggy" class="font-mono text-xs sm:text-sm font-black text-pink-300">0đ</span>
+          <div class="flex items-center gap-1 bg-stone-800 border border-pink-500/40 px-2.5 py-1 rounded-full shadow-inner">
+            <span class="text-xs">🐷</span>
+            <span id="hud-piggy" class="font-mono text-xs font-black text-pink-300">0đ</span>
           </div>
         </div>
       </div>
 
       <!-- HUD Ca Bán -->
-      <div id="kitchen-hud-bar" class="hidden flex items-center justify-between bg-stone-800/90 px-3 py-1.5 rounded-xl border border-stone-700 text-xs font-bold">
-        <div class="flex items-center gap-2 text-stone-200">
-          <span>⏱️ Thời gian:</span>
-          <span id="shift-timer" class="font-mono text-sm font-black text-yellow-400">03:00</span>
-          <button id="btn-toggle-pause" onclick="togglePauseGame()" class="ml-1 bg-stone-700 hover:bg-stone-600 text-yellow-300 px-2.5 py-0.5 rounded-lg text-xs font-black">
+      <div id="kitchen-hud-bar" class="hidden flex items-center justify-between bg-stone-800/90 px-2.5 py-1 rounded-xl border border-stone-700 text-[11px] font-bold">
+        <div class="flex items-center gap-1.5 text-stone-200">
+          <span>⏱️</span>
+          <span id="shift-timer" class="font-mono text-xs font-black text-yellow-400">03:00</span>
+          <button id="btn-toggle-pause" onclick="togglePauseGame()" class="ml-1 bg-stone-700 hover:bg-stone-600 text-yellow-300 px-2 py-0.2 rounded-md text-[10px] font-black">
             ⏸️ <span id="pause-text">Dừng</span>
           </button>
         </div>
-        <div class="text-red-400 font-black">
+        <div class="text-red-400 font-black text-[11px]">
           💢 Bỏ về: <span id="shift-missed" class="font-mono text-white">0/3</span>
         </div>
       </div>
     </header>
 
-    <!-- 2. VÙNG HIỂN THỊ CHÍNH -->
-    <main class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col p-3 gap-3">
+    <!-- 2. VÙNG NỘI DUNG CHÍNH -->
+    <main class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col p-2.5 gap-2">
       
       <!-- TAB 0: DASHBOARD / SẢNH CHÍNH -->
-      <section id="view-dashboard" class="tab-view flex-1 flex flex-col justify-between gap-3">
+      <section id="view-dashboard" class="tab-view flex-1 flex flex-col justify-between gap-3 p-1">
         <div class="bg-gradient-to-b from-amber-900/90 via-orange-950 to-stone-900 p-4 rounded-3xl border-2 border-amber-600/60 shadow-xl text-center flex flex-col items-center">
           <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center text-3xl mb-2 shadow-lg border-2 border-yellow-300 animate-pulse">
             🍲
@@ -149,15 +150,11 @@
         </button>
       </section>
 
-      <!-- TAB 1: SÂN KHẤU NẤU BÚN (CÓ CHỒNG BÁT ĐẾM TỒN KHO) -->
-      <section id="view-kitchen" class="tab-view hidden flex-1 flex flex-col justify-between gap-2.5 relative">
-        <!-- Bàn Ghế Khách Ngồi -->
-        <div class="bg-stone-800/90 p-2.5 rounded-2xl border border-stone-700 shadow-md">
-          <div class="flex justify-between items-center mb-1.5 px-1">
-            <span class="text-xs font-black uppercase text-amber-300">Bàn Ăn Của Khách</span>
-            <span class="text-[11px] text-stone-400 font-semibold">Phục vụ đúng yêu cầu</span>
-          </div>
-          <div id="customers-track" class="grid grid-cols-2 gap-2"></div>
+      <!-- TAB 1: SÂN KHẤU BẾP NẤU (GAME ART 2D VẼ TAY CHI TIẾT) -->
+      <section id="view-kitchen" class="tab-view hidden flex-1 flex flex-col justify-between gap-1.5 relative">
+        <!-- BÀN ĂN NGANG GỌN GÀNG -->
+        <div class="bg-stone-950/80 p-1.5 rounded-2xl border border-stone-700/80 shadow-md">
+          <div id="customers-track" class="grid grid-cols-4 gap-1.5"></div>
         </div>
 
         <!-- Màn hình tạm dừng -->
@@ -170,42 +167,42 @@
           </button>
         </div>
 
-        <!-- QUẦY BẾP: CHỒNG BÁT + NỒI NƯỚC + BÁT ĐANG NẤU -->
-        <div class="bg-stone-800/80 rounded-3xl p-3 border border-stone-700 shadow-xl flex flex-col gap-2 relative">
+        <!-- QUẦY BẾP TRUNG TÂM -->
+        <div class="bg-gradient-to-b from-stone-800 to-stone-850 rounded-3xl p-2.5 border border-stone-700 shadow-xl flex flex-col gap-1.5 relative">
           <div class="flex justify-between items-center px-1">
-            <span class="text-xs font-black text-stone-200 uppercase" id="bowl-status-text">Chưa Có Tô Trên Khay</span>
-            <button onclick="trashBowl()" class="text-red-400 hover:text-red-300 text-xs font-bold bg-stone-900 border border-red-500/40 px-2.5 py-1 rounded-lg active:scale-95">🗑️ Đổ đi</button>
+            <span class="text-[11px] font-black text-amber-300 uppercase tracking-tight" id="bowl-status-text">Chưa Có Tô Trên Khay</span>
+            <button onclick="trashBowl()" class="text-red-400 hover:text-red-300 text-[10px] font-bold bg-stone-900 border border-red-500/40 px-2 py-0.5 rounded-lg active:scale-95">🗑️ Đổ đi</button>
           </div>
 
-          <div class="flex items-center justify-between py-1 px-1">
-            <!-- CỘT TRÁI: CHỒNG BÁT ĐẾM TỒN KHO & NỒI CHAN NƯỚC -->
+          <div class="flex items-center justify-between py-1">
+            <!-- CỘT TRÁI: CHỒNG BÁT & NỒI CHAN NƯỚC DÙNG -->
             <div class="flex flex-col gap-2">
-              <!-- CHỒNG BÁT (BẤM ĐỂ RÚT TÔ RA KHAY) -->
               <button onclick="drawBowlFromStack()" class="group flex flex-col items-center bg-stone-900 p-2 rounded-2xl border-2 border-stone-600 hover:border-amber-400 active:scale-90 transition shadow-lg relative">
-                <!-- Số lượng bát sạch còn trong kho -->
-                <span id="stack-bowl-count" class="absolute -top-2 -right-1 bg-amber-400 text-stone-950 font-black text-[10px] px-2 py-0.5 rounded-full border border-stone-900 shadow">
+                <span id="stack-bowl-count" class="absolute -top-2 -right-1 bg-amber-400 text-stone-950 font-black text-[10px] px-1.5 py-0.2 rounded-full border border-stone-900 shadow">
                   x20
                 </span>
-                
-                <div class="relative w-12 h-12 flex items-center justify-center">
-                  <div class="absolute bottom-1 w-11 h-4 rounded-full border-2 border-amber-950 bg-stone-200 shadow"></div>
-                  <div class="absolute bottom-2.5 w-11 h-4 rounded-full border-2 border-amber-950 bg-stone-100 shadow"></div>
-                  <div class="absolute bottom-4 w-11 h-5 rounded-full border-2 border-amber-950 bg-gradient-to-b from-stone-50 to-amber-50 shadow-md flex items-center justify-center">
-                    <div class="w-6 h-1.5 rounded-full border border-sky-600/40 bg-sky-100/50"></div>
+                <!-- Chồng bát sứ vẽ tay -->
+                <div class="relative w-11 h-11 flex items-center justify-center">
+                  <div class="absolute bottom-1 w-10 h-3.5 rounded-full border border-blue-900 bg-stone-200"></div>
+                  <div class="absolute bottom-2.5 w-10 h-3.5 rounded-full border border-blue-900 bg-stone-100"></div>
+                  <div class="absolute bottom-4 w-10 h-4.5 rounded-full border-2 border-blue-900 bg-gradient-to-b from-white to-blue-50 shadow-md flex items-center justify-center overflow-hidden">
+                    <div class="w-8 h-2 rounded-full border-t border-blue-600/60"></div>
                   </div>
                 </div>
                 <span class="text-[10px] font-black text-amber-300 mt-0.5 uppercase tracking-tighter">Lấy Tô 🥣</span>
               </button>
 
-              <!-- Nồi Nước Lèo Cua -->
+              <!-- Nồi nước dùng cua sôi sùng sục -->
               <button onclick="addBroth()" class="flex flex-col items-center bg-stone-900 p-2 rounded-2xl border-2 border-amber-500/50 shadow-md active:scale-90 transition">
-                <div class="relative w-12 h-11 flex items-center justify-center">
+                <div class="relative w-11 h-10 flex items-center justify-center">
                   <svg class="w-11 h-11 food-glow" viewBox="0 0 60 60">
-                    <circle cx="30" cy="30" r="26" fill="#475569" stroke="#1e293b" stroke-width="2.5"/>
-                    <circle cx="30" cy="30" r="22" fill="#ea580c"/>
-                    <ellipse cx="30" cy="28" rx="19" ry="13" fill="#c2410c" opacity="0.8"/>
-                    <path d="M21 24 Q28 19 33 25 Q27 32 21 24 Z" fill="#ef4444"/>
-                    <circle cx="27" cy="33" r="3" fill="#fdba74" opacity="0.9"/>
+                    <circle cx="30" cy="30" r="27" fill="#475569" stroke="#1e293b" stroke-width="2.5"/>
+                    <circle cx="30" cy="30" r="23" fill="#ea580c"/>
+                    <!-- Váng dầu điều & mảng riêu cua nổi -->
+                    <ellipse cx="30" cy="27" rx="19" ry="13" fill="#c2410c" opacity="0.85"/>
+                    <path d="M18 24 Q24 18 30 25 Q24 32 18 24 Z" fill="#b91c1c"/>
+                    <circle cx="36" cy="23" r="4" fill="#fb923c" opacity="0.9"/>
+                    <circle cx="27" cy="33" r="3.5" fill="#fdba74"/>
                   </svg>
                   <div class="absolute -top-1.5 flex gap-1 pointer-events-none">
                     <div class="w-1.5 h-3 bg-white/70 rounded-full blur-[0.5px] steam-soft"></div>
@@ -215,23 +212,31 @@
               </button>
             </div>
 
-            <!-- Ở GIỮA: TÔ BÚN ĐANG LÀM -->
-            <div class="relative w-36 h-36 sm:w-40 sm:h-40 rounded-full border-[7px] border-amber-950 bg-gradient-to-b from-stone-100 to-amber-50 shadow-2xl flex flex-col items-center justify-center overflow-hidden" id="main-bowl-container">
-              <div id="no-bowl-prompt" class="text-stone-400 text-center text-xs font-bold px-2 z-0 leading-tight">
+            <!-- Ở GIỮA: TÔ BÚN GỐM SỨ VẼ TAY THỰC TẾ -->
+            <div class="relative w-44 h-44 rounded-full border-[8px] border-blue-950 bg-gradient-to-b from-stone-100 via-white to-blue-50 bowl-depth flex flex-col items-center justify-center overflow-hidden" id="main-bowl-container">
+              <!-- Viền hoa lam gốm sứ -->
+              <div class="absolute inset-1 rounded-full border border-blue-600/30 pointer-events-none z-10"></div>
+              
+              <div id="no-bowl-prompt" class="text-stone-400 text-center text-xs font-bold px-3 z-0 leading-tight">
                 Chạm <b class="text-amber-500">"Lấy Tô 🥣"</b><br>để bắt đầu làm
               </div>
 
-              <div id="empty-prompt" class="hidden text-stone-400 text-center text-xs font-bold px-2 z-0 leading-tight">
+              <div id="empty-prompt" class="hidden text-stone-400 text-center text-xs font-bold px-3 z-0 leading-tight">
                 Chọn <b class="text-red-700">Sợi Bún</b> bên dưới
               </div>
 
-              <div id="visual-noodles" class="hidden absolute inset-1.5 rounded-full flex items-center justify-center overflow-hidden z-10"></div>
-              <div id="broth-liquid" class="hidden absolute inset-0 bg-gradient-to-t from-red-600/80 via-orange-500/60 to-amber-400/40 rounded-full pointer-events-none z-20"></div>
-              <div id="visual-ingredients" class="absolute inset-0 p-2 flex flex-wrap content-center justify-center gap-1.5 pointer-events-none z-30"></div>
+              <!-- Lớp Sợi Bún / Bánh Đa chi tiết -->
+              <div id="visual-noodles" class="hidden absolute inset-2 rounded-full flex items-center justify-center overflow-hidden z-10"></div>
+
+              <!-- Nước lèo sóng sánh ánh cam mỡ cua -->
+              <div id="broth-liquid" class="hidden absolute inset-0 bg-gradient-to-t from-red-600/85 via-orange-500/65 to-amber-400/45 rounded-full pointer-events-none z-20 shadow-inner"></div>
+
+              <!-- Topping dập dềnh bồng bềnh -->
+              <div id="visual-ingredients" class="absolute inset-0 p-3 flex flex-wrap content-center justify-center gap-1 pointer-events-none z-30"></div>
             </div>
 
-            <!-- CỘT PHẢI: NÚT PHỤC VỤ 4 BÀN -->
-            <div class="grid grid-cols-1 gap-1.5 w-16">
+            <!-- CỘT PHẢI: NÚT GIAO CHO 4 BÀN ĂN -->
+            <div class="flex flex-col gap-1.5 w-14">
               <button onclick="serveCustomer(0)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-xs shadow active:scale-90">Bàn 1</button>
               <button onclick="serveCustomer(1)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-xs shadow active:scale-90">Bàn 2</button>
               <button onclick="serveCustomer(2)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-xs shadow active:scale-90">Bàn 3</button>
@@ -240,17 +245,17 @@
           </div>
         </div>
 
-        <!-- Khay Nguyên Liệu Chọn Nhanh -->
+        <!-- MÂM TOPPING NGHỆ THUẬT VẼ TAY THỰC TẾ -->
         <div class="bg-stone-900 rounded-2xl p-2 border border-stone-700 shadow-md flex flex-col gap-1">
           <div class="flex justify-between items-center px-1">
-            <span class="text-[11px] font-black uppercase text-amber-300">Khay Nguyên Liệu:</span>
+            <span class="text-[11px] font-black uppercase text-amber-300">Khay Nguyên Liệu Đặc Sản:</span>
             <span class="text-[10px] text-stone-400">Chạm gắp vào tô</span>
           </div>
           <div class="grid grid-cols-5 gap-1.5" id="quick-pantry-grid"></div>
         </div>
       </section>
 
-      <!-- TAB 2: ĐI CHỢ ĐẦU MỐI (CÓ BÁN TÔ BÁT SỨ BÁT TRÀNG) -->
+      <!-- TAB 2: ĐI CHỢ ĐẦU MỐI -->
       <section id="view-market" class="tab-view hidden flex-1 flex flex-col gap-2.5">
         <div class="bg-gradient-to-r from-amber-700 to-orange-700 text-white p-3 rounded-2xl shadow-md">
           <h2 class="brand-font text-base uppercase">Chợ Đầu Mối Cua Cá & Đồ Sứ</h2>
@@ -362,7 +367,7 @@
       </button>
     </nav>
 
-    <!-- MODAL SỔ THU CHI & ĐÚT HEO CUỐI CA -->
+    <!-- MODAL SỔ THU CHI -->
     <div id="modal-ledger" class="hidden fixed inset-0 z-50 bg-stone-950/85 backdrop-blur-md flex items-center justify-center p-3">
       <div class="bg-stone-900 rounded-3xl max-w-xs w-full p-4 text-white text-center border-2 border-yellow-500/80 shadow-2xl">
         <div class="text-3xl mb-1">📖</div>
@@ -438,60 +443,172 @@
       pig() { if (!this.ctx) return; this.coin(); setTimeout(() => this.plop(), 120); }
     };
 
-    /* DANH MỤC MÓN ĂN & TÔ BÁT ĐI CHỢ */
+    /* HỆ THỐNG MÓN ĂN VẼ TAY GAME ART CHI TIẾT (CHUẨN TẢ THỰC) */
     const ALL_ITEMS = {
-      // BÁT SỨ LÀ MẶT HÀNG ĐI CHỢ MUA VỀ
       clean_bowls: {
         name: 'Tô Bát Sứ Bát Tràng', basePrice: 1000, type: 'supplies', unlockDay: 1,
-        svg: `<div class="w-8 h-8 rounded-full border-2 border-amber-950 bg-gradient-to-b from-stone-50 to-amber-50 shadow flex items-center justify-center"><div class="w-4 h-1 rounded-full bg-sky-200"></div></div>`
+        svg: `<div class="w-8 h-8 rounded-full border-2 border-blue-900 bg-gradient-to-b from-white to-blue-50 shadow-md flex items-center justify-center"><div class="w-5 h-1.5 rounded-full border border-blue-600/40 bg-blue-100"></div></div>`
       },
       bun: { 
         name: 'Bún Trắng', basePrice: 2000, type: 'noodle', unlockDay: 1,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><path d="M10 18 Q22 30 34 18 M12 24 Q22 36 32 24" stroke="#e2e8f0" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M14 14 Q22 26 30 14" stroke="#ffffff" stroke-width="2.5" fill="none"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+          <path d="M9 17 Q22 31 35 17 M11 23 Q22 37 33 23" stroke="#e2e8f0" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M13 13 Q22 27 31 13" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+          <path d="M15 27 Q22 15 29 27" stroke="#f1f5f9" stroke-width="2" fill="none"/>
+        </svg>`
       },
       banh_da: { 
         name: 'Bánh Đa Đỏ', basePrice: 2500, type: 'noodle', unlockDay: 4,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="#78350f" stroke="#451a03" stroke-width="2"/><rect x="8" y="14" width="28" height="4" rx="2" fill="#b45309"/><rect x="7" y="20" width="30" height="4.5" rx="2" fill="#d97706"/><rect x="9" y="26.5" width="26" height="4" rx="2" fill="#9a3412"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="18" fill="#3f1301" stroke="#250901" stroke-width="2"/>
+          <rect x="7" y="12" width="30" height="4.5" rx="2" fill="#881337"/>
+          <rect x="6" y="19" width="32" height="5" rx="2" fill="#9f1239"/>
+          <rect x="8" y="26.5" width="28" height="4.5" rx="2" fill="#78350f"/>
+        </svg>`
       },
+      // GẠCH RIÊU CUA: TỪNG MẢNG XỐP VỠ GỒ GHỀ, VÂN DẦU ĐIỀU ÓNG Ả
       rieu_cua: { 
-        name: 'Gạch Riêu', basePrice: 4000, type: 'meat', unlockDay: 1,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><path d="M8 22 C6 14, 20 8, 32 14 C38 20, 36 30, 26 34 C16 38, 10 30, 8 22 Z" fill="#ea580c" stroke="#7c2d12" stroke-width="1.5"/><circle cx="16" cy="18" r="3" fill="#fdba74"/><circle cx="24" cy="22" r="4" fill="#fb923c"/><circle cx="28" cy="16" r="2.5" fill="#fef08a"/></svg>`
+        name: 'Gạch Riêu Cua', basePrice: 4000, type: 'meat', unlockDay: 1,
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <defs>
+            <radialGradient id="rieuReal" cx="40%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#fb923c"/>
+              <stop offset="50%" stop-color="#c2410c"/>
+              <stop offset="100%" stop-color="#6c1d04"/>
+            </radialGradient>
+          </defs>
+          <!-- Mảng riêu gồ ghề tự nhiên không tròn đều -->
+          <path d="M8 20 C6 14, 15 9, 23 8 C31 8, 38 13, 37 20 C36 26, 32 30, 26 34 C18 36, 12 33, 9 27 Z" fill="url(#rieuReal)" stroke="#451a03" stroke-width="1.5"/>
+          <!-- Váng dầu điều óng ánh và đốm mỡ riêu -->
+          <circle cx="16" cy="17" r="3.2" fill="#fed7aa" opacity="0.95"/>
+          <circle cx="26" cy="19" r="3.8" fill="#f97316" opacity="0.9"/>
+          <circle cx="20" cy="26" r="2.8" fill="#fef08a" opacity="0.85"/>
+          <circle cx="31" cy="24" r="2" fill="#ea580c"/>
+          <circle cx="13" cy="23" r="1.5" fill="#fef08a"/>
+          <path d="M22 13 Q25 18 28 14" stroke="#ffedd5" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>`
       },
+      // ĐẬU RÁN: VÀNG RUỘM, MẶT CẮT CÓ RÃNH CHIÊN KHÍ PHỒNG
       dau_ran: { 
-        name: 'Đậu Rán', basePrice: 2000, type: 'meat', unlockDay: 1,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><rect x="8" y="11" width="28" height="22" rx="4" fill="#eab308" stroke="#713f12" stroke-width="2"/><line x1="15" y1="14" x2="15" y2="30" stroke="#ca8a04" stroke-width="2"/><line x1="22" y1="14" x2="22" y2="30" stroke="#ca8a04" stroke-width="2"/></svg>`
+        name: 'Đậu Rán Giòn', basePrice: 2000, type: 'meat', unlockDay: 1,
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <defs>
+            <linearGradient id="dauReal" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#fef08a"/>
+              <stop offset="40%" stop-color="#eab308"/>
+              <stop offset="100%" stop-color="#78350f"/>
+            </linearGradient>
+          </defs>
+          <!-- Khối đậu cắt lát phồng -->
+          <rect x="6" y="9" width="32" height="26" rx="5" fill="url(#dauReal)" stroke="#451a03" stroke-width="2"/>
+          <!-- Viền chiên già xém nâu -->
+          <line x1="13" y1="12" x2="13" y2="32" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="22" y1="12" x2="22" y2="32" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="31" y1="12" x2="31" y2="32" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="17" cy="18" r="1.8" fill="#fef9c3" opacity="0.9"/>
+          <circle cx="26" cy="24" r="1.5" fill="#fef9c3" opacity="0.9"/>
+        </svg>`
       },
+      // ỐC BƯƠU: VỎ XOẮN BÓNG, LỘ MIỆNG THỊT ỐC VÀ SẢ
       oc: { 
-        name: 'Ốc Bươu', basePrice: 3500, type: 'meat', unlockDay: 4,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><path d="M12 24 C10 13, 30 10, 32 23 C34 31, 24 34, 18 34 C12 34, 13 28, 12 24 Z" fill="#44403c" stroke="#0c0a09" stroke-width="2"/><ellipse cx="23" cy="22" rx="5" ry="7" fill="#d97706"/><circle cx="21" cy="18" r="1.5" fill="#fef3c7"/></svg>`
+        name: 'Ốc Bươu Giòn', basePrice: 3500, type: 'meat', unlockDay: 4,
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <defs>
+            <radialGradient id="ocReal" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#78716c"/>
+              <stop offset="65%" stop-color="#292524"/>
+              <stop offset="100%" stop-color="#0c0a09"/>
+            </radialGradient>
+          </defs>
+          <!-- Thân xoắn ốc -->
+          <path d="M11 25 C9 13, 31 9, 34 21 C36 30, 25 35, 17 35 C11 35, 12 29, 11 25 Z" fill="url(#ocReal)" stroke="#0c0a09" stroke-width="2"/>
+          <!-- Lòng ốc màu cam đậm và chấm sả -->
+          <ellipse cx="24" cy="22" rx="5.5" ry="7" fill="#c2410c" transform="rotate(-15 24 22)"/>
+          <ellipse cx="24" cy="22" rx="3" ry="4.5" fill="#7c2d12" transform="rotate(-15 24 22)"/>
+          <circle cx="21" cy="18" r="2.2" fill="#fef08a" stroke="#ca8a04" stroke-width="0.5"/>
+        </svg>`
       },
+      // CHẢ LÁ LỐT: CUỘN DÀI BÓNG DẦU, GÂN LÁ RÕ NÉT, XÉM CẠNH THAN HỒNG
       cha_la_lot: { 
         name: 'Chả Lá Lốt', basePrice: 3000, type: 'meat', unlockDay: 8,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><rect x="7" y="14" width="30" height="16" rx="7" fill="#15803d" stroke="#052e16" stroke-width="2"/><line x1="14" y1="14" x2="14" y2="30" stroke="#166534" stroke-width="2.5"/><line x1="22" y1="14" x2="22" y2="30" stroke="#166534" stroke-width="2.5"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <defs>
+            <linearGradient id="lotReal" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#15803d"/>
+              <stop offset="50%" stop-color="#14532d"/>
+              <stop offset="100%" stop-color="#052e16"/>
+            </linearGradient>
+          </defs>
+          <!-- Cuộn chả thuôn dài -->
+          <rect x="5" y="12" width="34" height="20" rx="9" fill="url(#lotReal)" stroke="#022c22" stroke-width="2"/>
+          <!-- Thịt băm lồi nhẹ ở mép -->
+          <ellipse cx="6" cy="22" rx="2" ry="6" fill="#b91c1c"/>
+          <ellipse cx="38" cy="22" rx="2" ry="6" fill="#b91c1c"/>
+          <!-- Gân lá lốt xếp nếp -->
+          <line x1="12" y1="12" x2="12" y2="32" stroke="#16a34a" stroke-width="2"/>
+          <line x1="20" y1="12" x2="20" y2="32" stroke="#16a34a" stroke-width="2"/>
+          <line x1="28" y1="12" x2="28" y2="32" stroke="#16a34a" stroke-width="2"/>
+          <!-- Vết cháy sém than hoa nướng -->
+          <circle cx="16" cy="18" r="2.2" fill="#1c1917"/>
+          <circle cx="25" cy="26" r="2.5" fill="#1c1917"/>
+          <ellipse cx="22" cy="16" rx="4" ry="1.5" fill="#86efac" opacity="0.45"/>
+        </svg>`
       },
+      // BẮP BÒ HOA: LÁT THỊT UỐN LƯỢN, VÂN GÂN HOA CẨM THẠCH TRONG SUỐT
       bap_bo: { 
         name: 'Bắp Bò Hoa', basePrice: 6000, type: 'meat', unlockDay: 15,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><path d="M10 24 C8 14, 28 8, 34 18 C38 26, 26 34, 16 32 Z" fill="#b91c1c" stroke="#450a0a" stroke-width="1.8"/><path d="M14 18 Q22 24 30 16" stroke="#fee2e2" stroke-width="2" fill="none"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <defs>
+            <radialGradient id="boReal" cx="40%" cy="40%" r="65%">
+              <stop offset="0%" stop-color="#ef4444"/>
+              <stop offset="65%" stop-color="#b91c1c"/>
+              <stop offset="100%" stop-color="#450a0a"/>
+            </radialGradient>
+          </defs>
+          <!-- Miếng bắp bò lát mỏng cong tự nhiên -->
+          <path d="M8 24 C6 13, 26 7, 35 15 C40 24, 28 35, 16 33 Z" fill="url(#boReal)" stroke="#450a0a" stroke-width="2"/>
+          <!-- Vân mỡ hoa bò đan xen đối xứng như hoa cẩm thạch -->
+          <path d="M12 17 Q22 25 32 15" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0.95"/>
+          <path d="M14 24 Q22 29 29 22" stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.95"/>
+          <path d="M22 17 L22 27" stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.95"/>
+        </svg>`
       },
+      // SƯỜN SỤN NON: MIẾNG THỊT CÓ KHỐI SỤN TRẮNG ĐỤC NỔI BẬT
       suon_sun: { 
-        name: 'Sườn Sụn', basePrice: 5500, type: 'meat', unlockDay: 20,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><path d="M10 22 C10 14, 30 11, 34 20 C34 28, 14 30, 10 22 Z" fill="#ea580c" stroke="#9a3412" stroke-width="2"/><ellipse cx="22" cy="21" rx="5" ry="3" fill="#ffffff"/></svg>`
+        name: 'Sườn Sụn Non', basePrice: 5500, type: 'meat', unlockDay: 20,
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <path d="M8 22 C8 12, 31 9, 36 18 C36 28, 12 32, 8 22 Z" fill="#c2410c" stroke="#7c2d12" stroke-width="2"/>
+          <!-- Cục sụn non trắng trong -->
+          <ellipse cx="24" cy="20" rx="7" ry="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+          <circle cx="14" cy="18" r="2.2" fill="#fed7aa"/>
+          <line x1="17" y1="24" x2="30" y2="24" stroke="#9a3412" stroke-width="2"/>
+        </svg>`
       },
       rau_song: { 
         name: 'Rau Muống', basePrice: 1000, type: 'garnish', unlockDay: 1,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><circle cx="16" cy="18" r="6" fill="#22c55e"/><circle cx="26" cy="22" r="5.5" fill="#16a34a"/><circle cx="19" cy="27" r="5" fill="#4ade80"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <circle cx="15" cy="17" r="7" fill="#22c55e" stroke="#14532d" stroke-width="1.8"/>
+          <circle cx="28" cy="22" r="6.5" fill="#16a34a" stroke="#14532d" stroke-width="1.8"/>
+          <circle cx="19" cy="28" r="6" fill="#4ade80" stroke="#15803d" stroke-width="1.8"/>
+        </svg>`
       },
       quay: { 
         name: 'Quẩy Giòn', basePrice: 2000, type: 'garnish', unlockDay: 1,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><rect x="12" y="8" width="8" height="28" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="1.5"/><rect x="22" y="8" width="8" height="28" rx="4" fill="#d97706" stroke="#78350f" stroke-width="1.5"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <rect x="10" y="7" width="10" height="30" rx="4.5" fill="#f59e0b" stroke="#78350f" stroke-width="2"/>
+          <rect x="22" y="7" width="10" height="30" rx="4.5" fill="#d97706" stroke="#78350f" stroke-width="2"/>
+          <line x1="15" y1="12" x2="15" y2="33" stroke="#fef3c7" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="27" y1="12" x2="27" y2="33" stroke="#fef3c7" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>`
       }
     };
 
     const CUSTOMER_AVATARS = [
-      { name: 'Anh Nam Công Sở', avatar: '👨‍💼' },
-      { name: 'Bác Ba Tổ Dân Phố', avatar: '👴' },
+      { name: 'Nam Công Sở', avatar: '👨‍💼' },
+      { name: 'Bác Ba Tổ Trưởng', avatar: '👴' },
       { name: 'Cô Mai Sành Ăn', avatar: '👩‍🦰' },
-      { name: 'Em Sinh Viên', avatar: '👱‍♂️' }
+      { name: 'Sinh Viên', avatar: '👱‍♂️' }
     ];
 
     const ACHIEVEMENTS = [
@@ -514,7 +631,7 @@
       unlockedBadges: {},
       claimedBadges: {},
       inventory: { 
-        clean_bowls: 20, // Bắt đầu có sẵn 20 bát sạch
+        clean_bowls: 20,
         bun: 15, banh_da: 15, rieu_cua: 15, dau_ran: 15, oc: 15, cha_la_lot: 15, bap_bo: 15, suon_sun: 15, rau_song: 15, quay: 15 
       },
       upgrades: {
@@ -529,14 +646,14 @@
     };
 
     function loadGame() {
-      const data = localStorage.getItem('bun_rieu_coba_bowl_market_v3');
+      const data = localStorage.getItem('bun_rieu_coba_art_v7');
       if (data) {
         try { savedState = Object.assign(savedState, JSON.parse(data)); } catch (e) {}
       }
       if (savedState.inventory.clean_bowls === undefined) savedState.inventory.clean_bowls = 20;
     }
     function persistGame() {
-      localStorage.setItem('bun_rieu_coba_bowl_market_v3', JSON.stringify(savedState));
+      localStorage.setItem('bun_rieu_coba_art_v7', JSON.stringify(savedState));
     }
 
     const shiftState = {
@@ -573,7 +690,6 @@
       }
     }
 
-    /* ĐIỀU HƯỚNG TAB */
     function switchTab(tabKey) {
       document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
       document.querySelectorAll('.nav-btn').forEach(b => {
@@ -631,7 +747,6 @@
       else subTitle.textContent = 'Gánh Vỉa Hè';
     }
 
-    /* CƠ CHẾ RÚT TÔ BÁT (CÓ TRỪ SỐ LƯỢNG TRONG KHO) */
     function drawBowlFromStack() {
       if (shiftState.isPaused) { showToast('Bấm TIẾP TỤC để bán hàng!'); return; }
       if (shiftState.hasBowlOnTray) {
@@ -644,7 +759,6 @@
         return;
       }
 
-      // Trừ 1 tô sạch trong kho
       savedState.inventory.clean_bowls--;
       shiftState.hasBowlOnTray = true;
       Sound.plop();
@@ -657,25 +771,25 @@
       updateHUD();
       updateBowlUI();
       persistGame();
-      showToast('Đã rút 1 tô sứ ra khay!');
+      showToast('Đã rút 1 tô sứ men lam ra khay!');
     }
 
-    /* RENDER QUẦY BẾP */
+    /* RENDER MÂM TOPPING VỚI HÌNH VẼ CHI TIẾT */
     function renderQuickPantry() {
       const grid = document.getElementById('quick-pantry-grid');
       grid.innerHTML = '';
 
       for (let k in ALL_ITEMS) {
-        if (k === 'clean_bowls') continue; // Bát sứ chỉ hiển thị ở chồng bát & ở chợ
+        if (k === 'clean_bowls') continue;
         const it = ALL_ITEMS[k];
         const isUnlocked = savedState.day >= it.unlockDay;
         const btn = document.createElement('button');
-        btn.className = `p-1.5 rounded-2xl flex flex-col items-center justify-center transition border ${
+        btn.className = `p-1 rounded-2xl flex flex-col items-center justify-center transition border ${
           isUnlocked ? 'bg-stone-800 hover:bg-stone-700 border-stone-600 active:scale-95 shadow-sm' : 'bg-stone-900 border-stone-800 opacity-40 cursor-not-allowed'
         }`;
         btn.innerHTML = `
           ${it.svg}
-          <span class="text-[10px] font-black text-stone-200 truncate w-full text-center mt-0.5">${it.name}</span>
+          <span class="text-[10px] font-black text-stone-200 truncate w-full text-center mt-1">${it.name}</span>
           <span class="text-[9px] font-black text-amber-950 bg-amber-400 px-1.5 py-0.2 rounded-full mt-0.5">${isUnlocked ? savedState.inventory[k] : 'N.' + it.unlockDay}</span>
         `;
         if (isUnlocked) {
@@ -724,7 +838,6 @@
 
     function trashBowl() {
       if (shiftState.hasBowlOnTray) {
-        // Đổ bỏ thì hoàn lại tô sạch
         savedState.inventory.clean_bowls++;
       }
       shiftState.hasBowlOnTray = false;
@@ -735,7 +848,6 @@
       triggerAutoKitchen();
     }
 
-    /* PHỤ BẾP TỰ ĐỘNG BỐC BÁT */
     function triggerAutoKitchen() {
       if (savedState.upgrades.staffNoodle && !shiftState.hasBowlOnTray) {
         if (savedState.inventory.clean_bowls > 0 && savedState.inventory.bun > 0) {
@@ -751,6 +863,7 @@
       }
     }
 
+    /* HIỂN THỊ TÔ BÚN NẤU CHÂN THỰC */
     function updateBowlUI() {
       const bowl = shiftState.currentDish;
       const noBowlPrompt = document.getElementById('no-bowl-prompt');
@@ -773,7 +886,7 @@
       noBowlPrompt.classList.add('hidden');
 
       if (!bowl.base) {
-        statusText.textContent = 'Tô Trống (Chọn Loại Sợi)';
+        statusText.textContent = 'Tô Sứ Trống (Chọn Sợi)';
         promptEl.classList.remove('hidden');
         noodlesEl.classList.add('hidden');
         brothEl.classList.add('hidden');
@@ -785,20 +898,21 @@
       promptEl.classList.add('hidden');
       noodlesEl.classList.remove('hidden');
       
+      // Vẽ sợi bún/bánh đa cuộn tròn trong lòng tô
       if (bowl.base === 'bun') {
         noodlesEl.innerHTML = `
           <svg class="w-full h-full" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="47" fill="#f8fafc"/>
-            <path d="M12 32 Q50 68 88 32 M15 50 Q50 84 85 50 M12 68 Q50 102 88 68" stroke="#cbd5e1" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-            <path d="M22 38 Q50 74 78 38 M18 56 Q50 90 82 56" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M10 32 Q50 66 90 32 M14 48 Q50 82 86 48 M10 64 Q50 98 90 64" stroke="#e2e8f0" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+            <path d="M20 38 Q50 72 80 38 M16 54 Q50 88 84 54" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
           </svg>`;
       } else {
         noodlesEl.innerHTML = `
           <svg class="w-full h-full" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="47" fill="#5c2005"/>
-            <line x1="18" y1="28" x2="82" y2="28" stroke="#9a3412" stroke-width="9" stroke-linecap="round"/>
-            <line x1="12" y1="48" x2="88" y2="48" stroke="#b45309" stroke-width="9" stroke-linecap="round"/>
-            <line x1="20" y1="68" x2="80" y2="68" stroke="#78350f" stroke-width="9" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="47" fill="#3f1301"/>
+            <line x1="16" y1="26" x2="84" y2="26" stroke="#881337" stroke-width="9" stroke-linecap="round"/>
+            <line x1="10" y1="46" x2="90" y2="46" stroke="#9f1239" stroke-width="9" stroke-linecap="round"/>
+            <line x1="18" y1="66" x2="82" y2="66" stroke="#78350f" stroke-width="9" stroke-linecap="round"/>
           </svg>`;
       }
 
@@ -815,7 +929,7 @@
       });
     }
 
-    /* ĐI CHỢ (MUA NGUYÊN LIỆU & BÁT SỨ) */
+    /* ĐI CHỢ */
     let tempCart = {};
     function renderMarketTab() {
       const list = document.getElementById('market-items-list');
@@ -1145,37 +1259,36 @@
 
       shiftState.customers.forEach((c, idx) => {
         const slot = document.createElement('div');
-        slot.className = 'bg-stone-900 rounded-2xl p-2 border border-stone-700 flex flex-col justify-between min-h-[92px] text-white shadow-sm';
         
         if (idx >= 2 && !savedState.upgrades.staffGuard) {
-          slot.className = 'bg-stone-900/40 rounded-2xl p-2 border border-dashed border-stone-800 flex flex-col items-center justify-center min-h-[92px] text-stone-500 text-xs font-bold text-center';
-          slot.innerHTML = '🔒 Bàn Khóa<br>(Mở ở Level 8)';
+          slot.className = 'bg-stone-900/40 rounded-xl p-1 border border-dashed border-stone-800 flex flex-col items-center justify-center min-h-[64px] text-stone-600 text-[10px] font-bold text-center';
+          slot.innerHTML = '🔒 Bàn Khóa';
           track.appendChild(slot);
           return;
         }
 
         if (!c) {
-          slot.innerHTML = `<div class="text-stone-500 text-center py-5 text-xs font-bold">Bàn ${idx+1} Trống</div>`;
+          slot.className = 'bg-stone-900/60 rounded-xl p-1 border border-stone-800 flex flex-col items-center justify-center min-h-[64px] text-stone-500 text-[10px] font-bold';
+          slot.innerHTML = `Bàn ${idx+1}<br>Trống`;
         } else {
+          slot.className = 'bg-stone-900 rounded-xl p-1 border border-stone-700 flex flex-col justify-between min-h-[64px] text-white shadow-xs';
+          
           const topsBadges = c.toppings.map(tKey => {
-            return `<span class="bg-stone-800 text-amber-200 border border-stone-700 px-1.5 py-0.5 rounded font-black text-[9px]">${ALL_ITEMS[tKey].name}</span>`;
+            return `<span class="text-[8px] bg-stone-800 px-1 rounded text-amber-200">${ALL_ITEMS[tKey].name}</span>`;
           }).join('');
 
           slot.innerHTML = `
             <div>
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-1.5">
-                  <span class="text-lg">${c.avatar}</span>
-                  <div class="text-xs font-bold truncate max-w-[70px] text-stone-200">${c.name}</div>
-                </div>
-                <span class="text-xs font-black text-amber-400">${formatMoney(c.price)}</span>
+              <div class="flex items-center justify-between mb-0.5">
+                <span class="text-base">${c.avatar}</span>
+                <span class="text-[9px] font-black text-amber-400">${formatMoney(c.price)}</span>
               </div>
-              <div class="bg-stone-950 rounded-xl p-1.5 text-xs font-bold mt-1 border border-stone-800">
-                <div class="text-red-400 text-[10px] font-black uppercase">${ALL_ITEMS[c.base].name}</div>
-                <div class="flex flex-wrap gap-1 mt-0.5">${topsBadges}</div>
+              <div class="bg-stone-950 rounded p-0.5 text-[8px] font-bold leading-tight">
+                <div class="text-red-400 font-black truncate">${ALL_ITEMS[c.base].name}</div>
+                <div class="flex flex-wrap gap-0.5 mt-0.5 max-h-[22px] overflow-hidden">${topsBadges}</div>
               </div>
             </div>
-            <div class="w-full bg-stone-800 h-1.5 rounded-full overflow-hidden mt-1.5">
+            <div class="w-full bg-stone-800 h-1 rounded-full overflow-hidden mt-1">
               <div class="bg-emerald-500 h-full transition-all duration-300 rounded-full" style="width: ${(c.patience/c.maxPatience)*100}%"></div>
             </div>
           `;
@@ -1218,7 +1331,6 @@
         savedState.stats.maxCombo = shiftState.combo;
       }
 
-      // Khách ăn xong trả lại 1 tô sạch vào kho
       savedState.inventory.clean_bowls++;
 
       shiftState.customers[idx] = null;
@@ -1240,7 +1352,7 @@
           savedState.cash += Math.round(c.price * 0.9);
           shiftState.todaySales += Math.round(c.price * 0.9);
           savedState.stats.totalServed++;
-          savedState.inventory.clean_bowls++; // Bé dọn bàn rửa và trả bát về kho
+          savedState.inventory.clean_bowls++;
           shiftState.customers[idx] = null;
           Sound.coin();
           renderCustomers();
@@ -1295,7 +1407,6 @@
         Sound.pig();
       }
 
-      // Giữ lại đồ thừa theo cấp tủ mát (Bát đĩa là đồ gốm sứ nên được giữ lại 100%)
       const keepRate = savedState.upgrades.fridgeLevel === 0 ? 0.4 : (savedState.upgrades.fridgeLevel === 1 ? 0.7 : 1.0);
       for (let k in savedState.inventory) {
         if (k !== 'clean_bowls') {
