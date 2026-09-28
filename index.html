@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Tiệm Bún Riêu Cô Ba - Chạm Người Là Bán</title>
+  <title>Tiệm Bún Riêu Cô Ba - Bản Hoàn Thiện Master</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -26,14 +26,12 @@
       100% { transform: translateY(-34px) scaleX(1.6) scaleY(1.4); opacity: 0; }
     }
     .steam-soft { animation: smokeFlow 2.8s infinite ease-out; }
-    .steam-soft:nth-child(2) { animation-delay: 1s; }
 
     @keyframes bobbing {
       0%, 100% { transform: translateY(0) rotate(0deg); }
       50% { transform: translateY(-3px) rotate(1.2deg); }
     }
     .float-broth { animation: bobbing 3.2s infinite ease-in-out; }
-    .float-broth:nth-child(even) { animation-delay: 1.4s; animation-direction: reverse; }
 
     @keyframes dropIn {
       0% { transform: scale(0.3) translateY(-25px); opacity: 0; }
@@ -48,19 +46,46 @@
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
     .animate-bowl-spawn { animation: drawBowl 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+    @keyframes slurpAnim {
+      0%, 100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.08) translateY(-4px); }
+    }
+    .slurping-eating { animation: slurpAnim 0.35s infinite ease-in-out; }
+
+    @keyframes feverGlow {
+      0%, 100% { box-shadow: inset 0 0 25px #ea580c, 0 0 20px #f59e0b; border-color: #f97316; }
+      50% { box-shadow: inset 0 0 35px #dc2626, 0 0 30px #ef4444; border-color: #ef4444; }
+    }
+    .fever-active {
+      animation: feverGlow 1s infinite alternate;
+      border: 3px solid #f97316 !important;
+    }
+
+    @keyframes vipSparkle {
+      0%, 100% { filter: drop-shadow(0 0 8px #facc15); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 16px #f59e0b); transform: scale(1.03); }
+    }
+    .vip-card-sparkle { animation: vipSparkle 1.2s infinite ease-in-out; }
     
     .food-glow { filter: drop-shadow(0 3px 5px rgba(0,0,0,0.35)); }
     .bowl-depth {
       box-shadow: inset 0 8px 18px rgba(0,0,0,0.45), 0 12px 28px rgba(0,0,0,0.7);
+    }
+    .box-depth {
+      box-shadow: inset 0 6px 14px rgba(120,53,15,0.4), 0 10px 24px rgba(0,0,0,0.6);
+    }
+    .hotpot-depth {
+      box-shadow: inset 0 8px 20px rgba(180,83,9,0.5), 0 12px 30px rgba(234,88,12,0.6);
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
   </style>
 </head>
 
 <body class="min-h-screen flex justify-center items-center p-0 sm:py-4">
-  <div id="game-app" class="w-full max-w-[430px] h-[100dvh] sm:h-[860px] bg-stone-900 flex flex-col justify-between shadow-2xl relative overflow-hidden sm:rounded-[36px] sm:border-[6px] sm:border-stone-800">
+  <div id="game-app" class="w-full max-w-[430px] h-[100dvh] sm:h-[860px] bg-stone-900 flex flex-col justify-between shadow-2xl relative overflow-hidden sm:rounded-[36px] sm:border-[6px] sm:border-stone-800 transition-all">
     
-    <!-- 1. THANH ĐẦU TRANG -->
+    <!-- 1. TOP HEADER -->
     <header class="bg-stone-900/95 pt-3 px-3 pb-2 z-20 flex flex-col gap-1.5 border-b border-stone-800">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2 bg-stone-800 border border-stone-700 pl-1 pr-3 py-1 rounded-full shadow-sm">
@@ -72,8 +97,16 @@
               <span class="text-xs font-black text-white tracking-tight">CÔ BA</span>
               <span id="hud-day" class="text-[10px] font-black bg-amber-400 text-stone-950 px-1.5 py-0.2 rounded-full">Ngày 1</span>
             </div>
-            <div class="text-[10px] text-stone-300 font-semibold" id="shop-title-sub">Gánh Vỉa Hè</div>
+            <div class="text-[10px] text-stone-300 font-semibold flex items-center gap-1" id="shop-title-sub">
+              <span>Gánh Vỉa Hè</span>
+              <span id="weather-badge" class="text-[10px] bg-blue-950 text-blue-300 px-1.5 py-0.2 rounded border border-blue-700">☀️ Nắng Đẹp</span>
+            </div>
           </div>
+        </div>
+
+        <!-- Banner Fever Mode -->
+        <div id="fever-banner" class="hidden flex items-center gap-1 bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[10px] px-2.5 py-1 rounded-full animate-bounce shadow">
+          🔥 BỐC LỬA x1.5 (<span id="fever-timer">20</span>s)
         </div>
 
         <div class="flex items-center gap-1.5">
@@ -81,8 +114,8 @@
             <span class="text-xs">💵</span>
             <span id="hud-money" class="font-mono text-xs font-black text-amber-300">300.000đ</span>
           </div>
-          <div class="flex items-center gap-1 bg-stone-800 border border-pink-500/40 px-2.5 py-1 rounded-full shadow-inner">
-            <span class="text-xs">🐷</span>
+          <div class="flex items-center gap-1 bg-stone-800 border border-pink-500/40 px-2.5 py-1 rounded-full shadow-inner cursor-pointer" onclick="switchTab('piggy')">
+            <span class="text-xs" id="hud-piggy-icon">🐷</span>
             <span id="hud-piggy" class="font-mono text-xs font-black text-pink-300">0đ</span>
           </div>
         </div>
@@ -97,8 +130,11 @@
             ⏸️ <span id="pause-text">Dừng</span>
           </button>
         </div>
-        <div class="text-red-400 font-black text-[11px]">
-          💢 Bỏ về: <span id="shift-missed" class="font-mono text-white">0/3</span>
+        <div class="flex items-center gap-2">
+          <span class="text-amber-400 font-extrabold text-[11px]" id="combo-display">Combo: x0</span>
+          <div class="text-red-400 font-black text-[11px]">
+            💢 Hủy: <span id="shift-missed" class="font-mono text-white">0/3</span>
+          </div>
         </div>
       </div>
     </header>
@@ -106,64 +142,91 @@
     <!-- 2. VÙNG NỘI DUNG CHÍNH -->
     <main class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col p-2.5 gap-2">
       
-      <!-- TAB 0: DASHBOARD / SẢNH CHÍNH -->
-      <section id="view-dashboard" class="tab-view flex-1 flex flex-col justify-between gap-3 p-1">
-        <div class="bg-gradient-to-b from-amber-900/90 via-orange-950 to-stone-900 p-4 rounded-3xl border-2 border-amber-600/60 shadow-xl text-center flex flex-col items-center">
-          <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center text-3xl mb-2 shadow-lg border-2 border-yellow-300 animate-pulse">
+      <!-- TAB 0: SẢNH CHÍNH -->
+      <section id="view-dashboard" class="tab-view flex-1 flex flex-col justify-between gap-2.5 p-1">
+        <div class="bg-gradient-to-b from-amber-900/90 via-orange-950 to-stone-900 p-3.5 rounded-3xl border-2 border-amber-600/60 shadow-xl text-center flex flex-col items-center">
+          <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center text-3xl mb-1.5 shadow-lg border-2 border-yellow-300 animate-pulse">
             🍲
           </div>
-          <h2 class="brand-font text-xl text-yellow-300 uppercase tracking-wide">Tiệm Bún Riêu Cô Ba</h2>
-          <p class="text-xs text-amber-100 font-semibold mt-0.5">Đặc sản Cua đồng chuẩn vị truyền thống</p>
+          <h2 class="brand-font text-lg text-yellow-300 uppercase tracking-wide">Tiệm Bún Riêu Cô Ba</h2>
+          <p class="text-xs text-amber-100 font-semibold">Đặc sản Cua Đồng Phố Cổ - Trọn Vị Truyền Thống</p>
           
-          <div class="grid grid-cols-2 gap-2 w-full mt-3.5 pt-3 border-t border-amber-700/50 text-left">
-            <div class="bg-black/40 p-2.5 rounded-xl border border-stone-700">
-              <span class="text-[11px] text-stone-400 block font-medium">Doanh thu tích lũy</span>
-              <span id="dash-total-served" class="text-sm font-black text-amber-300">0 tô phục vụ</span>
+          <div class="grid grid-cols-2 gap-2 w-full mt-2.5 pt-2.5 border-t border-amber-700/50 text-left">
+            <div class="bg-black/40 p-2 rounded-xl border border-stone-700">
+              <span class="text-[10px] text-stone-400 block font-medium">Doanh thu tích lũy</span>
+              <span id="dash-total-served" class="text-xs font-black text-amber-300">0 đơn phục vụ</span>
             </div>
-            <div class="bg-black/40 p-2.5 rounded-xl border border-stone-700">
-              <span class="text-[11px] text-stone-400 block font-medium">Tô bát sạch sẵn sàng</span>
-              <span id="dash-bowl-count" class="text-sm font-black text-emerald-400">20 cái trong kho</span>
+            <div class="bg-black/40 p-2 rounded-xl border border-stone-700">
+              <span class="text-[10px] text-stone-400 block font-medium">Tô bát sạch sẵn sàng</span>
+              <span id="dash-bowl-count" class="text-xs font-black text-emerald-400">20 cái trong kho</span>
             </div>
+          </div>
+        </div>
+
+        <!-- BẢN TIN THỜI TIẾT BUỔI SÁNG -->
+        <div class="bg-stone-850 p-2.5 rounded-2xl border border-amber-500/40 shadow-md text-left flex items-start gap-2.5">
+          <span class="text-2xl" id="morning-news-icon">📰</span>
+          <div>
+            <div class="text-[11px] font-black text-amber-300 uppercase tracking-wide" id="morning-news-title">Bản Tin Phố Cổ Buổi Sáng</div>
+            <p class="text-[10px] text-stone-300 leading-snug mt-0.5" id="morning-news-desc">Hôm nay trời nắng đẹp, khách đến lai rai, giá cả tại chợ đầu mối ổn định.</p>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-2 text-xs">
-          <button onclick="switchTab('market')" class="bg-stone-800 hover:bg-stone-700/90 border border-stone-700 p-3 rounded-2xl flex items-center gap-2.5 text-left transition active:scale-95 shadow-md">
+          <button onclick="switchTab('market')" class="bg-stone-800 hover:bg-stone-700/90 border border-stone-700 p-2.5 rounded-2xl flex items-center gap-2 text-left transition active:scale-95 shadow-md">
             <span class="text-2xl">🛒</span>
             <div>
-              <div class="font-extrabold text-white text-sm">Đi Chợ</div>
-              <div class="text-[11px] text-stone-400">Mua bát & nguyên liệu</div>
+              <div class="font-extrabold text-white text-xs">Đi Chợ</div>
+              <div class="text-[10px] text-stone-400">Hải sản & sườn sụn</div>
             </div>
           </button>
-          <button onclick="switchTab('shop')" class="bg-stone-800 hover:bg-stone-700/90 border border-stone-700 p-3 rounded-2xl flex items-center gap-2.5 text-left transition active:scale-95 shadow-md">
-            <span class="text-2xl">🛠️</span>
+          <button onclick="switchTab('shop')" class="bg-stone-800 hover:bg-stone-700/90 border border-stone-700 p-2.5 rounded-2xl flex items-center gap-2 text-left transition active:scale-95 shadow-md">
+            <span class="text-2xl">🏛️</span>
             <div>
-              <div class="font-extrabold text-white text-sm">Nâng Cấp</div>
-              <div class="text-[11px] text-stone-400">Thuê người & thiết bị</div>
+              <div class="font-extrabold text-white text-xs">Cơ Ngơi</div>
+              <div class="text-[10px] text-stone-400">Mua Nhà & Nâng Cấp</div>
             </div>
           </button>
         </div>
 
-        <button onclick="startKitchenShift()" class="w-full bg-gradient-to-r from-red-600 via-amber-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-black py-4 rounded-2xl text-base shadow-2xl border-2 border-yellow-400 flex items-center justify-center gap-2.5 active:scale-95 transition">
-          <span class="text-2xl">🚀</span>
+        <button onclick="startKitchenShift()" class="w-full bg-gradient-to-r from-red-600 via-amber-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-black py-3.5 rounded-2xl text-sm shadow-2xl border-2 border-yellow-400 flex items-center justify-center gap-2 active:scale-95 transition">
+          <span class="text-xl">🚀</span>
           <span>MỞ CỬA BÁN CA 3 PHÚT</span>
         </button>
       </section>
 
-      <!-- TAB 1: SÂN KHẤU BẾP NẤU (CHẠM THẲNG VÀO KHÁCH LÀ GIAO) -->
+      <!-- TAB 1: SÂN KHẤU BẾP NẤU MASTER -->
       <section id="view-kitchen" class="tab-view hidden flex-1 flex flex-col justify-between gap-1.5 relative">
         
-        <!-- HÀNG KHÁCH ĐỢI (CHẠM VÀO ĐÂY ĐỂ TRẢ MÓN THU TIỀN) -->
+        <!-- HÀNG KHÁCH ĐỢI (CHẠM VÀO ĐỂ GIAO ĐƠN) -->
         <div class="bg-stone-950/80 p-2 rounded-2xl border border-stone-700/80 shadow-md">
           <div class="flex justify-between items-center px-1 mb-1">
-            <span class="text-[11px] font-black uppercase text-amber-300">Khách Đang Chờ Món:</span>
-            <span class="text-[10px] text-emerald-400 font-extrabold animate-pulse">👉 Làm xong CHẠM VÀO KHÁCH để giao</span>
+            <span class="text-[11px] font-black uppercase text-amber-300">Khách Tại Quán, VIP & Đơn App:</span>
+            <span class="text-[10px] text-emerald-400 font-extrabold animate-pulse">👉 CHẠM VÀO ĐỂ GIAO</span>
           </div>
-          <!-- Danh sách khách hàng hiển thị trực tiếp -->
-          <div id="customers-track" class="flex gap-2 justify-center items-stretch min-h-[80px]"></div>
+          <div id="customers-track" class="grid grid-cols-4 gap-1.5 items-stretch min-h-[84px]"></div>
         </div>
 
-        <!-- Màn hình tạm dừng -->
+        <!-- SỰ CỐ: MÈO CHÔM ĐẬU -->
+        <div id="cat-event-box" class="hidden absolute top-28 left-6 z-40 bg-amber-950/95 border-2 border-amber-400 p-2 rounded-2xl shadow-2xl flex items-center gap-2.5 animate-bounce cursor-pointer" onclick="scareCat()">
+          <span class="text-3xl">🐱</span>
+          <div class="text-left leading-tight">
+            <span class="text-xs font-black text-amber-300 block">MÈO MƯỚP RÌNH ĐẬU!</span>
+            <span class="text-[10px] text-white font-bold">Chạm nhanh để xua đuổi!</span>
+          </div>
+        </div>
+
+        <!-- SỰ CỐ: HẾT GAS -->
+        <div id="gas-event-box" class="hidden absolute inset-0 bg-stone-950/85 backdrop-blur-sm z-40 rounded-3xl flex flex-col items-center justify-center p-4 text-center">
+          <div class="text-4xl mb-1 animate-pulse">💨</div>
+          <h3 class="brand-font text-base text-red-400 uppercase tracking-wide">BẾP HẾT GAS GIỮA CHỪNG!</h3>
+          <p class="text-xs text-stone-300 mb-3 max-w-[220px]">Nồi nước dùng đã tắt lửa. Gõ nhanh vào bình gas để bật lại!</p>
+          <button id="btn-fix-gas" onclick="tapGasCylinder()" class="bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 active:scale-90 text-white font-black py-2.5 px-6 rounded-2xl text-xs shadow-lg border border-yellow-300">
+            🔥 GÕ BÌNH GAS (Còn <span id="gas-clicks-left">2</span> nhịp)
+          </button>
+        </div>
+
+        <!-- Pause Overlay -->
         <div id="pause-overlay" class="hidden absolute inset-0 bg-stone-950/90 backdrop-blur-md z-30 rounded-2xl flex flex-col items-center justify-center p-4 text-center">
           <div class="text-4xl mb-2 animate-bounce">⏸️</div>
           <h3 class="brand-font text-lg text-yellow-400 uppercase tracking-wide">Đang Tạm Dừng</h3>
@@ -173,81 +236,118 @@
           </button>
         </div>
 
-        <!-- QUẦY BẾP TRUNG TÂM (ĐÃ BỎ HẲN CỘT NÚT PHỤC VỤ) -->
-        <div class="bg-gradient-to-b from-stone-800 to-stone-850 rounded-3xl p-3 border border-stone-700 shadow-xl flex flex-col gap-2 relative">
+        <!-- BẾP TRUNG TÂM -->
+        <div id="central-kitchen-wrapper" class="bg-gradient-to-b from-stone-800 to-stone-850 rounded-3xl p-2.5 border border-stone-700 shadow-xl flex flex-col gap-1.5 relative transition-all">
           <div class="flex justify-between items-center px-1">
-            <span class="text-[11px] font-black text-amber-300 uppercase tracking-tight" id="bowl-status-text">Chưa Có Tô Trên Khay</span>
-            <button onclick="trashBowl()" class="text-red-400 hover:text-red-300 text-[10px] font-bold bg-stone-900 border border-red-500/40 px-2 py-0.5 rounded-lg active:scale-95">🗑️ Đổ đi</button>
+            <span class="text-[10px] font-black text-amber-300 uppercase tracking-tight" id="bowl-status-text">Chưa Có Vật Chứa Trên Khay</span>
+            <div class="flex items-center gap-1.5">
+              <button id="btn-quick-wash" onclick="quickWashBowls()" class="hidden text-emerald-400 hover:text-emerald-300 text-[10px] font-bold bg-stone-900 border border-emerald-500/40 px-2 py-0.5 rounded-lg active:scale-95 animate-pulse">
+                🧼 Rửa Bát (+3)
+              </button>
+              <button onclick="trashBowl()" class="text-red-400 hover:text-red-300 text-[10px] font-bold bg-stone-900 border border-red-500/40 px-2 py-0.5 rounded-lg active:scale-95">🗑️ Đổ đi</button>
+            </div>
           </div>
 
-          <div class="flex items-center justify-around py-1">
-            <!-- CỘT TRÁI: LẤY TÔ & CHAN NƯỚC -->
-            <div class="flex flex-col gap-2.5">
-              <button onclick="drawBowlFromStack()" class="group flex flex-col items-center bg-stone-900 p-2.5 rounded-2xl border-2 border-stone-600 hover:border-amber-400 active:scale-90 transition shadow-lg relative">
-                <span id="stack-bowl-count" class="absolute -top-2 -right-1 bg-amber-400 text-stone-950 font-black text-[10px] px-1.5 py-0.2 rounded-full border border-stone-900 shadow">
-                  x20
-                </span>
-                <div class="relative w-12 h-12 flex items-center justify-center">
-                  <div class="absolute bottom-1 w-11 h-4 rounded-full border border-blue-900 bg-stone-200"></div>
-                  <div class="absolute bottom-2.5 w-11 h-4 rounded-full border border-blue-900 bg-stone-100"></div>
-                  <div class="absolute bottom-4 w-11 h-5 rounded-full border-2 border-blue-900 bg-gradient-to-b from-white to-blue-50 shadow-md flex items-center justify-center overflow-hidden">
-                    <div class="w-8 h-2 rounded-full border-t border-blue-600/60"></div>
-                  </div>
-                </div>
-                <span class="text-[10px] font-black text-amber-300 mt-1 uppercase tracking-tighter">Lấy Tô 🥣</span>
-              </button>
+          <div class="flex items-center justify-between py-0.5">
+            <!-- CỘT TRÁI: 3 LOẠI VẬT CHỨA & CHAN NƯỚC -->
+            <div class="flex flex-col gap-1">
+              <div class="flex gap-1">
+                <button onclick="drawBowlFromStack('bowl')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-stone-600 hover:border-amber-400 active:scale-90 transition shadow-md relative w-9">
+                  <span id="stack-bowl-count" class="absolute -top-1.5 -right-1 bg-amber-400 text-stone-950 font-black text-[8px] px-1 rounded-full">x20</span>
+                  <span class="text-sm">🥣</span>
+                  <span class="text-[7px] font-black text-amber-300">Tô</span>
+                </button>
 
-              <button onclick="addBroth()" class="flex flex-col items-center bg-stone-900 p-2 rounded-2xl border-2 border-amber-500/50 shadow-md active:scale-90 transition">
-                <div class="relative w-12 h-11 flex items-center justify-center">
-                  <svg class="w-11 h-11 food-glow" viewBox="0 0 60 60">
+                <button onclick="drawBowlFromStack('box')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-orange-500/60 hover:border-orange-400 active:scale-90 transition shadow-md relative w-9">
+                  <span class="text-sm">🥡</span>
+                  <span class="text-[7px] font-black text-orange-300">Hộp</span>
+                </button>
+
+                <button onclick="drawBowlFromStack('hotpot')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-red-500/70 hover:border-red-400 active:scale-90 transition shadow-md relative w-9">
+                  <span class="absolute -top-1.5 -right-1 bg-red-600 text-white font-black text-[7px] px-1 rounded-full">VIP</span>
+                  <span class="text-sm">🍲</span>
+                  <span class="text-[7px] font-black text-red-300">Lẩu</span>
+                </button>
+              </div>
+
+              <button onclick="addBroth()" class="flex flex-col items-center bg-stone-900 p-1.5 rounded-2xl border-2 border-amber-500/50 shadow-md active:scale-90 transition w-full">
+                <div class="relative w-8 h-8 flex items-center justify-center">
+                  <svg class="w-8 h-8 food-glow" viewBox="0 0 60 60">
                     <circle cx="30" cy="30" r="27" fill="#475569" stroke="#1e293b" stroke-width="2.5"/>
                     <circle cx="30" cy="30" r="23" fill="#ea580c"/>
                     <ellipse cx="30" cy="27" rx="19" ry="13" fill="#c2410c" opacity="0.85"/>
-                    <path d="M18 24 Q24 18 30 25 Q24 32 18 24 Z" fill="#b91c1c"/>
                     <circle cx="36" cy="23" r="4" fill="#fb923c" opacity="0.9"/>
-                    <circle cx="27" cy="33" r="3.5" fill="#fdba74"/>
                   </svg>
-                  <div class="absolute -top-1.5 flex gap-1 pointer-events-none">
-                    <div class="w-1.5 h-3 bg-white/70 rounded-full blur-[0.5px] steam-soft"></div>
+                  <div id="pot-steam" class="absolute -top-1 flex gap-1 pointer-events-none">
+                    <div class="w-1.5 h-2.5 bg-white/70 rounded-full blur-[0.5px] steam-soft"></div>
                   </div>
                 </div>
-                <span class="text-[10px] font-black text-amber-200 mt-0.5 uppercase">Chan Nước</span>
+                <span class="text-[8px] font-black text-amber-200 mt-0.5 uppercase">Chan Nước</span>
               </button>
             </div>
 
-            <!-- Ở GIỮA: TÔ BÚN GỐM SỨ TO RÕ RÀNG -->
-            <div class="relative w-48 h-48 rounded-full border-[8px] border-blue-950 bg-gradient-to-b from-stone-100 via-white to-blue-50 bowl-depth flex flex-col items-center justify-center overflow-hidden" id="main-bowl-container">
-              <div class="absolute inset-1 rounded-full border border-blue-600/30 pointer-events-none z-10"></div>
+            <!-- Ở GIỮA: VẬT CHỨA -->
+            <div id="main-container-viewport" class="relative w-40 h-40 rounded-full border-[8px] border-blue-950 bg-gradient-to-b from-stone-100 via-white to-blue-50 bowl-depth flex flex-col items-center justify-center overflow-hidden transition-all duration-300">
+              <div id="inner-rim" class="absolute inset-1 rounded-full border border-blue-600/30 pointer-events-none z-10"></div>
               
               <div id="no-bowl-prompt" class="text-stone-400 text-center text-xs font-bold px-3 z-0 leading-tight">
-                Chạm <b class="text-amber-500">"Lấy Tô 🥣"</b><br>để bắt đầu làm
+                Chạm <b class="text-amber-500">"Tô"</b>, <b class="text-orange-400">"Hộp"</b> hoặc <b class="text-red-400">"Lẩu"</b>
               </div>
 
               <div id="empty-prompt" class="hidden text-stone-400 text-center text-xs font-bold px-3 z-0 leading-tight">
                 Chọn <b class="text-red-700">Sợi Bún</b> bên dưới
               </div>
 
-              <!-- Lớp Sợi -->
               <div id="visual-noodles" class="hidden absolute inset-2 rounded-full flex items-center justify-center overflow-hidden z-10"></div>
-              <!-- Nước lèo -->
               <div id="broth-liquid" class="hidden absolute inset-0 bg-gradient-to-t from-red-600/85 via-orange-500/65 to-amber-400/45 rounded-full pointer-events-none z-20 shadow-inner"></div>
-              <!-- Topping -->
-              <div id="visual-ingredients" class="absolute inset-0 p-3.5 flex flex-wrap content-center justify-center gap-1.5 pointer-events-none z-30"></div>
+              <div id="visual-ingredients" class="absolute inset-0 p-3 flex flex-wrap content-center justify-center gap-1 pointer-events-none z-30"></div>
+            </div>
+
+            <!-- CỘT PHẢI: QUẦY ĐỒ UỐNG 4 MÓN & MẮM TÔM -->
+            <div class="grid grid-cols-2 gap-1 w-24">
+              <button onclick="selectDrink('tea')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-emerald-500/60 hover:border-emerald-400 active:scale-90 transition relative">
+                <span id="drink-check-tea" class="hidden absolute -top-1 -right-1 bg-emerald-400 text-stone-950 font-black text-[8px] px-1 rounded-full">✓</span>
+                <span class="text-sm">🧊</span>
+                <span class="text-[8px] font-black text-emerald-300">Trà Đá</span>
+              </button>
+
+              <button onclick="selectDrink('kumquat')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-yellow-500/60 hover:border-yellow-400 active:scale-90 transition relative">
+                <span id="drink-check-kumquat" class="hidden absolute -top-1 -right-1 bg-yellow-400 text-stone-950 font-black text-[8px] px-1 rounded-full">✓</span>
+                <span class="text-sm">🍋</span>
+                <span class="text-[8px] font-black text-yellow-300">Trà Tắc</span>
+              </button>
+
+              <button onclick="selectDrink('soya')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-stone-400/60 hover:border-stone-200 active:scale-90 transition relative">
+                <span id="drink-check-soya" class="hidden absolute -top-1 -right-1 bg-white text-stone-950 font-black text-[8px] px-1 rounded-full">✓</span>
+                <span class="text-sm">🥛</span>
+                <span class="text-[8px] font-black text-stone-200">Đậu Nành</span>
+              </button>
+
+              <button onclick="selectDrink('soda')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-red-500/60 hover:border-red-400 active:scale-90 transition relative">
+                <span id="drink-check-soda" class="hidden absolute -top-1 -right-1 bg-red-400 text-white font-black text-[8px] px-1 rounded-full">✓</span>
+                <span class="text-sm">🥤</span>
+                <span class="text-[8px] font-black text-red-300">Xá Xị</span>
+              </button>
+
+              <button onclick="addShrimpPaste()" class="col-span-2 flex items-center justify-center gap-1 bg-stone-900 py-1 rounded-xl border border-purple-500/60 hover:border-purple-400 active:scale-90 transition">
+                <span class="text-sm">🫙</span>
+                <span class="text-[9px] font-black text-purple-300">Mắm Tôm</span>
+              </button>
             </div>
           </div>
 
           <!-- THANH HIỂN THỊ CÁC MÓN ĐÃ BỎ VÀO TÔ -->
-          <div id="bowl-contents-badges" class="bg-stone-900/90 rounded-xl px-2.5 py-1.5 min-h-[30px] flex flex-wrap items-center gap-1 border border-stone-700/80">
-            <span class="text-[10px] text-stone-500 font-bold">Trong tô có:</span>
-            <span class="text-[10px] text-stone-400 italic" id="empty-content-text">Chưa có gì</span>
+          <div id="bowl-contents-badges" class="bg-stone-900/90 rounded-xl px-2 py-1 min-h-[26px] flex flex-wrap items-center gap-1 border border-stone-700/80">
+            <span class="text-[9px] text-stone-500 font-bold">Khay có:</span>
+            <span class="text-[9px] text-stone-400 italic" id="empty-content-text">Chưa có gì</span>
           </div>
         </div>
 
-        <!-- MÂM NGUYÊN LIỆU ĐỒ HỌA MỚI -->
-        <div class="bg-stone-900 rounded-2xl p-2 border border-stone-700 shadow-md flex flex-col gap-1">
+        <!-- MÂM NGUYÊN LIỆU (GRID 5 CỘT THÔNG THOÁNG DỄ BẤM) -->
+        <div class="bg-stone-900 rounded-2xl p-2 border border-stone-700 shadow-md flex flex-col gap-1 max-h-[145px] overflow-y-auto no-scrollbar">
           <div class="flex justify-between items-center px-1">
             <span class="text-[11px] font-black uppercase text-amber-300">Khay Nguyên Liệu Đặc Sản:</span>
-            <span class="text-[10px] text-stone-400">Chạm gắp vào tô</span>
+            <span class="text-[10px] text-stone-400">Chạm gắp vào khay</span>
           </div>
           <div class="grid grid-cols-5 gap-1.5" id="quick-pantry-grid"></div>
         </div>
@@ -257,7 +357,7 @@
       <section id="view-market" class="tab-view hidden flex-1 flex flex-col gap-2.5">
         <div class="bg-gradient-to-r from-amber-700 to-orange-700 text-white p-3 rounded-2xl shadow-md">
           <h2 class="brand-font text-base uppercase">Chợ Đầu Mối Cua Cá & Đồ Sứ</h2>
-          <p class="text-xs text-amber-100">🌤️ Mua bát đĩa, cua cá tươi rói chuẩn bị cho ca bán</p>
+          <p class="text-xs text-amber-100" id="market-weather-notice">🌤️ Hôm nay trời quang đãng, nguồn hải sản tươi rói!</p>
         </div>
 
         <div class="flex-1 bg-stone-800/90 rounded-2xl p-3 border border-stone-700 shadow-sm flex flex-col justify-between overflow-y-auto no-scrollbar">
@@ -275,17 +375,31 @@
         </div>
       </section>
 
-      <!-- TAB 3: CÂY NÂNG CẤP -->
+      <!-- TAB 3: TIỆM NÂNG CẤP & CƠ NGƠI -->
       <section id="view-shop" class="tab-view hidden flex-1 flex flex-col gap-2.5">
         <div class="bg-gradient-to-r from-yellow-600 to-amber-700 text-white p-3 rounded-2xl shadow-md flex justify-between items-center">
           <div>
-            <h2 class="brand-font text-base uppercase">Cây Nâng Cấp Quán</h2>
-            <p class="text-[11px] text-yellow-100">Mở khóa theo Level / Mốc Ngày phục vụ</p>
+            <h2 class="brand-font text-base uppercase">Biệt Đội Phụ Quán & Cơ Ngơi</h2>
+            <p class="text-[11px] text-yellow-100">Mua đứt nhà mặt phố Phố Cổ 200.000.000đ</p>
           </div>
           <div class="text-right">
             <span class="text-[10px] text-yellow-200 block">Vốn ví:</span>
             <span id="shop-cash-val" class="font-mono text-sm font-black text-emerald-300">300.000đ</span>
           </div>
+        </div>
+
+        <!-- HỐT HỤI -->
+        <div class="bg-gradient-to-r from-red-950 to-amber-950 p-2.5 rounded-2xl border-2 border-yellow-500/70 shadow-md flex justify-between items-center">
+          <div class="text-left">
+            <div class="flex items-center gap-1.5">
+              <span class="text-lg">🤝</span>
+              <span class="text-xs font-black text-yellow-300 uppercase">Hốt Hụi Phường Chợ</span>
+            </div>
+            <p class="text-[10px] text-stone-300 mt-0.5">Nhận ngay <b class="text-emerald-400">2.000.000đ</b> tiền vốn, trả lãi 50.000đ/ngày.</p>
+          </div>
+          <button id="btn-hui-action" onclick="takeHuiLoan()" class="bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-black text-xs px-3 py-1.5 rounded-xl shadow active:scale-95">
+            HỐT HỤI
+          </button>
         </div>
 
         <div class="flex gap-1.5">
@@ -298,21 +412,21 @@
         <div class="flex-1 bg-stone-800/90 rounded-2xl p-2.5 border border-stone-700 shadow-sm overflow-y-auto no-scrollbar space-y-2" id="shop-items-list"></div>
       </section>
 
-      <!-- TAB 4: HEO ĐẤT & BẢNG DANH HIỆU -->
+      <!-- TAB 4: HŨ TIẾT KIỆM ĐA TẦNG & TỦ LƯU NIỆM -->
       <section id="view-piggy" class="tab-view hidden flex-1 flex flex-col gap-2.5">
         <div class="bg-gradient-to-r from-pink-600 to-rose-700 text-white p-3 rounded-2xl shadow-md flex justify-between items-center">
           <div>
-            <h2 class="brand-font text-base uppercase">Hũ Heo & Danh Hiệu</h2>
-            <p class="text-[11px] text-pink-100">Tích lũy quỹ an toàn & nhận thưởng thành tựu</p>
+            <h2 class="brand-font text-base uppercase">Hũ Tiết Kiệm Đa Tầng</h2>
+            <p class="text-[11px] text-pink-100">✨ Lãi suất qua đêm: <b class="text-yellow-300">+2%/ngày</b> trên số dư hũ</p>
           </div>
-          <span class="text-3xl">🏆</span>
+          <span class="text-3xl" id="tier-piggy-badge">🐷</span>
         </div>
 
         <div class="bg-stone-800/90 rounded-2xl p-3 border border-stone-700 shadow-sm flex flex-col gap-2">
           <div class="flex justify-between items-center">
             <div>
-              <span class="text-[11px] font-bold text-stone-400 block">Số Dư Trong Heo:</span>
-              <div id="piggy-vault-val" class="text-lg font-black text-pink-400">0đ</div>
+              <span class="text-[11px] font-bold text-stone-400 block" id="current-tier-name">Mốc 1: Heo Đất Làng Gốm Bát Tràng</span>
+              <div id="piggy-vault-val" class="text-xl font-black text-pink-400">0đ</div>
             </div>
             <button onclick="smashPiggy()" class="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-extrabold py-1.5 px-3.5 rounded-xl text-xs shadow">
               🔨 Đập Heo Lấy Vốn
@@ -321,18 +435,18 @@
 
           <div class="bg-stone-900/90 p-2.5 rounded-xl border border-stone-700 text-left text-xs space-y-1.5">
             <div class="flex justify-between text-[11px] text-stone-300">
-              <span>Mục Tiêu Mua Nhà (Ngày 100):</span>
-              <b class="text-amber-400">2.000.000đ</b>
+              <span id="tier-goal-title">Mục Tiêu Mốc 1 (Xe Wave Đi Chợ):</span>
+              <b class="text-amber-400" id="tier-goal-val">2.000.000đ</b>
             </div>
-            <div class="w-full bg-stone-700 h-2 rounded-full overflow-hidden">
-              <div id="piggy-progress" class="bg-pink-500 h-full rounded-full transition-all" style="width: 0%"></div>
+            <div class="w-full bg-stone-700 h-2.5 rounded-full overflow-hidden">
+              <div id="piggy-progress" class="bg-gradient-to-r from-pink-500 to-yellow-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
             </div>
           </div>
         </div>
 
         <div class="flex-1 bg-stone-800/90 rounded-2xl p-2.5 border border-stone-700 shadow-sm overflow-y-auto no-scrollbar flex flex-col gap-2">
           <div class="flex justify-between items-center border-b border-stone-700 pb-1.5 px-1">
-            <span class="text-xs font-black uppercase text-amber-300">Bảng Vinh Danh Danh Hiệu</span>
+            <span class="text-xs font-black uppercase text-amber-300">Tủ Kính Lưu Niệm & Danh Hiệu</span>
             <span class="text-xs text-stone-400 font-bold" id="badge-count-text">0/8</span>
           </div>
           <div class="space-y-2" id="achievements-container"></div>
@@ -356,12 +470,12 @@
         <span>Đi Chợ</span>
       </button>
       <button onclick="switchTab('shop')" id="nav-shop" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-xs transition">
-        <span class="text-xl">🛠️</span>
-        <span>Nâng Cấp</span>
+        <span class="text-xl">🏛️</span>
+        <span>Cơ Ngơi</span>
       </button>
       <button onclick="switchTab('piggy')" id="nav-piggy" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-xs transition">
-        <span class="text-xl">🏆</span>
-        <span>Danh Hiệu</span>
+        <span class="text-xl">🐷</span>
+        <span>Nuôi Heo</span>
       </button>
     </nav>
 
@@ -370,19 +484,21 @@
       <div class="bg-stone-900 rounded-3xl max-w-xs w-full p-4 text-white text-center border-2 border-yellow-500/80 shadow-2xl">
         <div class="text-3xl mb-1">📖</div>
         <h3 id="ledger-title" class="brand-font text-base text-yellow-400 mb-0.5 tracking-wide uppercase">SỔ THU CHI NGÀY 1</h3>
-        <p class="text-xs text-stone-400 mb-3">Kết toán tài chính sau ca bán hàng</p>
+        <p class="text-xs text-stone-400 mb-2">Kết toán doanh thu ca & tính lãi qua đêm</p>
 
-        <div class="bg-stone-800/90 rounded-2xl p-3 text-xs space-y-1.5 mb-3 border border-stone-700 text-left font-medium">
+        <div class="bg-stone-800/90 rounded-2xl p-2.5 text-xs space-y-1 mb-2 border border-stone-700 text-left font-medium">
           <div class="flex justify-between items-center text-stone-300"><span>Doanh thu ca:</span><span id="final-money" class="font-bold text-emerald-400">+0đ</span></div>
           <div class="flex justify-between items-center text-stone-300"><span>Tiền đi chợ:</span><span id="final-cost" class="font-bold text-red-400">-0đ</span></div>
-          <div class="flex justify-between items-center text-stone-300"><span>Lương phụ việc:</span><span id="final-wage" class="font-bold text-red-400">-0đ</span></div>
+          <div class="flex justify-between items-center text-stone-300"><span>Lương nhân sự:</span><span id="final-wage" class="font-bold text-red-400">-0đ</span></div>
+          <div id="ledger-hui-row" class="hidden flex justify-between items-center text-orange-400"><span>Tiền họ hụi ngày:</span><span class="font-bold text-orange-300">-50.000đ</span></div>
+          <div class="flex justify-between items-center text-yellow-400"><span>Lãi đẻ từ Hũ Heo (+2%):</span><span id="final-interest" class="font-bold text-yellow-300">+0đ</span></div>
           <div class="h-px bg-stone-700 my-1"></div>
-          <div class="flex justify-between items-center font-black text-sm"><span>Lãi Ròng:</span><span id="final-net" class="text-yellow-300">0đ</span></div>
+          <div class="flex justify-between items-center font-black text-sm"><span>Lãi Ròng Ca:</span><span id="final-net" class="text-yellow-300">0đ</span></div>
         </div>
 
         <div class="bg-stone-800/90 rounded-2xl p-2.5 border border-pink-500/30 mb-3 text-left">
           <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-pink-300">🐷 Trích Tiền Nuôi Heo</span>
+            <span class="text-xs font-bold text-pink-300">🐷 Trích Tiền Đút Heo</span>
             <span id="piggy-save-pct" class="text-xs font-black text-pink-300 bg-pink-900/60 px-2 py-0.5 rounded-full border border-pink-400/40">30%</span>
           </div>
           <input type="range" id="piggy-slider" min="0" max="100" value="30" class="w-full accent-pink-500 cursor-pointer mb-1.5">
@@ -405,7 +521,7 @@
   </div>
 
   <script>
-    /* ÂM THANH */
+    /* ÂM THANH ASMR */
     const Sound = {
       ctx: null,
       init() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
@@ -423,12 +539,47 @@
         gain.gain.setValueAtTime(0.25, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
         osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.3);
       },
+      ice() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(1200, now); osc.frequency.exponentialRampToValueAtTime(600, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0, now + 0.08);
+        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.08);
+      },
+      slurp() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(280, now); osc.frequency.linearRampToValueAtTime(420, now + 0.2);
+        gain.gain.setValueAtTime(0.18, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.25);
+      },
+      cameraFlash() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
+        osc.type = 'square'; osc.frequency.setValueAtTime(1500, now); osc.frequency.exponentialRampToValueAtTime(400, now + 0.08);
+        gain.gain.setValueAtTime(0.25, now); gain.gain.linearRampToValueAtTime(0, now + 0.08);
+        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.08);
+      },
+      tingting() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(880, now); osc.frequency.setValueAtTime(1760, now + 0.1);
+        gain.gain.setValueAtTime(0.25, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.5);
+      },
+      meow() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(450, now); osc.frequency.linearRampToValueAtTime(750, now + 0.2); osc.frequency.linearRampToValueAtTime(520, now + 0.4);
+        gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
+        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.4);
+      },
       coin() {
         if (!this.ctx) return;
         const now = this.ctx.currentTime, osc1 = this.ctx.createOscillator(), osc2 = this.ctx.createOscillator(), gain = this.ctx.createGain();
         osc1.frequency.setValueAtTime(987.77, now); osc2.frequency.setValueAtTime(1318.51, now + 0.08);
         gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-        osc1.connect(gain); osc2.connect(gain); gain.connect(this.ctx.destination);
+        osc1.connect(gain); gain.connect(this.ctx.destination); osc2.connect(gain);
         osc1.start(now); osc1.stop(now + 0.15); osc2.start(now + 0.08); osc2.stop(now + 0.45);
       },
       buzz() {
@@ -438,13 +589,20 @@
         gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
         osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.35);
       },
+      fever() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
+        osc.type = 'square'; osc.frequency.setValueAtTime(523.25, now); osc.frequency.setValueAtTime(659.25, now + 0.1); osc.frequency.setValueAtTime(783.99, now + 0.2);
+        gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.45);
+      },
       pig() { if (!this.ctx) return; this.coin(); setTimeout(() => this.plop(), 120); }
     };
 
-    /* HỆ THỐNG MÓN ĂN VẼ TAY THỰC TẾ */
+    /* HỆ THỐNG NGUYÊN LIỆU ĐẦY ĐỦ 100% */
     const ALL_ITEMS = {
       clean_bowls: {
-        name: 'Tô Bát Sứ Bát Tràng', basePrice: 1000, type: 'supplies', unlockDay: 1,
+        name: 'Tô Bát Sứ', basePrice: 1000, type: 'supplies', unlockDay: 1,
         svg: `<div class="w-8 h-8 rounded-full border-2 border-blue-900 bg-gradient-to-b from-white to-blue-50 shadow-md flex items-center justify-center"><div class="w-5 h-1.5 rounded-full border border-blue-600/40 bg-blue-100"></div></div>`
       },
       bun: { 
@@ -452,8 +610,6 @@
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
           <circle cx="22" cy="22" r="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
           <path d="M9 17 Q22 31 35 17 M11 23 Q22 37 33 23" stroke="#e2e8f0" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path d="M13 13 Q22 27 31 13" stroke="#ffffff" stroke-width="2.5" fill="none"/>
-          <path d="M15 27 Q22 15 29 27" stroke="#f1f5f9" stroke-width="2" fill="none"/>
         </svg>`
       },
       banh_da: { 
@@ -462,106 +618,79 @@
           <circle cx="22" cy="22" r="18" fill="#3f1301" stroke="#250901" stroke-width="2"/>
           <rect x="7" y="12" width="30" height="4.5" rx="2" fill="#881337"/>
           <rect x="6" y="19" width="32" height="5" rx="2" fill="#9f1239"/>
-          <rect x="8" y="26.5" width="28" height="4.5" rx="2" fill="#78350f"/>
         </svg>`
       },
       rieu_cua: { 
-        name: 'Gạch Riêu Cua', basePrice: 4000, type: 'meat', unlockDay: 1,
+        name: 'Gạch Riêu', basePrice: 4000, type: 'meat', unlockDay: 1,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <defs>
-            <radialGradient id="rieuReal" cx="40%" cy="35%" r="65%">
-              <stop offset="0%" stop-color="#fb923c"/>
-              <stop offset="50%" stop-color="#c2410c"/>
-              <stop offset="100%" stop-color="#6c1d04"/>
-            </radialGradient>
-          </defs>
-          <path d="M8 20 C6 14, 15 9, 23 8 C31 8, 38 13, 37 20 C36 26, 32 30, 26 34 C18 36, 12 33, 9 27 Z" fill="url(#rieuReal)" stroke="#451a03" stroke-width="1.5"/>
+          <path d="M8 20 C6 14, 15 9, 23 8 C31 8, 38 13, 37 20 C36 26, 32 30, 26 34 C18 36, 12 33, 9 27 Z" fill="#c2410c" stroke="#451a03" stroke-width="1.5"/>
           <circle cx="16" cy="17" r="3.2" fill="#fed7aa" opacity="0.95"/>
           <circle cx="26" cy="19" r="3.8" fill="#f97316" opacity="0.9"/>
-          <circle cx="20" cy="26" r="2.8" fill="#fef08a" opacity="0.85"/>
-          <circle cx="31" cy="24" r="2" fill="#ea580c"/>
-          <circle cx="13" cy="23" r="1.5" fill="#fef08a"/>
-          <path d="M22 13 Q25 18 28 14" stroke="#ffedd5" stroke-width="1.5" fill="none" stroke-linecap="round"/>
         </svg>`
       },
       dau_ran: { 
-        name: 'Đậu Rán Giòn', basePrice: 2000, type: 'meat', unlockDay: 1,
+        name: 'Đậu Rán', basePrice: 2000, type: 'meat', unlockDay: 1,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <defs>
-            <linearGradient id="dauReal" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#fef08a"/>
-              <stop offset="40%" stop-color="#eab308"/>
-              <stop offset="100%" stop-color="#78350f"/>
-            </linearGradient>
-          </defs>
-          <rect x="6" y="9" width="32" height="26" rx="5" fill="url(#dauReal)" stroke="#451a03" stroke-width="2"/>
+          <rect x="6" y="9" width="32" height="26" rx="5" fill="#eab308" stroke="#451a03" stroke-width="2"/>
           <line x1="13" y1="12" x2="13" y2="32" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="22" y1="12" x2="22" y2="32" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="31" y1="12" x2="31" y2="32" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
-          <circle cx="17" cy="18" r="1.8" fill="#fef9c3" opacity="0.9"/>
-          <circle cx="26" cy="24" r="1.5" fill="#fef9c3" opacity="0.9"/>
+        </svg>`
+      },
+      tiet_luoc: { 
+        name: 'Tiết Luộc', basePrice: 2500, type: 'meat', unlockDay: 2,
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <rect x="7" y="10" width="30" height="24" rx="6" fill="#450a0a" stroke="#2b0000" stroke-width="1.8"/>
+          <ellipse cx="16" cy="16" rx="5" ry="2.5" fill="#ef4444" opacity="0.4" transform="rotate(-10 16 16)"/>
+        </svg>`
+      },
+      trung_lon: { 
+        name: 'Trứng Vịt Lộn', basePrice: 4500, type: 'meat', unlockDay: 4,
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <ellipse cx="22" cy="22" rx="14" ry="17" fill="#eab308" stroke="#451a03" stroke-width="1.8"/>
+          <circle cx="20" cy="18" r="5.5" fill="#ea580c" opacity="0.9"/>
+        </svg>`
+      },
+      cha_ca: {
+        name: 'Chả Cá Chiên', basePrice: 3500, type: 'meat', unlockDay: 6,
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <ellipse cx="22" cy="22" rx="17" ry="12" fill="#ca8a04" stroke="#713f12" stroke-width="1.8"/>
+          <circle cx="15" cy="20" r="1.5" fill="#15803d"/>
+          <circle cx="22" cy="17" r="1.8" fill="#166534"/>
+        </svg>`
+      },
+      moc_nam: {
+        name: 'Mọc Nấm', basePrice: 4000, type: 'meat', unlockDay: 8,
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="15" fill="#fecdd3" stroke="#9f1239" stroke-width="1.8"/>
+          <circle cx="17" cy="18" r="2.5" fill="#451a03"/>
+          <circle cx="21" cy="27" r="3" fill="#451a03"/>
+        </svg>`
+      },
+      suon_sun: {
+        name: 'Sườn Sụn Non', basePrice: 5500, type: 'meat', unlockDay: 10,
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
+          <path d="M8 22 C8 12, 31 9, 36 18 C36 28, 12 32, 8 22 Z" fill="#c2410c" stroke="#7c2d12" stroke-width="2"/>
+          <ellipse cx="24" cy="20" rx="7" ry="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
         </svg>`
       },
       oc: { 
-        name: 'Ốc Bươu Giòn', basePrice: 3500, type: 'meat', unlockDay: 4,
+        name: 'Ốc Bươu', basePrice: 3500, type: 'meat', unlockDay: 5,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <defs>
-            <radialGradient id="ocReal" cx="30%" cy="30%" r="70%">
-              <stop offset="0%" stop-color="#78716c"/>
-              <stop offset="65%" stop-color="#292524"/>
-              <stop offset="100%" stop-color="#0c0a09"/>
-            </radialGradient>
-          </defs>
-          <path d="M11 25 C9 13, 31 9, 34 21 C36 30, 25 35, 17 35 C11 35, 12 29, 11 25 Z" fill="url(#ocReal)" stroke="#0c0a09" stroke-width="2"/>
+          <path d="M11 25 C9 13, 31 9, 34 21 C36 30, 25 35, 17 35 C11 35, 12 29, 11 25 Z" fill="#292524" stroke="#0c0a09" stroke-width="2"/>
           <ellipse cx="24" cy="22" rx="5.5" ry="7" fill="#c2410c" transform="rotate(-15 24 22)"/>
-          <ellipse cx="24" cy="22" rx="3" ry="4.5" fill="#7c2d12" transform="rotate(-15 24 22)"/>
-          <circle cx="21" cy="18" r="2.2" fill="#fef08a" stroke="#ca8a04" stroke-width="0.5"/>
         </svg>`
       },
       cha_la_lot: { 
         name: 'Chả Lá Lốt', basePrice: 3000, type: 'meat', unlockDay: 8,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <defs>
-            <linearGradient id="lotReal" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#15803d"/>
-              <stop offset="50%" stop-color="#14532d"/>
-              <stop offset="100%" stop-color="#052e16"/>
-            </linearGradient>
-          </defs>
-          <rect x="5" y="12" width="34" height="20" rx="9" fill="url(#lotReal)" stroke="#022c22" stroke-width="2"/>
-          <ellipse cx="6" cy="22" rx="2" ry="6" fill="#b91c1c"/>
-          <ellipse cx="38" cy="22" rx="2" ry="6" fill="#b91c1c"/>
+          <rect x="5" y="12" width="34" height="20" rx="9" fill="#14532d" stroke="#022c22" stroke-width="2"/>
           <line x1="12" y1="12" x2="12" y2="32" stroke="#16a34a" stroke-width="2"/>
-          <line x1="20" y1="12" x2="20" y2="32" stroke="#16a34a" stroke-width="2"/>
-          <line x1="28" y1="12" x2="28" y2="32" stroke="#16a34a" stroke-width="2"/>
-          <circle cx="16" cy="18" r="2.2" fill="#1c1917"/>
-          <circle cx="25" cy="26" r="2.5" fill="#1c1917"/>
-          <ellipse cx="22" cy="16" rx="4" ry="1.5" fill="#86efac" opacity="0.45"/>
         </svg>`
       },
       bap_bo: { 
-        name: 'Bắp Bò Hoa', basePrice: 6000, type: 'meat', unlockDay: 15,
+        name: 'Bắp Bò Hoa', basePrice: 6000, type: 'meat', unlockDay: 12,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <defs>
-            <radialGradient id="boReal" cx="40%" cy="40%" r="65%">
-              <stop offset="0%" stop-color="#ef4444"/>
-              <stop offset="65%" stop-color="#b91c1c"/>
-              <stop offset="100%" stop-color="#450a0a"/>
-            </radialGradient>
-          </defs>
-          <path d="M8 24 C6 13, 26 7, 35 15 C40 24, 28 35, 16 33 Z" fill="url(#boReal)" stroke="#450a0a" stroke-width="2"/>
-          <path d="M12 17 Q22 25 32 15" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0.95"/>
-          <path d="M14 24 Q22 29 29 22" stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.95"/>
-          <path d="M22 17 L22 27" stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.95"/>
-        </svg>`
-      },
-      suon_sun: { 
-        name: 'Sườn Sụn Non', basePrice: 5500, type: 'meat', unlockDay: 20,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <path d="M8 22 C8 12, 31 9, 36 18 C36 28, 12 32, 8 22 Z" fill="#c2410c" stroke="#7c2d12" stroke-width="2"/>
-          <ellipse cx="24" cy="20" rx="7" ry="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <circle cx="14" cy="18" r="2.2" fill="#fed7aa"/>
-          <line x1="17" y1="24" x2="30" y2="24" stroke="#9a3412" stroke-width="2"/>
+          <path d="M8 24 C6 13, 26 7, 35 15 C40 24, 28 35, 16 33 Z" fill="#b91c1c" stroke="#450a0a" stroke-width="2"/>
+          <path d="M12 17 Q22 25 32 15" stroke="#ffffff" stroke-width="2.2" fill="none"/>
         </svg>`
       },
       rau_song: { 
@@ -569,7 +698,6 @@
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
           <circle cx="15" cy="17" r="7" fill="#22c55e" stroke="#14532d" stroke-width="1.8"/>
           <circle cx="28" cy="22" r="6.5" fill="#16a34a" stroke="#14532d" stroke-width="1.8"/>
-          <circle cx="19" cy="28" r="6" fill="#4ade80" stroke="#15803d" stroke-width="1.8"/>
         </svg>`
       },
       quay: { 
@@ -577,73 +705,105 @@
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
           <rect x="10" y="7" width="10" height="30" rx="4.5" fill="#f59e0b" stroke="#78350f" stroke-width="2"/>
           <rect x="22" y="7" width="10" height="30" rx="4.5" fill="#d97706" stroke="#78350f" stroke-width="2"/>
-          <line x1="15" y1="12" x2="15" y2="33" stroke="#fef3c7" stroke-width="1.8" stroke-linecap="round"/>
-          <line x1="27" y1="12" x2="27" y2="33" stroke="#fef3c7" stroke-width="1.8" stroke-linecap="round"/>
         </svg>`
       }
     };
 
-    const CUSTOMER_AVATARS = [
-      { name: 'Anh Nam', avatar: '👨‍💼' },
-      { name: 'Bác Ba', avatar: '👴' },
-      { name: 'Cô Mai', avatar: '👩‍🦰' },
-      { name: 'Sinh Viên', avatar: '👱‍♂️' }
+    /* HỆ THỐNG ĐỒ UỐNG */
+    const DRINKS_DATA = {
+      tea: { name: 'Trà Đá Hà Nội', price: 5000, icon: '🧊', badgeClass: 'bg-emerald-950 text-emerald-300 border-emerald-600' },
+      kumquat: { name: 'Trà Tắc Mật Ong', price: 10000, icon: '🍋', badgeClass: 'bg-yellow-950 text-yellow-300 border-yellow-600' },
+      soya: { name: 'Sữa Đậu Nành', price: 8000, icon: '🥛', badgeClass: 'bg-stone-800 text-stone-200 border-stone-500' },
+      soda: { name: 'Lon Xá Xị', price: 12000, icon: '🥤', badgeClass: 'bg-red-950 text-red-300 border-red-600' }
+    };
+
+    /* BIẾN ĐỘNG THỜI TIẾT */
+    const WEATHER_TYPES = [
+      { id: 'sunny', title: 'Hôm Nay Nắng Đẹp', desc: 'Trời quang đãng, khách ghé ăn lai rai. Giá chợ đầu mối bình ổn.', icon: '☀️', crabMod: 1.0, vegMod: 1.0, patienceMod: 1.0 },
+      { id: 'rainy', title: 'Mưa Lạnh Phố Cổ (+50% Khách)', desc: 'Trời se lạnh, khách thèm ăn bún nóng tăng vọt! Giá rau muống ở chợ tăng gấp đôi (+100%).', icon: '🌧️', crabMod: 1.0, vegMod: 2.0, patienceMod: 1.15 },
+      { id: 'flood', title: 'Mùa Nước Nổi Cua Rẻ (-40%)', desc: 'Thuyền cua đồng về đầy chợ! Giá gạch riêu giảm sốc 40%.', icon: '🦀', crabMod: 0.6, vegMod: 1.0, patienceMod: 1.0 }
+    ];
+
+    /* LỘ TRÌNH 4 MỐC HŨ HEO */
+    const PIGGY_TIERS = [
+      { id: 1, name: 'Mốc 1: Heo Đất Làng Gốm Bát Tràng', goalName: 'Mua Xe Máy Wave Cũ Đi Chợ', target: 2000000, icon: '🐷' },
+      { id: 2, name: 'Mốc 2: Heo Vàng Tài Lộc Phố Hàng Bạc', goalName: 'Sửa Mặt Bằng & Máy Lạnh Daikin', target: 10000000, icon: '🐖' },
+      { id: 3, name: 'Mốc 3: Két Sắt Chống Cháy Việt Tiệp', goalName: 'Mở Quán Bún 2 Tầng Ngã Tư', target: 50000000, icon: '💼' },
+      { id: 4, name: 'Mốc 4: Sổ Đỏ Lồng Kính Mạ Vàng', goalName: 'Mua Đứt Căn Nhà Mặt Phố Hàng Bè', target: 200000000, icon: '🏛️' }
     ];
 
     const ACHIEVEMENTS = [
       { id: 'first_serve', name: 'Khai Trương Hồng Phát', desc: 'Phục vụ thành công 10 tô đầu tiên.', icon: '🍜', target: 10, reward: 50000 },
-      { id: 'master_chef', name: 'Đôi Tay Vàng Bếp Cụ', desc: 'Phục vụ chuẩn xác 50 tô bún riêu.', icon: '🥇', target: 50, reward: 150000 },
-      { id: 'crab_lover', name: 'Chúa Tể Cua Đồng', desc: 'Sử dụng tổng cộng 100 muôi gạch riêu.', icon: '🦀', target: 100, reward: 200000 },
-      { id: 'reach_day_10', name: 'Trụ Vững Phố Cổ', desc: 'Kinh doanh liên tiếp đến Ngày 10.', icon: '🗓️', target: 10, reward: 250000 },
-      { id: 'piggy_master', name: 'Đại Gia Nuôi Heo', desc: 'Tích lũy 500.000đ trong hũ heo đất.', icon: '🐷', target: 500000, reward: 300000 },
-      { id: 'team_builder', name: 'Ông Chủ Dễ Tính', desc: 'Thuê đủ Bé Dọn Bàn & Phụ Bếp.', icon: '👥', target: 2, reward: 350000 },
-      { id: 'combo_king', name: 'Chiến Thần Nấu Nhanh', desc: 'Đạt chuỗi Combo liên tiếp x5.', icon: '⚡', target: 5, reward: 200000 },
-      { id: 'buy_house', name: 'Trùm Địa Ốc Phố Cổ', desc: 'Mua đứt nhà mặt phố (Mốc Ngày 100).', icon: '🏛️', target: 1, reward: 1000000 }
+      { id: 'vip_lover', name: 'Ngôi Sao Mạng Xã Hội', desc: 'Làm hài lòng 5 Food Reviewer 5 sao.', icon: '🌟', target: 5, reward: 250000 },
+      { id: 'hotpot_master', name: 'Đại Tiệc Lẩu Cua', desc: 'Phục vụ 5 Nồi Lẩu Riêu Cua VIP.', icon: '🍲', target: 5, reward: 300000 },
+      { id: 'online_master', name: 'Chiến Thần Đơn App', desc: 'Đóng gói thành công 10 đơn mang đi.', icon: '🥡', target: 10, reward: 100000 },
+      { id: 'drink_master', name: 'Vua Giải Khát', desc: 'Phục vụ 20 cốc nước giải khát.', icon: '🍹', target: 20, reward: 120000 },
+      { id: 'reach_day_15', name: 'Trụ Vững Phố Cổ', desc: 'Kinh doanh liên tiếp đến Ngày 15.', icon: '🗓️', target: 15, reward: 350000 },
+      { id: 'fever_hero', name: 'Cơn Lốc Bốc Lửa', desc: 'Đạt chuỗi Combo liên tiếp x5 trong ca.', icon: '🔥', target: 5, reward: 200000 },
+      { id: 'buy_house_ultimate', name: 'Chủ Nhân Phố Cổ', desc: 'Mua đứt nhà mặt phố (200.000.000đ).', icon: '🏛️', target: 200000000, reward: 5000000 }
     ];
 
     let savedState = {
       day: 1,
       cash: 300000,
       piggyBank: 0,
+      piggyTier: 1,
       todayMarketCost: 0,
-      stats: { totalServed: 0, totalCrabUsed: 0, maxCombo: 0 },
+      currentWeatherId: 'sunny',
+      hasHuiLoan: false,
+      boughtHouseUltimate: false,
+      stats: { totalServed: 0, totalCrabUsed: 0, totalDrinksServed: 0, totalOnlineServed: 0, totalVipServed: 0, totalHotpotServed: 0, maxCombo: 0 },
       unlockedBadges: {},
       claimedBadges: {},
       inventory: { 
         clean_bowls: 20,
-        bun: 15, banh_da: 15, rieu_cua: 15, dau_ran: 15, oc: 15, cha_la_lot: 15, bap_bo: 15, suon_sun: 15, rau_song: 15, quay: 15 
+        bun: 15, banh_da: 15, rieu_cua: 15, dau_ran: 15, tiet_luoc: 15, trung_lon: 10, cha_ca: 15, moc_nam: 15, suon_sun: 15, oc: 15, cha_la_lot: 15, bap_bo: 15, rau_song: 15, quay: 15 
       },
       upgrades: {
-        fanLevel: 0, staffBusser: false, electricPotLevel: 0,
-        crabMold: false, staffNoodle: false, fridgeLevel: 0,
-        staffGuard: false, staffBroth: false, bikeDelivery: false,
-        staffShipper: false, retroRadio: false,
-        acLevel: 0, truckDelivery: false, inductionStove: false,
-        luxuryTable: false, sauceBar: false,
-        headChef: false, marketingCampaign: false, boughtHouse: false
+        fanLevel: 0, staffBusser: false, staffTea: false, staffShipper: false, staffNoodle: false, 
+        staffGuard: false, staffChefSix: false, electricPotLevel: 0, crabMold: false, fridgeLevel: 0, 
+        staffBroth: false, bikeDelivery: false, acLevel: 0, truckDelivery: false
       }
     };
 
     function loadGame() {
-      const data = localStorage.getItem('bun_rieu_coba_pure_touch_v10');
+      const data = localStorage.getItem('bun_rieu_phase4_final_v14');
       if (data) {
         try { savedState = Object.assign(savedState, JSON.parse(data)); } catch (e) {}
       }
-      if (savedState.inventory.clean_bowls === undefined) savedState.inventory.clean_bowls = 20;
+      // Bảo đảm bù đủ mọi trường kho hàng nếu chơi tiếp từ save cũ
+      for (let k in ALL_ITEMS) {
+        if (savedState.inventory[k] === undefined) {
+          savedState.inventory[k] = (k === 'clean_bowls' ? 20 : 15);
+        }
+      }
+      if (savedState.piggyTier === undefined) savedState.piggyTier = 1;
+      if (savedState.currentWeatherId === undefined) savedState.currentWeatherId = 'sunny';
     }
     function persistGame() {
-      localStorage.setItem('bun_rieu_coba_pure_touch_v10', JSON.stringify(savedState));
+      localStorage.setItem('bun_rieu_phase4_final_v14', JSON.stringify(savedState));
     }
 
     const shiftState = {
       isPaused: false,
-      hasBowlOnTray: false,
+      containerType: null,
+      hasContainer: false,
       timeLeft: 180,
       todaySales: 0,
       missedCount: 0,
       combo: 0,
+      feverTime: 0,
+      gasOut: false,
+      gasClicks: 2,
+      catActive: false,
       customers: [null, null, null, null],
-      currentDish: { base: null, hasBroth: false, toppings: [] }
+      currentDish: { 
+        base: null, 
+        hasBroth: false, 
+        toppings: [], 
+        drink: null, 
+        hasShrimpPaste: false 
+      }
     };
 
     function formatMoney(amount) { return amount.toLocaleString('vi-VN') + 'đ'; }
@@ -700,12 +860,18 @@
     function startKitchenShift() {
       switchTab('kitchen');
       togglePauseGame(false);
-      showToast('🚀 Bắt đầu ca! Chạm "Lấy Tô" để chuẩn bị món.');
+      showToast('🚀 Mở cửa ca! Khách VIP & các đơn đố mẹo đang tới.');
     }
 
     function renderDashboard() {
-      document.getElementById('dash-total-served').textContent = `${savedState.stats.totalServed} tô đã bán`;
+      document.getElementById('dash-total-served').textContent = `${savedState.stats.totalServed} đơn đã giao`;
       document.getElementById('dash-bowl-count').textContent = `${savedState.inventory.clean_bowls} cái trong kho`;
+
+      const weather = WEATHER_TYPES.find(w => w.id === savedState.currentWeatherId) || WEATHER_TYPES[0];
+      document.getElementById('morning-news-icon').textContent = weather.icon;
+      document.getElementById('morning-news-title').textContent = `Bản Tin: ${weather.title}`;
+      document.getElementById('morning-news-desc').textContent = weather.desc;
+      document.getElementById('weather-badge').textContent = `${weather.icon} ${weather.title}`;
     }
 
     function updateHUD() {
@@ -713,36 +879,60 @@
       document.getElementById('hud-money').textContent = formatMoney(savedState.cash);
       document.getElementById('hud-piggy').textContent = formatMoney(savedState.piggyBank);
       document.getElementById('shift-missed').textContent = `${shiftState.missedCount}/3`;
+      document.getElementById('combo-display').textContent = `Combo: x${shiftState.combo}`;
       document.getElementById('shop-cash-val').textContent = formatMoney(savedState.cash);
       document.getElementById('stack-bowl-count').textContent = `x${savedState.inventory.clean_bowls}`;
       
+      const washBtn = document.getElementById('btn-quick-wash');
+      if (savedState.inventory.clean_bowls <= 0) washBtn.classList.remove('hidden');
+      else washBtn.classList.add('hidden');
+
+      const currentTier = PIGGY_TIERS[savedState.piggyTier - 1] || PIGGY_TIERS[PIGGY_TIERS.length - 1];
+      document.getElementById('hud-piggy-icon').textContent = currentTier.icon;
+
       const m = Math.floor(shiftState.timeLeft / 60), s = shiftState.timeLeft % 60;
       document.getElementById('shift-timer').textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
 
-      const subTitle = document.getElementById('shop-title-sub');
-      if (savedState.day >= 100) subTitle.textContent = 'Nhà Hàng 5 Sao';
-      else if (savedState.day >= 25) subTitle.textContent = 'Tiệm Lớn Phố Cổ';
-      else if (savedState.day >= 8) subTitle.textContent = 'Quán Bún Cửa Hàng';
-      else subTitle.textContent = 'Gánh Vỉa Hè';
+      const subTitleSpan = document.querySelector('#shop-title-sub span:first-child');
+      if (savedState.boughtHouseUltimate) subTitleSpan.textContent = '👑 Nhà Hàng 5 Sao Phố Cổ';
+      else if (savedState.day >= 25) subTitleSpan.textContent = 'Tiệm Lớn Phố Cổ';
+      else if (savedState.day >= 8) subTitleSpan.textContent = 'Quán Bún Cửa Hàng';
+      else subTitleSpan.textContent = 'Gánh Vỉa Hè';
     }
 
-    function drawBowlFromStack() {
+    function quickWashBowls() {
+      if (shiftState.isPaused) return;
+      Sound.pour();
+      savedState.inventory.clean_bowls += 3;
+      updateHUD();
+      showToast('🧼 Đã cọ sạch cấp tốc 3 chiếc bát đưa vào kho!');
+    }
+
+    function drawBowlFromStack(type) {
       if (shiftState.isPaused) { showToast('Bấm TIẾP TỤC để bán hàng!'); return; }
-      if (shiftState.hasBowlOnTray) {
-        showToast('Đã có tô trên bàn rồi! Hãy gắp sợi và món ăn.');
-        return;
-      }
-      if (savedState.inventory.clean_bowls <= 0) {
-        showToast('Hết sạch tô bát rồi! Hãy sang tab "Đi Chợ" mua thêm bát sứ nhé.', false);
-        Sound.buzz();
-        return;
+      if (shiftState.hasContainer) { showToast('Đã có vật chứa trên khay rồi!'); return; }
+
+      if (type === 'bowl') {
+        if (savedState.inventory.clean_bowls <= 0) {
+          showToast('Hết bát sạch! Chạm "Rửa Bát (+3)" ở góc trên ngay!', false);
+          Sound.buzz();
+          return;
+        }
+        savedState.inventory.clean_bowls--;
+        shiftState.containerType = 'bowl';
+        showToast('Đã lấy 1 Tô Sứ cho khách ăn tại chỗ!');
+      } else if (type === 'box') {
+        shiftState.containerType = 'box';
+        showToast('Đã lấy 1 Hộp Bã Mía đóng đơn mang về!');
+      } else if (type === 'hotpot') {
+        shiftState.containerType = 'hotpot';
+        showToast('Đã chuẩn bị Nồi Lẩu Riêu Cua Đại Tiệc!');
       }
 
-      savedState.inventory.clean_bowls--;
-      shiftState.hasBowlOnTray = true;
+      shiftState.hasContainer = true;
       Sound.plop();
       
-      const bowlBox = document.getElementById('main-bowl-container');
+      const bowlBox = document.getElementById('main-container-viewport');
       bowlBox.classList.remove('animate-bowl-spawn');
       void bowlBox.offsetWidth;
       bowlBox.classList.add('animate-bowl-spawn');
@@ -750,7 +940,6 @@
       updateHUD();
       updateBowlUI();
       persistGame();
-      showToast('Đã rút 1 tô sứ men lam ra khay!');
     }
 
     function renderQuickPantry() {
@@ -762,13 +951,13 @@
         const it = ALL_ITEMS[k];
         const isUnlocked = savedState.day >= it.unlockDay;
         const btn = document.createElement('button');
-        btn.className = `p-1.5 rounded-2xl flex flex-col items-center justify-center transition border ${
+        btn.className = `p-1 rounded-2xl flex flex-col items-center justify-center transition border ${
           isUnlocked ? 'bg-stone-800 hover:bg-stone-700 border-stone-600 active:scale-95 shadow-sm' : 'bg-stone-900 border-stone-800 opacity-40 cursor-not-allowed'
         }`;
         btn.innerHTML = `
           ${it.svg}
-          <span class="text-[10px] font-black text-stone-200 truncate w-full text-center mt-1">${it.name}</span>
-          <span class="text-[9px] font-black text-amber-950 bg-amber-400 px-1.5 py-0.2 rounded-full mt-0.5">${isUnlocked ? savedState.inventory[k] : 'N.' + it.unlockDay}</span>
+          <span class="text-[9px] font-black text-stone-200 truncate w-full text-center mt-0.5">${it.name}</span>
+          <span class="text-[8px] font-black text-amber-950 bg-amber-400 px-1 py-0.2 rounded-full mt-0.5">${isUnlocked ? savedState.inventory[k] : 'N.' + it.unlockDay}</span>
         `;
         if (isUnlocked) {
           btn.onclick = () => {
@@ -782,29 +971,31 @@
     }
 
     function selectNoodle(type) {
-      if (!shiftState.hasBowlOnTray) { showToast('Chạm vào "Lấy Tô 🥣" trước nhé!'); Sound.buzz(); return; }
+      if (!shiftState.hasContainer) { showToast('Lấy Tô, Hộp hoặc Nồi Lẩu trước nhé!'); Sound.buzz(); return; }
       if (savedState.inventory[type] <= 0) { showToast('Đã hết sợi trong kho!'); Sound.buzz(); return; }
       if (shiftState.currentDish.base) { showToast('Đã chọn sợi rồi!'); return; }
       Sound.plop();
       savedState.inventory[type]--;
       shiftState.currentDish.base = type;
-      if (savedState.upgrades.staffBroth) shiftState.currentDish.hasBroth = true;
+      if (savedState.upgrades.staffBroth && !shiftState.gasOut) shiftState.currentDish.hasBroth = true;
       updateBowlUI();
       renderQuickPantry();
+      triggerChefSixHelper();
     }
 
     function addBroth() {
       if (shiftState.isPaused) return;
-      if (!shiftState.hasBowlOnTray) { showToast('Chạm "Lấy Tô 🥣" trước!'); Sound.buzz(); return; }
+      if (shiftState.gasOut) { showToast('Bếp đang tắt gas! Hãy gõ vào bình gas trước!'); Sound.buzz(); return; }
+      if (!shiftState.hasContainer) { showToast('Lấy Tô, Hộp hoặc Nồi Lẩu trước!'); Sound.buzz(); return; }
       if (!shiftState.currentDish.base) { showToast('Hãy chọn Bún hoặc Bánh Đa trước!'); Sound.buzz(); return; }
-      if (shiftState.currentDish.hasBroth) { showToast('Tô đã chan đầy nước dùng rồi!'); return; }
+      if (shiftState.currentDish.hasBroth) { showToast('Đã chan đầy nước dùng rồi!'); return; }
       Sound.pour();
       shiftState.currentDish.hasBroth = true;
       updateBowlUI();
     }
 
     function addTopping(key) {
-      if (!shiftState.hasBowlOnTray) { showToast('Chạm "Lấy Tô 🥣" trước!'); Sound.buzz(); return; }
+      if (!shiftState.hasContainer) { showToast('Lấy vật chứa trước!'); Sound.buzz(); return; }
       if (!shiftState.currentDish.base) { showToast('Hãy chọn sợi trước!'); Sound.buzz(); return; }
       if (savedState.inventory[key] <= 0) { showToast('Đã hết món này!'); Sound.buzz(); return; }
       Sound.plop();
@@ -815,12 +1006,45 @@
       renderQuickPantry();
     }
 
+    function selectDrink(drinkKey) {
+      if (shiftState.isPaused) return;
+      Sound.ice();
+      shiftState.currentDish.drink = drinkKey;
+      
+      ['tea', 'kumquat', 'soya', 'soda'].forEach(dk => {
+        const el = document.getElementById(`drink-check-${dk}`);
+        if (el) {
+          if (dk === drinkKey) el.classList.remove('hidden');
+          else el.classList.add('hidden');
+        }
+      });
+
+      updateBowlUI();
+      showToast(`Đã rót: ${DRINKS_DATA[drinkKey].name}!`);
+    }
+
+    function addShrimpPaste() {
+      if (shiftState.isPaused) return;
+      if (!shiftState.hasContainer) { showToast('Lấy tô trước khi nêm mắm tôm!'); Sound.buzz(); return; }
+      if (shiftState.currentDish.hasShrimpPaste) { showToast('Tô đã nêm mắm tôm rồi!'); return; }
+      Sound.plop();
+      shiftState.currentDish.hasShrimpPaste = true;
+      updateBowlUI();
+      showToast('Đã thêm 1 thìa Mắm Tôm bông xốp thơm lừng!');
+    }
+
     function trashBowl() {
-      if (shiftState.hasBowlOnTray) {
+      // Chỉ trả lại bát sứ nếu hủy đúng loại tô sứ
+      if (shiftState.hasContainer && shiftState.containerType === 'bowl') {
         savedState.inventory.clean_bowls++;
       }
-      shiftState.hasBowlOnTray = false;
-      shiftState.currentDish = { base: null, hasBroth: false, toppings: [] };
+      shiftState.hasContainer = false;
+      shiftState.containerType = null;
+      shiftState.currentDish = { base: null, hasBroth: false, toppings: [], drink: null, hasShrimpPaste: false };
+      ['tea', 'kumquat', 'soya', 'soda'].forEach(dk => {
+        const el = document.getElementById(`drink-check-${dk}`);
+        if (el) el.classList.add('hidden');
+      });
       Sound.plop();
       updateBowlUI();
       updateHUD();
@@ -828,23 +1052,42 @@
     }
 
     function triggerAutoKitchen() {
-      if (savedState.upgrades.staffNoodle && !shiftState.hasBowlOnTray) {
+      if (savedState.upgrades.staffNoodle && !shiftState.hasContainer) {
         if (savedState.inventory.clean_bowls > 0 && savedState.inventory.bun > 0) {
           savedState.inventory.clean_bowls--;
-          shiftState.hasBowlOnTray = true;
+          shiftState.hasContainer = true;
+          shiftState.containerType = 'bowl';
           shiftState.currentDish.base = 'bun';
           savedState.inventory.bun--;
-          if (savedState.upgrades.staffBroth) shiftState.currentDish.hasBroth = true;
+          if (savedState.upgrades.staffBroth && !shiftState.gasOut) shiftState.currentDish.hasBroth = true;
           updateBowlUI();
           updateHUD();
           renderQuickPantry();
+          triggerChefSixHelper();
+        }
+      }
+      if (savedState.upgrades.staffTea && !shiftState.currentDish.drink) {
+        selectDrink('tea');
+      }
+    }
+
+    function triggerChefSixHelper() {
+      if (!savedState.upgrades.staffChefSix || !shiftState.hasContainer || !shiftState.currentDish.base) return;
+      if (shiftState.currentDish.toppings.length === 0) {
+        if (savedState.inventory.dau_ran > 0) {
+          savedState.inventory.dau_ran--;
+          shiftState.currentDish.toppings.push('dau_ran');
+          updateBowlUI();
+          renderQuickPantry();
+          showToast('👨‍🍳 Bác Sáu Bếp Phó đã gắp sẵn Đậu Rán vào tô!');
         }
       }
     }
 
-    /* HIỂN THỊ TÔ BÚN NẤU VÀ DANH SÁCH HUY HIỆU TEXT */
     function updateBowlUI() {
       const bowl = shiftState.currentDish;
+      const viewport = document.getElementById('main-container-viewport');
+      const innerRim = document.getElementById('inner-rim');
       const noBowlPrompt = document.getElementById('no-bowl-prompt');
       const promptEl = document.getElementById('empty-prompt');
       const noodlesEl = document.getElementById('visual-noodles');
@@ -853,30 +1096,47 @@
       const statusText = document.getElementById('bowl-status-text');
       const badgesContainer = document.getElementById('bowl-contents-badges');
 
-      if (!shiftState.hasBowlOnTray) {
-        statusText.textContent = 'Chưa Có Tô Trên Khay';
+      if (!shiftState.hasContainer) {
+        statusText.textContent = 'Chưa Có Vật Chứa Trên Khay';
+        viewport.className = 'relative w-40 h-40 rounded-full border-[8px] border-blue-950 bg-gradient-to-b from-stone-100 via-white to-blue-50 bowl-depth flex flex-col items-center justify-center overflow-hidden transition-all duration-300';
+        innerRim.className = 'absolute inset-1 rounded-full border border-blue-600/30 pointer-events-none z-10';
         noBowlPrompt.classList.remove('hidden');
         promptEl.classList.add('hidden');
         noodlesEl.classList.add('hidden');
         brothEl.classList.add('hidden');
         ingsEl.innerHTML = '';
-        badgesContainer.innerHTML = '<span class="text-[10px] text-stone-500 font-bold">Trong tô có:</span><span class="text-[10px] text-stone-400 italic">Chưa có gì</span>';
+        badgesContainer.innerHTML = '<span class="text-[9px] text-stone-500 font-bold">Khay:</span><span class="text-[9px] text-stone-400 italic">Trống</span>';
         return;
       }
 
       noBowlPrompt.classList.add('hidden');
 
+      let containerLabel = 'Tô Sứ';
+      if (shiftState.containerType === 'box') {
+        containerLabel = 'Hộp Mang Về';
+        viewport.className = 'relative w-40 h-40 rounded-3xl border-[8px] border-amber-900 bg-gradient-to-b from-amber-50 to-orange-100 box-depth flex flex-col items-center justify-center overflow-hidden transition-all duration-300';
+        innerRim.className = 'absolute inset-1 rounded-2xl border border-amber-600/40 pointer-events-none z-10';
+      } else if (shiftState.containerType === 'hotpot') {
+        containerLabel = 'Nồi Lẩu Cua';
+        viewport.className = 'relative w-40 h-40 rounded-full border-[10px] border-amber-600 bg-gradient-to-b from-amber-100 via-orange-100 to-yellow-50 hotpot-depth flex flex-col items-center justify-center overflow-hidden transition-all duration-300 animate-pulse';
+        innerRim.className = 'absolute inset-1 rounded-full border-2 border-red-500/50 pointer-events-none z-10';
+      } else {
+        containerLabel = 'Tô Sứ';
+        viewport.className = 'relative w-40 h-40 rounded-full border-[8px] border-blue-950 bg-gradient-to-b from-stone-100 via-white to-blue-50 bowl-depth flex flex-col items-center justify-center overflow-hidden transition-all duration-300';
+        innerRim.className = 'absolute inset-1 rounded-full border border-blue-600/30 pointer-events-none z-10';
+      }
+
       if (!bowl.base) {
-        statusText.textContent = 'Tô Sứ Trống (Chọn Sợi)';
+        statusText.textContent = `${containerLabel} Trống (Chọn Sợi)`;
         promptEl.classList.remove('hidden');
         noodlesEl.classList.add('hidden');
         brothEl.classList.add('hidden');
         ingsEl.innerHTML = '';
-        badgesContainer.innerHTML = '<span class="text-[10px] text-stone-500 font-bold">Trong tô có:</span><span class="text-[10px] text-amber-400 font-bold">Tô Sứ Trống</span>';
+        badgesContainer.innerHTML = `<span class="text-[9px] text-stone-500 font-bold">Khay:</span><span class="text-[9px] text-amber-400 font-bold">${containerLabel} Trống</span>`;
         return;
       }
 
-      statusText.textContent = `${ALL_ITEMS[bowl.base].name} ${bowl.hasBroth ? '(Đã Chan Nước)' : ''}`;
+      statusText.textContent = `${containerLabel}: ${ALL_ITEMS[bowl.base].name} ${bowl.hasBroth ? '(Đã Chan)' : ''}`;
       promptEl.classList.add('hidden');
       noodlesEl.classList.remove('hidden');
       
@@ -885,7 +1145,6 @@
           <svg class="w-full h-full" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="47" fill="#f8fafc"/>
             <path d="M10 32 Q50 66 90 32 M14 48 Q50 82 86 48 M10 64 Q50 98 90 64" stroke="#e2e8f0" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-            <path d="M20 38 Q50 72 80 38 M16 54 Q50 88 84 54" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
           </svg>`;
       } else {
         noodlesEl.innerHTML = `
@@ -893,7 +1152,6 @@
             <circle cx="50" cy="50" r="47" fill="#3f1301"/>
             <line x1="16" y1="26" x2="84" y2="26" stroke="#881337" stroke-width="9" stroke-linecap="round"/>
             <line x1="10" y1="46" x2="90" y2="46" stroke="#9f1239" stroke-width="9" stroke-linecap="round"/>
-            <line x1="18" y1="66" x2="82" y2="66" stroke="#78350f" stroke-width="9" stroke-linecap="round"/>
           </svg>`;
       }
 
@@ -909,13 +1167,21 @@
         ingsEl.appendChild(span);
       });
 
-      let badgesHTML = `<span class="text-[10px] text-stone-500 font-bold">Trong tô có:</span>`;
-      badgesHTML += `<span class="text-[10px] font-black bg-stone-800 text-stone-200 px-2 py-0.5 rounded border border-stone-700">${ALL_ITEMS[bowl.base].name}</span>`;
+      let badgesHTML = `<span class="text-[9px] text-stone-500 font-bold">Khay có:</span>`;
+      badgesHTML += `<span class="text-[9px] font-black ${shiftState.containerType === 'hotpot' ? 'bg-red-950 text-red-300 border-red-600' : (shiftState.containerType === 'box' ? 'bg-orange-950 text-orange-300 border-orange-700' : 'bg-blue-950 text-blue-300 border-blue-700')} px-1 py-0.2 rounded border">${containerLabel}</span>`;
+      badgesHTML += `<span class="text-[9px] font-black bg-stone-800 text-stone-200 px-1 py-0.2 rounded border border-stone-700">${ALL_ITEMS[bowl.base].name}</span>`;
       if (bowl.hasBroth) {
-        badgesHTML += `<span class="text-[10px] font-black bg-orange-950 text-orange-300 px-2 py-0.5 rounded border border-orange-700">Nước Dùng</span>`;
+        badgesHTML += `<span class="text-[9px] font-black bg-orange-950 text-orange-300 px-1 py-0.2 rounded border border-orange-700">Nước Dùng</span>`;
+      }
+      if (bowl.hasShrimpPaste) {
+        badgesHTML += `<span class="text-[9px] font-black bg-purple-950 text-purple-300 px-1 py-0.2 rounded border border-purple-700">Mắm Tôm</span>`;
+      }
+      if (bowl.drink) {
+        const d = DRINKS_DATA[bowl.drink];
+        badgesHTML += `<span class="text-[9px] font-black ${d.badgeClass} px-1 py-0.2 rounded border">${d.name} ${d.icon}</span>`;
       }
       bowl.toppings.forEach(tKey => {
-        badgesHTML += `<span class="text-[10px] font-black bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-700">${ALL_ITEMS[tKey].name}</span>`;
+        badgesHTML += `<span class="text-[9px] font-black bg-amber-950 text-amber-300 px-1 py-0.2 rounded border border-amber-700">${ALL_ITEMS[tKey].name}</span>`;
       });
       badgesContainer.innerHTML = badgesHTML;
     }
@@ -927,6 +1193,9 @@
       list.innerHTML = '';
       tempCart = {};
 
+      const weather = WEATHER_TYPES.find(w => w.id === savedState.currentWeatherId) || WEATHER_TYPES[0];
+      document.getElementById('market-weather-notice').textContent = `${weather.icon} ${weather.title}: ${weather.desc}`;
+
       let discount = 1.0;
       if (savedState.upgrades.truckDelivery) discount = 0.80;
       else if (savedState.upgrades.bikeDelivery) discount = 0.90;
@@ -934,19 +1203,22 @@
       for (let k in ALL_ITEMS) {
         const it = ALL_ITEMS[k];
         tempCart[k] = 0;
-        const actualPrice = Math.round(it.basePrice * discount);
+        
+        let priceMod = 1.0;
+        if (k === 'rieu_cua') priceMod = weather.crabMod;
+        if (k === 'rau_song') priceMod = weather.vegMod;
+
+        const actualPrice = Math.round(it.basePrice * discount * priceMod);
         const row = document.createElement('div');
-        row.className = `flex justify-between items-center p-2.5 rounded-2xl border ${
+        row.className = `flex justify-between items-center p-2 rounded-2xl border ${
           k === 'clean_bowls' ? 'bg-amber-950/40 border-amber-500/60' : 'bg-stone-900/80 border-stone-700'
         }`;
         row.innerHTML = `
-          <div class="flex items-center gap-2.5">
+          <div class="flex items-center gap-2">
             ${it.svg}
             <div>
-              <div class="font-extrabold text-xs sm:text-sm text-stone-200">
-                ${it.name} ${k === 'clean_bowls' ? '✨ (Vật tư)' : ''}
-              </div>
-              <div class="text-[11px] text-stone-400">Kho: <b>${savedState.inventory[k]}</b> • Giá: <b class="text-amber-400">${formatMoney(actualPrice)}</b></div>
+              <div class="font-extrabold text-xs text-stone-200">${it.name} ${k === 'clean_bowls' ? '✨' : ''}</div>
+              <div class="text-[10px] text-stone-400">Kho: <b>${savedState.inventory[k]}</b> • Giá: <b class="text-amber-400">${formatMoney(actualPrice)}</b></div>
             </div>
           </div>
           <div class="flex items-center gap-1.5">
@@ -968,11 +1240,17 @@
 
     function calcMarketBill() {
       let total = 0;
+      const weather = WEATHER_TYPES.find(w => w.id === savedState.currentWeatherId) || WEATHER_TYPES[0];
       let discount = 1.0;
       if (savedState.upgrades.truckDelivery) discount = 0.80;
       else if (savedState.upgrades.bikeDelivery) discount = 0.90;
 
-      for (let k in tempCart) total += tempCart[k] * Math.round(ALL_ITEMS[k].basePrice * discount);
+      for (let k in tempCart) {
+        let priceMod = 1.0;
+        if (k === 'rieu_cua') priceMod = weather.crabMod;
+        if (k === 'rau_song') priceMod = weather.vegMod;
+        total += tempCart[k] * Math.round(ALL_ITEMS[k].basePrice * discount * priceMod);
+      }
       document.getElementById('market-bill').textContent = formatMoney(total);
       return total;
     }
@@ -988,10 +1266,24 @@
       updateHUD();
       renderQuickPantry();
       renderMarketTab();
-      showToast('Đã nhập hàng & bát đĩa thành công vào kho!');
+      showToast('Đã nhập hàng thành công vào kho!');
     }
 
-    /* TIỆM NÂNG CẤP */
+    function takeHuiLoan() {
+      if (savedState.hasHuiLoan) {
+        showToast('Bạn đang gánh khoản hụi 2.000.000đ rồi, hãy trả hết đã!');
+        return;
+      }
+      savedState.hasHuiLoan = true;
+      savedState.cash += 2000000;
+      Sound.coin();
+      persistGame();
+      updateHUD();
+      renderShopTab();
+      showToast('🤝 Hốt hụi thành công! Nhận ngay 2.000.000đ vào ví.');
+    }
+
+    /* TIỆM NÂNG CẤP & CƠ NGƠI */
     let currentShopFilter = 'all';
     function filterShop(type) {
       currentShopFilter = type;
@@ -1005,38 +1297,34 @@
 
     function getFullUpgradesTree() {
       return [
+        { id: 'boughtHouseUltimate', reqDay: 15, cat: 'place', icon: '🏛️', name: 'Mua Đứt Nhà Mặt Phố Hàng Bè', desc: 'Trở thành Nhà Hàng 5 Sao di sản Phố Cổ, nhân đôi x2 tiền tip vĩnh viễn!', cost: 200000000, owned: savedState.boughtHouseUltimate },
+        { id: 'staffGuard', reqDay: 4, cat: 'staff', icon: '👮', name: 'Bác Tư (Bảo Vệ Dắt Xe)', desc: 'Mở rộng đón 4 khách cùng lúc, +8s kiên nhẫn.', cost: 350000, owned: savedState.upgrades.staffGuard },
+        { id: 'staffChefSix', reqDay: 6, cat: 'staff', icon: '👨‍🍳', name: 'Bác Sáu (Bếp Phó Đứng Chảo)', desc: 'Tự động xào chiên và gắp sẵn 1 topping mặn vào tô.', cost: 450000, owned: savedState.upgrades.staffChefSix },
+        { id: 'staffBusser', reqDay: 1, cat: 'staff', icon: '👧', name: 'Bé Na (Dọn Bàn & Rửa Bát)', desc: 'Tự dọn bàn khách ăn xong và rửa bát cất lại kho sạch sẽ.', cost: 180000, owned: savedState.upgrades.staffBusser },
+        { id: 'staffTea', reqDay: 2, cat: 'staff', icon: '👱‍♂️', name: 'Chú Ba (Rót Trà Đá Tự Động)', desc: 'Tự động rót sẵn cốc trà đá để sẵn lên khay cho bạn.', cost: 220000, owned: savedState.upgrades.staffTea },
+        { id: 'staffShipper', reqDay: 3, cat: 'staff', icon: '🛵', name: 'Anh Shipper Ruột (Giao Đơn App)', desc: 'Tự đóng nắp hộp và giao ngay đơn online khi bạn nấu xong.', cost: 260000, owned: savedState.upgrades.staffShipper },
+        { id: 'staffNoodle', reqDay: 4, cat: 'staff', icon: '👦', name: 'Cu Tí (Bốc Sẵn Tô & Bún)', desc: 'Tự động lấy tô sứ & bún tươi ra khay cho bạn.', cost: 300000, owned: savedState.upgrades.staffNoodle },
+
         { id: 'fanLevel', reqDay: 1, cat: 'place', icon: '💨', name: `Quạt Treo Tường [Cấp ${savedState.upgrades.fanLevel}/3]`, desc: '+4s thời gian khách kiên nhẫn chờ.', cost: 120000 * (savedState.upgrades.fanLevel + 1), maxed: savedState.upgrades.fanLevel >= 3 },
-        { id: 'staffBusser', reqDay: 1, cat: 'staff', icon: '🧹', name: 'Bé Dọn Bàn (Tự Động)', desc: 'Tự động dọn bàn, rửa bát & thu tiền khi khách ăn xong.', cost: 200000, owned: savedState.upgrades.staffBusser },
         { id: 'electricPotLevel', reqDay: 1, cat: 'kitchen', icon: '🍲', name: `Nồi Nước Inox [Cấp ${savedState.upgrades.electricPotLevel}/2]`, desc: 'Nước ngọt thơm, +2.000đ tiền tip/tô.', cost: 150000 * (savedState.upgrades.electricPotLevel + 1), maxed: savedState.upgrades.electricPotLevel >= 2 },
-
         { id: 'crabMold', reqDay: 4, cat: 'kitchen', icon: '🦀', name: 'Khuôn Ép Gạch Cua Hoa', desc: 'Miếng gạch cua đẹp mắt, +4.000đ tiền tip.', cost: 250000, owned: savedState.upgrades.crabMold },
-        { id: 'staffNoodle', reqDay: 4, cat: 'staff', icon: '👨‍🍳', name: 'Phụ Bếp Bốc Sẵn Tô & Bún', desc: 'Tự động lấy tô sứ & bún tươi ra khay cho bạn.', cost: 300000, owned: savedState.upgrades.staffNoodle },
-        { id: 'fridgeLevel', reqDay: 4, cat: 'kitchen', icon: '🧊', name: `Tủ Mát [Cấp ${savedState.upgrades.fridgeLevel}/3]`, desc: `Giữ lại ${savedState.upgrades.fridgeLevel === 0 ? '50%' : (savedState.upgrades.fridgeLevel === 1 ? '80%' : '100%')} đồ thừa.`, cost: 220000 * (savedState.upgrades.fridgeLevel + 1), maxed: savedState.upgrades.fridgeLevel >= 3 },
-
-        { id: 'staffGuard', reqDay: 8, cat: 'staff', icon: '👮', name: 'Bác Bảo Vệ Trông Xe', desc: 'Mở rộng quán đón tối đa 3 và 4 khách cùng lúc.', cost: 350000, owned: savedState.upgrades.staffGuard },
         { id: 'staffBroth', reqDay: 8, cat: 'staff', icon: '🚰', name: 'Vòi Chan Nước Tự Động', desc: 'Chọn sợi là tự động xả ngập nước dùng riêu cua.', cost: 280000, owned: savedState.upgrades.staffBroth },
-        { id: 'bikeDelivery', reqDay: 8, cat: 'kitchen', icon: '🛵', name: 'Xe Máy Đi Chợ Cũ', desc: 'Giảm 10% giá vốn nguyên liệu tại Chợ.', cost: 320000, owned: savedState.upgrades.bikeDelivery },
-
-        { id: 'staffShipper', reqDay: 15, cat: 'staff', icon: '📦', name: 'Nhân Viên Đóng Đơn Online', desc: 'Tự động giao đơn cho Shipper lấy nhanh.', cost: 400000, owned: savedState.upgrades.staffShipper },
-        { id: 'retroRadio', reqDay: 15, cat: 'place', icon: '📻', name: 'Đài Radio Nhạc Xưa', desc: 'Giảm 25% tốc độ tụt thanh kiên nhẫn.', cost: 300000, owned: savedState.upgrades.retroRadio },
-
-        { id: 'acLevel', reqDay: 25, cat: 'place', icon: '❄️', name: 'Điều Hòa Daikin Mát Rượi', desc: '+8 giây kiên nhẫn cho toàn bộ khách.', cost: 500000, owned: savedState.upgrades.acLevel > 0 },
-        { id: 'truckDelivery', reqDay: 25, cat: 'kitchen', icon: '🚚', name: 'Xe Tải Chở Cua Cà Mau', desc: 'Giảm vĩnh viễn 20% giá nguyên liệu chợ.', cost: 650000, owned: savedState.upgrades.truckDelivery },
-        { id: 'inductionStove', reqDay: 25, cat: 'kitchen', icon: '⚡', name: 'Bếp Từ Đôi Công Nghiệp', desc: '+6.000đ tiền tip/tô cho nước dùng nóng hổi.', cost: 480000, owned: savedState.upgrades.inductionStove },
-
-        { id: 'luxuryTable', reqDay: 35, cat: 'place', icon: '🪑', name: 'Bàn Ghế Gỗ Lim Phố Cổ', desc: 'Thu hút khách VIP trả thêm +15.000đ/tô.', cost: 750000, owned: savedState.upgrades.luxuryTable },
-        { id: 'sauceBar', reqDay: 35, cat: 'place', icon: '🍶', name: 'Quầy Nước Chấm Tự Phục Vụ', desc: 'Khách tự nêm gia vị, không bao giờ phàn nàn.', cost: 400000, owned: savedState.upgrades.sauceBar },
-
-        { id: 'headChef', reqDay: 50, cat: 'staff', icon: '👑', name: 'Bếp Trưởng Đứng Line', desc: 'Tự động gắp 1 topping mặn bất kỳ vào bát.', cost: 1000000, owned: savedState.upgrades.headChef },
-        { id: 'marketingCampaign', reqDay: 50, cat: 'place', icon: '📢', name: 'Chiến Dịch Food Reviewer', desc: 'Tăng 50% tần suất khách ùa vào quán.', cost: 850000, owned: savedState.upgrades.marketingCampaign },
-
-        { id: 'boughtHouse', reqDay: 100, cat: 'place', icon: '🏛️', name: 'Mua Đứt Nhà Mặt Phố', desc: 'Trở thành Nhà Hàng 5 Sao, tiền tip x2 vĩnh viễn.', cost: 2000000, owned: savedState.upgrades.boughtHouse }
+        { id: 'truckDelivery', reqDay: 25, cat: 'kitchen', icon: '🚚', name: 'Xe Tải Chở Cua Cà Mau', desc: 'Giảm vĩnh viễn 20% giá nguyên liệu chợ.', cost: 650000, owned: savedState.upgrades.truckDelivery }
       ];
     }
 
     function renderShopTab() {
       const list = document.getElementById('shop-items-list');
       list.innerHTML = '';
+
+      const huiBtn = document.getElementById('btn-hui-action');
+      if (savedState.hasHuiLoan) {
+        huiBtn.textContent = 'ĐANG VAY';
+        huiBtn.className = 'bg-stone-700 text-stone-400 font-black text-xs px-3 py-1.5 rounded-xl cursor-not-allowed';
+      } else {
+        huiBtn.textContent = 'HỐT HỤI';
+        huiBtn.className = 'bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-black text-xs px-3 py-1.5 rounded-xl shadow active:scale-95';
+      }
 
       const catalog = getFullUpgradesTree();
       const filtered = currentShopFilter === 'all' ? catalog : catalog.filter(x => x.cat === currentShopFilter);
@@ -1046,8 +1334,8 @@
         const isUnlocked = savedState.day >= u.reqDay;
         const isBought = u.owned || u.maxed;
 
-        item.className = `flex justify-between items-center p-2.5 rounded-2xl border ${
-          !isUnlocked ? 'bg-stone-900/60 border-stone-800 opacity-50' : 'bg-stone-900/90 border-stone-700'
+        item.className = `flex justify-between items-center p-2 rounded-2xl border ${
+          !isUnlocked ? 'bg-stone-900/60 border-stone-800 opacity-50' : (u.id === 'boughtHouseUltimate' ? 'bg-gradient-to-r from-amber-950 to-red-950 border-2 border-yellow-400 shadow-lg' : 'bg-stone-900/90 border-stone-700')
         }`;
 
         let actionBtn = '';
@@ -1060,12 +1348,12 @@
         }
 
         item.innerHTML = `
-          <div class="flex items-center gap-2.5">
+          <div class="flex items-center gap-2">
             <span class="text-2xl">${isUnlocked ? u.icon : '🔒'}</span>
             <div class="text-left">
               <div class="font-extrabold text-xs sm:text-sm text-stone-200">${u.name}</div>
-              <div class="text-[11px] text-stone-400 leading-tight">${u.desc}</div>
-              ${isUnlocked && !isBought ? `<div class="text-[11px] text-amber-400 font-black mt-0.5">Giá: ${formatMoney(u.cost)}</div>` : ''}
+              <div class="text-[10px] text-stone-400 leading-tight">${u.desc}</div>
+              ${isUnlocked && !isBought ? `<div class="text-[10px] text-amber-400 font-black mt-0.5">Giá: ${formatMoney(u.cost)}</div>` : ''}
             </div>
           </div>
           <div>${actionBtn}</div>
@@ -1080,7 +1368,11 @@
       if (savedState.cash < cost) { showToast('Không đủ tiền vốn!'); Sound.buzz(); return; }
       savedState.cash -= cost;
 
-      if (id === 'fanLevel') savedState.upgrades.fanLevel++;
+      if (id === 'boughtHouseUltimate') {
+        savedState.boughtHouseUltimate = true;
+        Sound.pig();
+        showToast('🏛️ CHÚC MỪNG! BẠN ĐÃ MUA ĐỨT CĂN NHÀ MẶT PHỐ HÀNG BÈ 200 TRIỆU!');
+      } else if (id === 'fanLevel') savedState.upgrades.fanLevel++;
       else if (id === 'electricPotLevel') savedState.upgrades.electricPotLevel++;
       else if (id === 'fridgeLevel') savedState.upgrades.fridgeLevel++;
       else savedState.upgrades[id] = true;
@@ -1090,14 +1382,26 @@
       updateHUD();
       renderShopTab();
       triggerAutoKitchen();
-      showToast('Nâng cấp thành công!');
     }
 
-    /* TAB HEO ĐẤT & DANH HIỆU */
+    /* HŨ HEO TIẾT KIỆM */
     function renderPiggyAndAchievements() {
+      const currentTier = PIGGY_TIERS[savedState.piggyTier - 1] || PIGGY_TIERS[PIGGY_TIERS.length - 1];
+
+      document.getElementById('current-tier-name').textContent = currentTier.name;
+      document.getElementById('tier-piggy-badge').textContent = currentTier.icon;
       document.getElementById('piggy-vault-val').textContent = formatMoney(savedState.piggyBank);
-      const pct = Math.min(100, (savedState.piggyBank / 2000000) * 100);
+      document.getElementById('tier-goal-title').textContent = `${currentTier.goalName}:`;
+      document.getElementById('tier-goal-val').textContent = formatMoney(currentTier.target);
+
+      const pct = Math.min(100, (savedState.piggyBank / currentTier.target) * 100);
       document.getElementById('piggy-progress').style.width = `${pct}%`;
+
+      if (savedState.piggyBank >= currentTier.target && savedState.piggyTier < PIGGY_TIERS.length) {
+        savedState.piggyTier++;
+        showToast(`🎉 CHÚC MỪNG! Hũ heo đã tiến hóa lên ${PIGGY_TIERS[savedState.piggyTier - 1].name}!`);
+        Sound.pig();
+      }
 
       updateAchievementsState();
       const container = document.getElementById('achievements-container');
@@ -1107,13 +1411,14 @@
 
       ACHIEVEMENTS.forEach(ach => {
         let currentVal = 0;
-        if (ach.id === 'first_serve' || ach.id === 'master_chef') currentVal = savedState.stats.totalServed;
-        else if (ach.id === 'crab_lover') currentVal = savedState.stats.totalCrabUsed;
-        else if (ach.id === 'reach_day_10') currentVal = savedState.day;
-        else if (ach.id === 'piggy_master') currentVal = savedState.piggyBank;
-        else if (ach.id === 'team_builder') currentVal = (savedState.upgrades.staffBusser ? 1 : 0) + (savedState.upgrades.staffNoodle ? 1 : 0);
-        else if (ach.id === 'combo_king') currentVal = savedState.stats.maxCombo;
-        else if (ach.id === 'buy_house') currentVal = savedState.upgrades.boughtHouse ? 1 : 0;
+        if (ach.id === 'first_serve') currentVal = savedState.stats.totalServed;
+        else if (ach.id === 'vip_lover') currentVal = savedState.stats.totalVipServed;
+        else if (ach.id === 'hotpot_master') currentVal = savedState.stats.totalHotpotServed;
+        else if (ach.id === 'online_master') currentVal = savedState.stats.totalOnlineServed;
+        else if (ach.id === 'drink_master') currentVal = savedState.stats.totalDrinksServed;
+        else if (ach.id === 'reach_day_15') currentVal = savedState.day;
+        else if (ach.id === 'fever_hero') currentVal = savedState.stats.maxCombo;
+        else if (ach.id === 'buy_house_ultimate') currentVal = savedState.boughtHouseUltimate ? 200000000 : savedState.cash;
 
         const isCompleted = currentVal >= ach.target;
         const isClaimed = !!savedState.claimedBadges[ach.id];
@@ -1121,7 +1426,7 @@
         if (isCompleted) unlockedCount++;
 
         const card = document.createElement('div');
-        card.className = `p-2.5 rounded-2xl border flex items-center justify-between transition ${
+        card.className = `p-2 rounded-2xl border flex items-center justify-between transition ${
           isClaimed ? 'bg-stone-900/60 border-stone-800' : (isCompleted ? 'bg-stone-800 border-yellow-500/80 shadow-md' : 'bg-stone-900/40 border-stone-800 opacity-60')
         }`;
 
@@ -1133,15 +1438,15 @@
         } else if (isCompleted) {
           actionArea = `<button onclick="claimBadgeReward('${ach.id}', ${ach.reward})" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black text-xs px-2.5 py-1 rounded-lg shadow animate-bounce">NHẬN ${formatMoney(ach.reward)}</button>`;
         } else {
-          actionArea = `<span class="text-[11px] font-bold text-stone-400">${currentVal}/${ach.target}</span>`;
+          actionArea = `<span class="text-[10px] font-bold text-stone-400">${currentVal}/${ach.target}</span>`;
         }
 
         card.innerHTML = `
-          <div class="flex items-center gap-2.5">
+          <div class="flex items-center gap-2">
             <span class="text-2xl">${ach.icon}</span>
             <div class="text-left">
-              <div class="font-extrabold text-xs sm:text-sm text-stone-200">${ach.name}</div>
-              <div class="text-[11px] text-stone-400 leading-tight">${ach.desc}</div>
+              <div class="font-extrabold text-xs text-stone-200">${ach.name}</div>
+              <div class="text-[10px] text-stone-400 leading-tight">${ach.desc}</div>
               <div class="w-24 bg-stone-700 h-1.5 rounded-full overflow-hidden mt-1">
                 <div class="bg-amber-400 h-full" style="width: ${progressPct}%"></div>
               </div>
@@ -1158,13 +1463,14 @@
     function updateAchievementsState() {
       ACHIEVEMENTS.forEach(ach => {
         let currentVal = 0;
-        if (ach.id === 'first_serve' || ach.id === 'master_chef') currentVal = savedState.stats.totalServed;
-        else if (ach.id === 'crab_lover') currentVal = savedState.stats.totalCrabUsed;
-        else if (ach.id === 'reach_day_10') currentVal = savedState.day;
-        else if (ach.id === 'piggy_master') currentVal = savedState.piggyBank;
-        else if (ach.id === 'team_builder') currentVal = (savedState.upgrades.staffBusser ? 1 : 0) + (savedState.upgrades.staffNoodle ? 1 : 0);
-        else if (ach.id === 'combo_king') currentVal = savedState.stats.maxCombo;
-        else if (ach.id === 'buy_house') currentVal = savedState.upgrades.boughtHouse ? 1 : 0;
+        if (ach.id === 'first_serve') currentVal = savedState.stats.totalServed;
+        else if (ach.id === 'vip_lover') currentVal = savedState.stats.totalVipServed;
+        else if (ach.id === 'hotpot_master') currentVal = savedState.stats.totalHotpotServed;
+        else if (ach.id === 'online_master') currentVal = savedState.stats.totalOnlineServed;
+        else if (ach.id === 'drink_master') currentVal = savedState.stats.totalDrinksServed;
+        else if (ach.id === 'reach_day_15') currentVal = savedState.day;
+        else if (ach.id === 'fever_hero') currentVal = savedState.stats.maxCombo;
+        else if (ach.id === 'buy_house_ultimate') currentVal = savedState.boughtHouseUltimate ? 200000000 : savedState.cash;
 
         if (currentVal >= ach.target && !savedState.unlockedBadges[ach.id]) {
           savedState.unlockedBadges[ach.id] = true;
@@ -1197,11 +1503,9 @@
       showToast('Đã đập heo lấy tiền vốn!');
     }
 
-    /* GIỚI HẠN SỐ LƯỢNG KHÁCH: MỚI CHƠI CHỈ DUY NHẤT 1 KHÁCH */
     function getMaxAllowedCustomers() {
-      if (savedState.day <= 3) return 1; // Ngày 1 - 3: Chỉ đúng 1 khách
-      if (savedState.day <= 7) return 2; // Ngày 4 - 7: Tối đa 2 khách
-      if (savedState.upgrades.staffGuard) return 4; 
+      if (savedState.upgrades.staffGuard) return 4;
+      if (savedState.day <= 3) return 2; 
       return 3; 
     }
 
@@ -1215,132 +1519,280 @@
       const emptyIdx = shiftState.customers.slice(0, maxAllowed).findIndex(c => c === null);
 
       if (emptyIdx !== -1) {
-        const avatar = CUSTOMER_AVATARS[Math.floor(Math.random() * CUSTOMER_AVATARS.length)];
-        
-        const noodles = ['bun'];
-        if (savedState.day >= 4) noodles.push('banh_da');
-        const chosenBase = noodles[Math.floor(Math.random() * noodles.length)];
+        const roll = Math.random();
+        let customerObj = null;
 
-        const availTops = [];
-        for (let k in ALL_ITEMS) {
-          if (k !== 'clean_bowls' && ALL_ITEMS[k].type !== 'noodle' && savedState.day >= ALL_ITEMS[k].unlockDay) {
-            availTops.push(k);
+        // 1. FOOD REVIEWER / TIKTOKER (15% tỷ lệ)
+        if (roll < 0.15) {
+          Sound.cameraFlash();
+          showToast('📸 FOOD REVIEWER TIKTOKER ĐẾN QUÁN! Phục vụ chuẩn để nhận 5 sao!');
+          customerObj = {
+            name: 'Food Reviewer VIP',
+            avatar: '🌟',
+            isVIP: true,
+            isOnline: false,
+            isHotpot: false,
+            base: 'bun',
+            toppings: ['rieu_cua', 'dau_ran', 'bap_bo', 'suon_sun'],
+            wantsDrink: 'kumquat',
+            wantsShrimpPaste: true,
+            price: 120000,
+            patience: 35,
+            maxPatience: 35,
+            riddleHint: '⭐ YÊU CẦU: Bún Riêu Thập Cẩm Bò Sụn + Trà Tắc + Mắm Tôm!',
+            isEating: false
+          };
+        }
+        // 2. ĐẠI TIỆC NỒI LẨU RIÊU CUA ĐỒNG QUÊ (15% tỷ lệ)
+        else if (roll < 0.30) {
+          showToast('🍲 BÀN ĐẶT NỒI LẨU RIÊU CUA VIP! Hãy lấy "Lẩu" trên khay!');
+          customerObj = {
+            name: 'Gia Đình Đặt Lẩu',
+            avatar: '👨‍👩‍👧‍👦',
+            isVIP: false,
+            isOnline: false,
+            isHotpot: true,
+            base: 'bun',
+            toppings: ['rieu_cua', 'dau_ran', 'bap_bo', 'suon_sun', 'moc_nam', 'rau_song', 'quay'],
+            wantsDrink: 'soda',
+            wantsShrimpPaste: false,
+            price: 220000,
+            patience: 45,
+            maxPatience: 45,
+            riddleHint: '🍲 LẨU RIÊU CUA ĐỒNG: Gạch Cua, Bò, Sụn, Mọc, Rau, Quẩy + Lon Xá Xị!',
+            isEating: false
+          };
+        }
+        // 3. ĐƠN ĐỐ MẸO ẨN DỤ (20% tỷ lệ)
+        else if (roll < 0.50) {
+          const riddleType = Math.floor(Math.random() * 3);
+          if (riddleType === 0) {
+            customerObj = {
+              name: 'Khách Đố Mẹo 1',
+              avatar: '🧙‍♂️',
+              isVIP: false,
+              isOnline: false,
+              isHotpot: false,
+              base: 'bun',
+              toppings: ['dau_ran', 'bap_bo', 'rau_song'],
+              wantsDrink: 'tea',
+              wantsShrimpPaste: false,
+              price: 45000,
+              patience: 35,
+              maxPatience: 35,
+              riddleHint: '💡 "Bát không chân đi dưới nước" (Bún + Đậu + Bò + Rau, KHÔNG Cua, KHÔNG Ốc)!',
+              isEating: false
+            };
+          } else if (riddleType === 1) {
+            customerObj = {
+              name: 'Khách Đố Mẹo 2',
+              avatar: '🧑‍🦰',
+              isVIP: false,
+              isOnline: false,
+              isHotpot: false,
+              base: 'banh_da',
+              toppings: ['rieu_cua', 'bap_bo', 'tiet_luoc'],
+              wantsDrink: 'soda',
+              wantsShrimpPaste: false,
+              price: 52000,
+              patience: 35,
+              maxPatience: 35,
+              riddleHint: '💡 "Đỏ cả nước lẫn cái" (Bánh đa đỏ + Riêu + Bắp bò + Tiết luộc + Xá xị)!',
+              isEating: false
+            };
+          } else {
+            customerObj = {
+              name: 'Bà Cụ Ăn Chay',
+              avatar: '👵',
+              isVIP: false,
+              isOnline: false,
+              isHotpot: false,
+              base: 'bun',
+              toppings: ['dau_ran', 'rau_song', 'quay'],
+              wantsDrink: 'soya',
+              wantsShrimpPaste: false,
+              price: 38000,
+              patience: 40,
+              maxPatience: 40,
+              riddleHint: '💡 "Bát chay thanh tịnh" (Bún + Đậu + Rau + Quẩy + Sữa Đậu, KHÔNG THỊT/CUA)!',
+              isEating: false
+            };
           }
         }
+        // 4. KHÁCH THƯỜNG HOẶC ĐƠN APP ONLINE
+        else {
+          const isOnlineOrder = Math.random() < 0.35;
+          const noodles = ['bun'];
+          if (savedState.day >= 4) noodles.push('banh_da');
+          const chosenBase = noodles[Math.floor(Math.random() * noodles.length)];
 
-        const maxTops = savedState.day <= 3 ? 2 : 3;
-        const count = Math.min(availTops.length, Math.floor(Math.random() * maxTops) + 1);
-        const chosenTops = new Set();
-        while (chosenTops.size < count) {
-          chosenTops.add(availTops[Math.floor(Math.random() * availTops.length)]);
+          const availTops = [];
+          for (let k in ALL_ITEMS) {
+            if (k !== 'clean_bowls' && ALL_ITEMS[k].type !== 'noodle' && savedState.day >= ALL_ITEMS[k].unlockDay) {
+              availTops.push(k);
+            }
+          }
+
+          const count = Math.min(availTops.length, Math.floor(Math.random() * 3) + 2);
+          const chosenTops = new Set();
+          while (chosenTops.size < count) {
+            chosenTops.add(availTops[Math.floor(Math.random() * availTops.length)]);
+          }
+
+          let wantsDrink = null;
+          if (Math.random() < 0.45) {
+            const drinkKeys = ['tea', 'kumquat', 'soya', 'soda'];
+            wantsDrink = drinkKeys[Math.floor(Math.random() * drinkKeys.length)];
+          }
+
+          let totalPrice = 25000 + (chosenTops.size * 7000);
+          if (isOnlineOrder) totalPrice += 15000;
+          if (wantsDrink) totalPrice += DRINKS_DATA[wantsDrink].price;
+
+          customerObj = {
+            name: isOnlineOrder ? 'ShopeeFood #902' : 'Khách Phố Cổ',
+            avatar: isOnlineOrder ? '🛵' : '👨‍💼',
+            isVIP: false,
+            isOnline: isOnlineOrder,
+            isHotpot: false,
+            base: chosenBase,
+            toppings: Array.from(chosenTops),
+            wantsDrink: wantsDrink,
+            wantsShrimpPaste: Math.random() < 0.25,
+            price: totalPrice,
+            patience: isOnlineOrder ? 25 : 40,
+            maxPatience: isOnlineOrder ? 25 : 40,
+            riddleHint: null,
+            isEating: false
+          };
         }
 
-        const bonusPatience = (savedState.upgrades.fanLevel * 4) + (savedState.upgrades.acLevel ? 8 : 0);
-        let tipBonus = (savedState.upgrades.electricPotLevel * 2000) + 
-                       (savedState.upgrades.crabMold ? 4000 : 0) + 
-                       (savedState.upgrades.inductionStove ? 6000 : 0) + 
-                       (savedState.upgrades.luxuryTable ? 15000 : 0);
+        if (savedState.boughtHouseUltimate) {
+          customerObj.price = Math.round(customerObj.price * 1.5);
+        }
 
-        if (savedState.upgrades.boughtHouse) tipBonus *= 2;
-
-        shiftState.customers[emptyIdx] = {
-          name: avatar.name, 
-          avatar: avatar.avatar,
-          base: chosenBase,
-          toppings: Array.from(chosenTops),
-          price: 25000 + (chosenTops.size * 7000) + tipBonus,
-          patience: 40 + bonusPatience, 
-          maxPatience: 40 + bonusPatience
-        };
+        shiftState.customers[emptyIdx] = customerObj;
         renderCustomers();
       }
     }
 
-    /* RENDER HÀNG KHÁCH: BẤM TRỰC TIẾP VÀO Ô ĐỂ GIAO HÀNG (ĐÃ FIX POINTER EVENTS) */
     function renderCustomers() {
       const track = document.getElementById('customers-track');
       track.innerHTML = '';
 
       const maxAllowed = getMaxAllowedCustomers();
-      let hasAnyCustomer = false;
 
       shiftState.customers.slice(0, maxAllowed).forEach((c, idx) => {
-        if (!c) return;
-        hasAnyCustomer = true;
-
-        const topsBadges = c.toppings.map(tKey => {
-          return `<span class="text-[9px] bg-stone-800 px-1.5 py-0.5 rounded text-amber-200 border border-stone-700 pointer-events-none">${ALL_ITEMS[tKey].name}</span>`;
-        }).join('');
+        if (!c) {
+          const emptySlot = document.createElement('div');
+          emptySlot.className = 'bg-stone-900/40 rounded-2xl border border-dashed border-stone-800 flex flex-col items-center justify-center p-2 text-stone-600 text-[10px] font-bold';
+          emptySlot.innerHTML = `Bàn ${idx+1}<br>Trống`;
+          track.appendChild(emptySlot);
+          return;
+        }
 
         const card = document.createElement('div');
-        // Gắn sự kiện click thẳng vào thẻ khách
+        
+        if (c.isEating) {
+          card.className = 'bg-amber-950/80 border-2 border-amber-400 shadow-xl rounded-2xl p-2 flex flex-col justify-center items-center text-center slurping-eating';
+          card.innerHTML = `
+            <div class="text-2xl">${c.avatar}</div>
+            <div class="text-[10px] font-black text-yellow-300">Húp xì xụp...</div>
+            <div class="text-[9px] text-pink-300 font-bold">Ngon tuyệt cú mèo! ❤️</div>
+          `;
+          track.appendChild(card);
+          return;
+        }
+
         card.onclick = () => serveCustomerDirect(idx);
-        card.className = 'flex-1 max-w-[240px] bg-stone-900 hover:bg-stone-800 border-2 border-yellow-500 shadow-xl rounded-2xl p-2.5 flex flex-col justify-between cursor-pointer active:scale-95 transition';
+        
+        let borderStyle = 'border-2 border-yellow-500 bg-stone-900';
+        if (c.isVIP) borderStyle = 'border-2 border-yellow-300 bg-gradient-to-b from-yellow-950/80 to-stone-900 vip-card-sparkle';
+        else if (c.isHotpot) borderStyle = 'border-2 border-red-500 bg-red-950/50';
+        else if (c.isOnline) borderStyle = 'border-2 border-orange-500 bg-orange-950/40';
+
+        card.className = `hover:bg-stone-800 ${borderStyle} shadow-xl rounded-2xl p-1.5 flex flex-col justify-between cursor-pointer active:scale-95 transition`;
+
+        const topsBadges = c.toppings.map(tKey => {
+          return `<span class="text-[7px] bg-stone-800 px-1 py-0.2 rounded text-amber-200 border border-stone-700 pointer-events-none">${ALL_ITEMS[tKey].name}</span>`;
+        }).join('');
+
+        let extraBadges = '';
+        if (c.isVIP) extraBadges += `<span class="text-[7px] bg-yellow-400 text-stone-950 px-1 rounded font-black">🌟 VIP REVIEWER</span>`;
+        if (c.isHotpot) extraBadges += `<span class="text-[7px] bg-red-600 text-white px-1 rounded font-black">🍲 NỒI LẨU VIP</span>`;
+        if (c.isOnline) extraBadges += `<span class="text-[7px] bg-orange-600 text-white px-1 rounded font-black">HỘP VỀ</span>`;
+        if (c.wantsDrink) {
+          const d = DRINKS_DATA[c.wantsDrink];
+          extraBadges += `<span class="text-[7px] ${d.badgeClass} px-1 rounded font-black">+ ${d.icon}</span>`;
+        }
+        if (c.wantsShrimpPaste) extraBadges += `<span class="text-[7px] bg-purple-950 text-purple-300 px-1 rounded border border-purple-600 font-black">+ Mắm</span>`;
 
         card.innerHTML = `
           <div class="pointer-events-none">
-            <div class="flex items-center justify-between mb-1.5">
-              <div class="flex items-center gap-1.5">
-                <span class="text-2xl">${c.avatar}</span>
-                <span class="text-xs font-black text-white">${c.name}</span>
-              </div>
-              <span class="text-[10px] font-black text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded-full border border-amber-500/40">${formatMoney(c.price)}</span>
+            <div class="flex items-center justify-between mb-0.5">
+              <span class="text-base">${c.avatar}</span>
+              <span class="text-[8px] font-black text-amber-300 bg-amber-950 px-1 rounded border border-amber-500/40">${formatMoney(c.price)}</span>
             </div>
-            <div class="bg-black/70 rounded-xl p-1.5 text-xs font-bold border border-stone-800">
-              <div class="text-red-400 font-black text-[10px] uppercase mb-1">Món gọi: ${ALL_ITEMS[c.base].name}</div>
-              <div class="flex flex-wrap gap-1">${topsBadges}</div>
+            <div class="bg-black/70 rounded p-1 text-xs font-bold border border-stone-800">
+              ${c.riddleHint ? `<div class="text-[7px] text-yellow-300 font-extrabold mb-0.5 leading-tight">${c.riddleHint}</div>` : `<div class="text-red-400 font-black text-[8px] uppercase mb-0.5">${ALL_ITEMS[c.base].name}</div><div class="flex flex-wrap gap-0.5">${topsBadges}</div>`}
+              ${extraBadges ? `<div class="flex flex-wrap gap-0.5 border-t border-stone-800 pt-0.5 mt-0.5">${extraBadges}</div>` : ''}
             </div>
           </div>
-          <div class="w-full bg-stone-800 h-2 rounded-full overflow-hidden mt-2 pointer-events-none">
-            <div class="bg-emerald-500 h-full transition-all duration-300 rounded-full" style="width: ${(c.patience/c.maxPatience)*100}%"></div>
-          </div>
-          <div class="text-[10px] text-center text-yellow-300 font-black mt-1.5 uppercase pointer-events-none bg-yellow-950/40 py-0.5 rounded-lg border border-yellow-500/30">
-            👉 CHẠM VÀO ĐÂY ĐỂ TRẢ MÓN 👈
+          <div class="w-full bg-stone-800 h-1 rounded-full overflow-hidden mt-1 pointer-events-none">
+            <div class="${c.isOnline ? 'bg-orange-500' : (c.isVIP ? 'bg-yellow-400' : 'bg-emerald-500')} h-full transition-all duration-300 rounded-full" style="width: ${(c.patience/c.maxPatience)*100}%"></div>
           </div>
         `;
         track.appendChild(card);
       });
-
-      if (!hasAnyCustomer) {
-        track.innerHTML = `<div class="text-stone-500 text-xs font-bold py-5 text-center">Đang chờ khách tới quán...</div>`;
-      }
     }
 
-    /* GIAO TRỰC TIẾP CHO KHÁCH VỪA CHẠM TAY */
     function serveCustomerDirect(idx) {
       if (shiftState.isPaused) { showToast('Bấm TIẾP TỤC để bán hàng!'); return; }
-      if (!shiftState.hasBowlOnTray) { showToast('Bạn chưa lấy tô bún ra khay!'); Sound.buzz(); return; }
+      if (!shiftState.hasContainer) { showToast('Bạn chưa lấy vật chứa ra khay!'); Sound.buzz(); return; }
       
       const c = shiftState.customers[idx];
-      if (!c) return;
+      if (!c || c.isEating) return;
 
       const dish = shiftState.currentDish;
-      
-      // 1. Kiểm tra sợi
-      if (!dish.base) {
+
+      if (c.isHotpot && shiftState.containerType !== 'hotpot') {
         Sound.buzz();
-        showToast('Tô chưa có sợi bún hoặc bánh đa!');
+        showToast('Khách gọi Nồi Lẩu Riêu Cua, phải lấy "Lẩu 🍲" trên khay!');
         return;
       }
+      if (c.isOnline && shiftState.containerType !== 'box') {
+        Sound.buzz();
+        showToast('Đơn Shipper phải đóng bằng "Hộp Về 🥡"!');
+        return;
+      }
+      if (!c.isHotpot && !c.isOnline && shiftState.containerType !== 'bowl') {
+        Sound.buzz();
+        showToast('Khách ăn tại quán phải múc vào "Tô Sứ 🥣"!');
+        return;
+      }
+      
+      if (!dish.base) { Sound.buzz(); showToast('Tô chưa có sợi bún hoặc bánh đa!'); return; }
       if (dish.base !== c.base) {
         Sound.buzz();
-        showToast(`Khách muốn ăn ${ALL_ITEMS[c.base].name}, bạn lại làm ${ALL_ITEMS[dish.base].name}!`);
+        showToast(`Khách muốn ăn ${ALL_ITEMS[c.base].name}, tô bạn lại là ${ALL_ITEMS[dish.base].name}!`);
         return;
       }
+      if (!dish.hasBroth) { Sound.buzz(); showToast('Bạn quên chưa chan nước dùng vào tô!'); return; }
 
-      // 2. Kiểm tra nước dùng
-      if (!dish.hasBroth) {
+      if (c.wantsDrink && dish.drink !== c.wantsDrink) {
         Sound.buzz();
-        showToast('Bạn quên chưa chan nước dùng vào tô!');
+        showToast(`Khách gọi thêm: ${DRINKS_DATA[c.wantsDrink].name}!`);
+        return;
+      }
+      if (c.wantsShrimpPaste && !dish.hasShrimpPaste) {
+        Sound.buzz();
+        showToast('Khách dặn thêm một thìa Mắm Tôm!');
         return;
       }
 
-      // 3. Kiểm tra topping
       const missingToppings = [];
       c.toppings.forEach(reqKey => {
-        if (!dish.toppings.includes(reqKey)) {
-          missingToppings.push(ALL_ITEMS[reqKey].name);
-        }
+        if (!dish.toppings.includes(reqKey)) missingToppings.push(ALL_ITEMS[reqKey].name);
       });
 
       if (missingToppings.length > 0) {
@@ -1349,62 +1801,188 @@
         return;
       }
 
-      // GIAO HÀNG THÀNH CÔNG!
-      Sound.coin();
-      savedState.cash += c.price;
-      shiftState.todaySales += c.price;
-      savedState.stats.totalServed++;
-      shiftState.combo++;
-      if (shiftState.combo > savedState.stats.maxCombo) {
-        savedState.stats.maxCombo = shiftState.combo;
+      const isOnline = c.isOnline;
+      const isBowl = shiftState.containerType === 'bowl';
+      const isHotpot = c.isHotpot;
+      const isVIP = c.isVIP;
+
+      let earnedCash = c.price;
+      if (shiftState.feverTime > 0) earnedCash = Math.round(earnedCash * 1.5);
+
+      shiftState.hasContainer = false;
+      shiftState.containerType = null;
+      shiftState.currentDish = { base: null, hasBroth: false, toppings: [], drink: null, hasShrimpPaste: false };
+      ['tea', 'kumquat', 'soya', 'soda'].forEach(dk => {
+        const el = document.getElementById(`drink-check-${dk}`);
+        if (el) el.classList.add('hidden');
+      });
+      updateBowlUI();
+
+      if (isVIP) {
+        Sound.cameraFlash();
+        showToast('📸 FOOD REVIEWER CHẤM 5 SAO! QUÁN LÊN XU HƯỚNG TIKTOK!');
+        savedState.stats.totalVipServed++;
+      }
+      if (isHotpot) {
+        savedState.stats.totalHotpotServed++;
       }
 
-      savedState.inventory.clean_bowls++;
+      if (!isOnline) {
+        Sound.slurp();
+        c.isEating = true;
+        renderCustomers();
 
-      // Xóa khách và reset tô
-      shiftState.customers[idx] = null;
-      shiftState.hasBowlOnTray = false;
-      shiftState.currentDish = { base: null, hasBroth: false, toppings: [] };
-      
-      renderCustomers();
-      updateBowlUI();
-      updateHUD();
-      updateAchievementsState();
-      triggerAutoKitchen();
-      showToast(`+${formatMoney(c.price)} Đã giao thành công cho ${c.name}!`);
+        setTimeout(() => {
+          Sound.coin();
+          savedState.cash += earnedCash;
+          shiftState.todaySales += earnedCash;
+          savedState.stats.totalServed++;
+          if (c.wantsDrink) savedState.stats.totalDrinksServed++;
+          
+          handleComboSuccess();
+          if (isBowl) savedState.inventory.clean_bowls++;
+          shiftState.customers[idx] = null;
+
+          renderCustomers();
+          updateHUD();
+          updateAchievementsState();
+          triggerAutoKitchen();
+          showToast(`+${formatMoney(earnedCash)} Thu tiền từ ${c.name}!`);
+        }, 1500);
+      } else {
+        Sound.coin();
+        savedState.cash += earnedCash;
+        shiftState.todaySales += earnedCash;
+        savedState.stats.totalServed++;
+        savedState.stats.totalOnlineServed++;
+        if (c.wantsDrink) savedState.stats.totalDrinksServed++;
+        
+        handleComboSuccess();
+        shiftState.customers[idx] = null;
+
+        renderCustomers();
+        updateHUD();
+        updateAchievementsState();
+        triggerAutoKitchen();
+        showToast(`🛵 +${formatMoney(earnedCash)} Shipper đã lấy đơn đi giao!`);
+      }
+    }
+
+    function handleComboSuccess() {
+      shiftState.combo++;
+      if (shiftState.combo > savedState.stats.maxCombo) savedState.stats.maxCombo = shiftState.combo;
+
+      if (shiftState.combo >= 3 && shiftState.feverTime <= 0) {
+        shiftState.feverTime = 20;
+        Sound.fever();
+        showToast('🔥🔥🔥 GIỜ BỐC LỬA! DOANH THU x1.5 TRONG 20S!');
+        document.getElementById('game-app').classList.add('fever-active');
+        document.getElementById('fever-banner').classList.remove('hidden');
+      }
+    }
+
+    function scareCat() {
+      Sound.meow();
+      shiftState.catActive = false;
+      document.getElementById('cat-event-box').classList.add('hidden');
+      showToast('🐱 Mèo mướp đã giật mình chạy mất!');
+    }
+
+    function tapGasCylinder() {
+      Sound.plop();
+      shiftState.gasClicks--;
+      document.getElementById('gas-clicks-left').textContent = shiftState.gasClicks;
+      if (shiftState.gasClicks <= 0) {
+        shiftState.gasOut = false;
+        document.getElementById('gas-event-box').classList.add('hidden');
+        document.getElementById('pot-steam').classList.remove('hidden');
+        showToast('🔥 Bếp gas đã bật lại!');
+      }
+    }
+
+    function checkRandomKitchenEvents() {
+      if (shiftState.isPaused) return;
+
+      if (!shiftState.catActive && Math.random() < 0.04) {
+        shiftState.catActive = true;
+        document.getElementById('cat-event-box').classList.remove('hidden');
+        Sound.meow();
+        setTimeout(() => {
+          if (shiftState.catActive) {
+            shiftState.catActive = false;
+            document.getElementById('cat-event-box').classList.add('hidden');
+            if (savedState.inventory.dau_ran > 0) savedState.inventory.dau_ran--;
+            renderQuickPantry();
+            showToast('🙀 Mèo mướp đã tha mất 1 miếng Đậu Rán!');
+          }
+        }, 5000);
+      }
+
+      if (!shiftState.gasOut && Math.random() < 0.025) {
+        shiftState.gasOut = true;
+        shiftState.gasClicks = 2;
+        document.getElementById('gas-clicks-left').textContent = '2';
+        document.getElementById('gas-event-box').classList.remove('hidden');
+        document.getElementById('pot-steam').classList.add('hidden');
+        Sound.buzz();
+      }
+    }
+
+    function checkAutoStaffShipper() {
+      if (!savedState.upgrades.staffShipper || shiftState.isPaused) return;
+      if (!shiftState.hasContainer || shiftState.containerType !== 'box') return;
+
+      const onlineIdx = shiftState.customers.findIndex(c => c && c.isOnline && !c.isEating);
+      if (onlineIdx !== -1) {
+        serveCustomerDirect(onlineIdx);
+        showToast('🛵 Anh Shipper Ruột đã tự gói và giao đơn online!');
+      }
     }
 
     function checkAutoBusser() {
       if (!savedState.upgrades.staffBusser || shiftState.isPaused) return;
       shiftState.customers.forEach((c, idx) => {
-        if (c && c.patience <= 4) {
+        if (c && !c.isEating && c.patience <= 5) {
           savedState.cash += Math.round(c.price * 0.9);
           shiftState.todaySales += Math.round(c.price * 0.9);
           savedState.stats.totalServed++;
-          savedState.inventory.clean_bowls++;
+          if (!c.isOnline && !c.isHotpot) savedState.inventory.clean_bowls++;
           shiftState.customers[idx] = null;
           Sound.coin();
           renderCustomers();
           updateHUD();
           updateAchievementsState();
-          showToast(`🧹 Bé Dọn Bàn đã hỗ trợ dọn tô cho ${c.name}!`);
+          showToast(`👧 Bé Na đã dọn bàn cho ${c.name}!`);
         }
       });
     }
 
+    /* SỔ THU CHI & LÃI QUA ĐÊM */
     function showLedgerModal() {
       togglePauseGame(true);
 
       const wages = (savedState.upgrades.staffBusser ? 30000 : 0) + 
-                    (savedState.upgrades.staffNoodle ? 40000 : 0) + 
-                    (savedState.upgrades.staffBroth ? 30000 : 0);
+                    (savedState.upgrades.staffTea ? 35000 : 0) +
+                    (savedState.upgrades.staffShipper ? 40000 : 0) +
+                    (savedState.upgrades.staffNoodle ? 45000 : 0) +
+                    (savedState.upgrades.staffGuard ? 40000 : 0) +
+                    (savedState.upgrades.staffChefSix ? 50000 : 0);
 
-      const net = shiftState.todaySales - savedState.todayMarketCost - wages;
+      const huiCost = savedState.hasHuiLoan ? 50000 : 0;
+      const huiRow = document.getElementById('ledger-hui-row');
+      if (savedState.hasHuiLoan) huiRow.classList.remove('hidden');
+      else huiRow.classList.add('hidden');
+
+      const interest = Math.floor(savedState.piggyBank * 0.02);
+      savedState.piggyBank += interest;
+
+      const net = shiftState.todaySales - savedState.todayMarketCost - wages - huiCost;
 
       document.getElementById('ledger-title').textContent = `SỔ THU CHI NGÀY ${savedState.day}`;
       document.getElementById('final-money').textContent = `+${formatMoney(shiftState.todaySales)}`;
       document.getElementById('final-cost').textContent = `-${formatMoney(savedState.todayMarketCost)}`;
       document.getElementById('final-wage').textContent = `-${formatMoney(wages)}`;
+      document.getElementById('final-interest').textContent = `+${formatMoney(interest)}`;
 
       const netEl = document.getElementById('final-net');
       netEl.textContent = `${net >= 0 ? '+' : ''}${formatMoney(net)}`;
@@ -1426,8 +2004,9 @@
     function confirmLedgerAndNextDay() {
       const slider = document.getElementById('piggy-slider');
       const pct = parseInt(slider.value);
-      const wages = (savedState.upgrades.staffBusser ? 30000 : 0) + (savedState.upgrades.staffNoodle ? 40000 : 0);
-      const net = Math.max(0, shiftState.todaySales - savedState.todayMarketCost - wages);
+      const wages = (savedState.upgrades.staffBusser ? 30000 : 0) + (savedState.upgrades.staffTea ? 35000 : 0);
+      const huiCost = savedState.hasHuiLoan ? 50000 : 0;
+      const net = Math.max(0, shiftState.todaySales - savedState.todayMarketCost - wages - huiCost);
       const toPig = Math.floor(net * (pct / 100));
 
       if (toPig > 0 && savedState.cash >= toPig) {
@@ -1449,8 +2028,19 @@
       shiftState.todaySales = 0;
       shiftState.missedCount = 0;
       shiftState.combo = 0;
+      shiftState.feverTime = 0;
+      shiftState.gasOut = false;
+      shiftState.catActive = false;
       shiftState.customers = [null, null, null, null];
       trashBowl();
+
+      const randomWeather = WEATHER_TYPES[Math.floor(Math.random() * WEATHER_TYPES.length)];
+      savedState.currentWeatherId = randomWeather.id;
+
+      document.getElementById('game-app').classList.remove('fever-active');
+      document.getElementById('fever-banner').classList.add('hidden');
+      document.getElementById('cat-event-box').classList.add('hidden');
+      document.getElementById('gas-event-box').classList.add('hidden');
 
       persistGame();
       updateHUD();
@@ -1477,6 +2067,15 @@
         if (kitchenVisible && !shiftState.isPaused) {
           if (shiftState.timeLeft > 0) {
             shiftState.timeLeft--;
+            if (shiftState.feverTime > 0) {
+              shiftState.feverTime--;
+              document.getElementById('fever-timer').textContent = shiftState.feverTime;
+              if (shiftState.feverTime <= 0) {
+                document.getElementById('game-app').classList.remove('fever-active');
+                document.getElementById('fever-banner').classList.add('hidden');
+                showToast('Hết giờ bốc lửa Fever Mode!');
+              }
+            }
             updateHUD();
           } else {
             showLedgerModal();
@@ -1484,18 +2083,17 @@
         }
       }, 1000);
 
-      const spawnInterval = savedState.upgrades.marketingCampaign ? 2600 : 4200;
       setInterval(() => {
         const kitchenVisible = !document.getElementById('view-kitchen').classList.contains('hidden');
         if (kitchenVisible && !shiftState.isPaused) spawnCustomer();
-      }, spawnInterval);
+      }, savedState.currentWeatherId === 'rainy' ? 2600 : 3600);
 
       setInterval(() => {
         const kitchenVisible = !document.getElementById('view-kitchen').classList.contains('hidden');
         if (kitchenVisible && !shiftState.isPaused) {
-          const decay = savedState.upgrades.retroRadio ? 0.3 : 0.45;
+          const decay = 0.45;
           shiftState.customers.forEach((c, idx) => {
-            if (c) {
+            if (c && !c.isEating) {
               c.patience -= decay;
               if (c.patience <= 0) {
                 shiftState.customers[idx] = null;
@@ -1503,15 +2101,17 @@
                 shiftState.combo = 0;
                 updateHUD();
                 renderCustomers();
-                showToast(`Khách ${c.name} đợi lâu nên đã bỏ về!`);
+                showToast(`Đơn của ${c.name} đã bị hủy!`);
                 if (shiftState.missedCount >= 3) {
-                  showToast('Đã có 3 khách bỏ về! Đóng cửa ca sớm.');
+                  showToast('Đã có 3 khách/đơn bị hủy! Đóng cửa ca sớm.');
                   showLedgerModal();
                 }
               }
             }
           });
           checkAutoBusser();
+          checkAutoStaffShipper();
+          checkRandomKitchenEvents();
         }
       }, 500);
 
