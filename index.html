@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Tiệm Bún Riêu & Bánh Đa Cua Cô Ba - Game Art Edition</title>
+  <title>Tiệm Bún Riêu Cô Ba - Fixed Logic Edition</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -37,10 +37,10 @@
 
     @keyframes dropIn {
       0% { transform: scale(0.3) translateY(-25px); opacity: 0; }
-      65% { transform: scale(1.12) translateY(3px); opacity: 1; }
+      65% { transform: scale(1.1) translateY(3px); opacity: 1; }
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
-    .drop-item { animation: dropIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .drop-item { animation: dropIn 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
     @keyframes drawBowl {
       0% { transform: scale(0.6) translateY(20px); opacity: 0; }
@@ -150,9 +150,10 @@
         </button>
       </section>
 
-      <!-- TAB 1: SÂN KHẤU BẾP NẤU (GAME ART 2D VẼ TAY CHI TIẾT) -->
+      <!-- TAB 1: SÂN KHẤU BẾP NẤU (LOGIC CHUẨN XÁC) -->
       <section id="view-kitchen" class="tab-view hidden flex-1 flex flex-col justify-between gap-1.5 relative">
-        <!-- BÀN ĂN NGANG GỌN GÀNG -->
+        
+        <!-- BÀN ĂN NGANG: HIỂN THỊ RÕ TỪNG MÓN KHÁCH ĐÒI -->
         <div class="bg-stone-950/80 p-1.5 rounded-2xl border border-stone-700/80 shadow-md">
           <div id="customers-track" class="grid grid-cols-4 gap-1.5"></div>
         </div>
@@ -175,13 +176,12 @@
           </div>
 
           <div class="flex items-center justify-between py-1">
-            <!-- CỘT TRÁI: CHỒNG BÁT & NỒI CHAN NƯỚC DÙNG -->
+            <!-- CỘT TRÁI: LẤY TÔ & CHAN NƯỚC -->
             <div class="flex flex-col gap-2">
               <button onclick="drawBowlFromStack()" class="group flex flex-col items-center bg-stone-900 p-2 rounded-2xl border-2 border-stone-600 hover:border-amber-400 active:scale-90 transition shadow-lg relative">
                 <span id="stack-bowl-count" class="absolute -top-2 -right-1 bg-amber-400 text-stone-950 font-black text-[10px] px-1.5 py-0.2 rounded-full border border-stone-900 shadow">
                   x20
                 </span>
-                <!-- Chồng bát sứ vẽ tay -->
                 <div class="relative w-11 h-11 flex items-center justify-center">
                   <div class="absolute bottom-1 w-10 h-3.5 rounded-full border border-blue-900 bg-stone-200"></div>
                   <div class="absolute bottom-2.5 w-10 h-3.5 rounded-full border border-blue-900 bg-stone-100"></div>
@@ -192,13 +192,11 @@
                 <span class="text-[10px] font-black text-amber-300 mt-0.5 uppercase tracking-tighter">Lấy Tô 🥣</span>
               </button>
 
-              <!-- Nồi nước dùng cua sôi sùng sục -->
               <button onclick="addBroth()" class="flex flex-col items-center bg-stone-900 p-2 rounded-2xl border-2 border-amber-500/50 shadow-md active:scale-90 transition">
                 <div class="relative w-11 h-10 flex items-center justify-center">
-                  <svg class="w-11 h-11 food-glow" viewBox="0 0 60 60">
+                  <svg class="w-10 h-10 food-glow" viewBox="0 0 60 60">
                     <circle cx="30" cy="30" r="27" fill="#475569" stroke="#1e293b" stroke-width="2.5"/>
                     <circle cx="30" cy="30" r="23" fill="#ea580c"/>
-                    <!-- Váng dầu điều & mảng riêu cua nổi -->
                     <ellipse cx="30" cy="27" rx="19" ry="13" fill="#c2410c" opacity="0.85"/>
                     <path d="M18 24 Q24 18 30 25 Q24 32 18 24 Z" fill="#b91c1c"/>
                     <circle cx="36" cy="23" r="4" fill="#fb923c" opacity="0.9"/>
@@ -212,9 +210,8 @@
               </button>
             </div>
 
-            <!-- Ở GIỮA: TÔ BÚN GỐM SỨ VẼ TAY THỰC TẾ -->
+            <!-- Ở GIỮA: TÔ BÚN GỐM SỨ -->
             <div class="relative w-44 h-44 rounded-full border-[8px] border-blue-950 bg-gradient-to-b from-stone-100 via-white to-blue-50 bowl-depth flex flex-col items-center justify-center overflow-hidden" id="main-bowl-container">
-              <!-- Viền hoa lam gốm sứ -->
               <div class="absolute inset-1 rounded-full border border-blue-600/30 pointer-events-none z-10"></div>
               
               <div id="no-bowl-prompt" class="text-stone-400 text-center text-xs font-bold px-3 z-0 leading-tight">
@@ -225,13 +222,11 @@
                 Chọn <b class="text-red-700">Sợi Bún</b> bên dưới
               </div>
 
-              <!-- Lớp Sợi Bún / Bánh Đa chi tiết -->
+              <!-- Lớp Sợi -->
               <div id="visual-noodles" class="hidden absolute inset-2 rounded-full flex items-center justify-center overflow-hidden z-10"></div>
-
-              <!-- Nước lèo sóng sánh ánh cam mỡ cua -->
+              <!-- Nước lèo -->
               <div id="broth-liquid" class="hidden absolute inset-0 bg-gradient-to-t from-red-600/85 via-orange-500/65 to-amber-400/45 rounded-full pointer-events-none z-20 shadow-inner"></div>
-
-              <!-- Topping dập dềnh bồng bềnh -->
+              <!-- Topping -->
               <div id="visual-ingredients" class="absolute inset-0 p-3 flex flex-wrap content-center justify-center gap-1 pointer-events-none z-30"></div>
             </div>
 
@@ -243,9 +238,15 @@
               <button onclick="serveCustomer(3)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-xs shadow active:scale-90">Bàn 4</button>
             </div>
           </div>
+
+          <!-- THANH HIỂN THỊ CÁC MÓN ĐÃ BỎ VÀO TÔ (TRÁNH BỊ QUÊN HOẶC LẪN) -->
+          <div id="bowl-contents-badges" class="bg-stone-900/90 rounded-xl px-2 py-1 min-h-[26px] flex flex-wrap items-center gap-1 border border-stone-700/80">
+            <span class="text-[9px] text-stone-500 font-bold">Trong tô có:</span>
+            <span class="text-[9px] text-stone-400 italic" id="empty-content-text">Chưa có gì</span>
+          </div>
         </div>
 
-        <!-- MÂM TOPPING NGHỆ THUẬT VẼ TAY THỰC TẾ -->
+        <!-- MÂM NGUYÊN LIỆU ĐỒ HỌA MỚI -->
         <div class="bg-stone-900 rounded-2xl p-2 border border-stone-700 shadow-md flex flex-col gap-1">
           <div class="flex justify-between items-center px-1">
             <span class="text-[11px] font-black uppercase text-amber-300">Khay Nguyên Liệu Đặc Sản:</span>
@@ -443,7 +444,7 @@
       pig() { if (!this.ctx) return; this.coin(); setTimeout(() => this.plop(), 120); }
     };
 
-    /* HỆ THỐNG MÓN ĂN VẼ TAY GAME ART CHI TIẾT (CHUẨN TẢ THỰC) */
+    /* HỆ THỐNG MÓN ĂN VẼ TAY THỰC TẾ CHI TIẾT */
     const ALL_ITEMS = {
       clean_bowls: {
         name: 'Tô Bát Sứ Bát Tràng', basePrice: 1000, type: 'supplies', unlockDay: 1,
@@ -467,7 +468,6 @@
           <rect x="8" y="26.5" width="28" height="4.5" rx="2" fill="#78350f"/>
         </svg>`
       },
-      // GẠCH RIÊU CUA: TỪNG MẢNG XỐP VỠ GỒ GHỀ, VÂN DẦU ĐIỀU ÓNG Ả
       rieu_cua: { 
         name: 'Gạch Riêu Cua', basePrice: 4000, type: 'meat', unlockDay: 1,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
@@ -478,9 +478,7 @@
               <stop offset="100%" stop-color="#6c1d04"/>
             </radialGradient>
           </defs>
-          <!-- Mảng riêu gồ ghề tự nhiên không tròn đều -->
           <path d="M8 20 C6 14, 15 9, 23 8 C31 8, 38 13, 37 20 C36 26, 32 30, 26 34 C18 36, 12 33, 9 27 Z" fill="url(#rieuReal)" stroke="#451a03" stroke-width="1.5"/>
-          <!-- Váng dầu điều óng ánh và đốm mỡ riêu -->
           <circle cx="16" cy="17" r="3.2" fill="#fed7aa" opacity="0.95"/>
           <circle cx="26" cy="19" r="3.8" fill="#f97316" opacity="0.9"/>
           <circle cx="20" cy="26" r="2.8" fill="#fef08a" opacity="0.85"/>
@@ -489,7 +487,6 @@
           <path d="M22 13 Q25 18 28 14" stroke="#ffedd5" stroke-width="1.5" fill="none" stroke-linecap="round"/>
         </svg>`
       },
-      // ĐẬU RÁN: VÀNG RUỘM, MẶT CẮT CÓ RÃNH CHIÊN KHÍ PHỒNG
       dau_ran: { 
         name: 'Đậu Rán Giòn', basePrice: 2000, type: 'meat', unlockDay: 1,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
@@ -500,9 +497,7 @@
               <stop offset="100%" stop-color="#78350f"/>
             </linearGradient>
           </defs>
-          <!-- Khối đậu cắt lát phồng -->
           <rect x="6" y="9" width="32" height="26" rx="5" fill="url(#dauReal)" stroke="#451a03" stroke-width="2"/>
-          <!-- Viền chiên già xém nâu -->
           <line x1="13" y1="12" x2="13" y2="32" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
           <line x1="22" y1="12" x2="22" y2="32" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
           <line x1="31" y1="12" x2="31" y2="32" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
@@ -510,7 +505,6 @@
           <circle cx="26" cy="24" r="1.5" fill="#fef9c3" opacity="0.9"/>
         </svg>`
       },
-      // ỐC BƯƠU: VỎ XOẮN BÓNG, LỘ MIỆNG THỊT ỐC VÀ SẢ
       oc: { 
         name: 'Ốc Bươu Giòn', basePrice: 3500, type: 'meat', unlockDay: 4,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
@@ -521,15 +515,12 @@
               <stop offset="100%" stop-color="#0c0a09"/>
             </radialGradient>
           </defs>
-          <!-- Thân xoắn ốc -->
           <path d="M11 25 C9 13, 31 9, 34 21 C36 30, 25 35, 17 35 C11 35, 12 29, 11 25 Z" fill="url(#ocReal)" stroke="#0c0a09" stroke-width="2"/>
-          <!-- Lòng ốc màu cam đậm và chấm sả -->
           <ellipse cx="24" cy="22" rx="5.5" ry="7" fill="#c2410c" transform="rotate(-15 24 22)"/>
           <ellipse cx="24" cy="22" rx="3" ry="4.5" fill="#7c2d12" transform="rotate(-15 24 22)"/>
           <circle cx="21" cy="18" r="2.2" fill="#fef08a" stroke="#ca8a04" stroke-width="0.5"/>
         </svg>`
       },
-      // CHẢ LÁ LỐT: CUỘN DÀI BÓNG DẦU, GÂN LÁ RÕ NÉT, XÉM CẠNH THAN HỒNG
       cha_la_lot: { 
         name: 'Chả Lá Lốt', basePrice: 3000, type: 'meat', unlockDay: 8,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
@@ -540,22 +531,17 @@
               <stop offset="100%" stop-color="#052e16"/>
             </linearGradient>
           </defs>
-          <!-- Cuộn chả thuôn dài -->
           <rect x="5" y="12" width="34" height="20" rx="9" fill="url(#lotReal)" stroke="#022c22" stroke-width="2"/>
-          <!-- Thịt băm lồi nhẹ ở mép -->
           <ellipse cx="6" cy="22" rx="2" ry="6" fill="#b91c1c"/>
           <ellipse cx="38" cy="22" rx="2" ry="6" fill="#b91c1c"/>
-          <!-- Gân lá lốt xếp nếp -->
           <line x1="12" y1="12" x2="12" y2="32" stroke="#16a34a" stroke-width="2"/>
           <line x1="20" y1="12" x2="20" y2="32" stroke="#16a34a" stroke-width="2"/>
           <line x1="28" y1="12" x2="28" y2="32" stroke="#16a34a" stroke-width="2"/>
-          <!-- Vết cháy sém than hoa nướng -->
           <circle cx="16" cy="18" r="2.2" fill="#1c1917"/>
           <circle cx="25" cy="26" r="2.5" fill="#1c1917"/>
           <ellipse cx="22" cy="16" rx="4" ry="1.5" fill="#86efac" opacity="0.45"/>
         </svg>`
       },
-      // BẮP BÒ HOA: LÁT THỊT UỐN LƯỢN, VÂN GÂN HOA CẨM THẠCH TRONG SUỐT
       bap_bo: { 
         name: 'Bắp Bò Hoa', basePrice: 6000, type: 'meat', unlockDay: 15,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
@@ -566,20 +552,16 @@
               <stop offset="100%" stop-color="#450a0a"/>
             </radialGradient>
           </defs>
-          <!-- Miếng bắp bò lát mỏng cong tự nhiên -->
           <path d="M8 24 C6 13, 26 7, 35 15 C40 24, 28 35, 16 33 Z" fill="url(#boReal)" stroke="#450a0a" stroke-width="2"/>
-          <!-- Vân mỡ hoa bò đan xen đối xứng như hoa cẩm thạch -->
           <path d="M12 17 Q22 25 32 15" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0.95"/>
           <path d="M14 24 Q22 29 29 22" stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.95"/>
           <path d="M22 17 L22 27" stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.95"/>
         </svg>`
       },
-      // SƯỜN SỤN NON: MIẾNG THỊT CÓ KHỐI SỤN TRẮNG ĐỤC NỔI BẬT
       suon_sun: { 
         name: 'Sườn Sụn Non', basePrice: 5500, type: 'meat', unlockDay: 20,
         svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
           <path d="M8 22 C8 12, 31 9, 36 18 C36 28, 12 32, 8 22 Z" fill="#c2410c" stroke="#7c2d12" stroke-width="2"/>
-          <!-- Cục sụn non trắng trong -->
           <ellipse cx="24" cy="20" rx="7" ry="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
           <circle cx="14" cy="18" r="2.2" fill="#fed7aa"/>
           <line x1="17" y1="24" x2="30" y2="24" stroke="#9a3412" stroke-width="2"/>
@@ -646,14 +628,14 @@
     };
 
     function loadGame() {
-      const data = localStorage.getItem('bun_rieu_coba_art_v7');
+      const data = localStorage.getItem('bun_rieu_coba_fixed_logic_v8');
       if (data) {
         try { savedState = Object.assign(savedState, JSON.parse(data)); } catch (e) {}
       }
       if (savedState.inventory.clean_bowls === undefined) savedState.inventory.clean_bowls = 20;
     }
     function persistGame() {
-      localStorage.setItem('bun_rieu_coba_art_v7', JSON.stringify(savedState));
+      localStorage.setItem('bun_rieu_coba_fixed_logic_v8', JSON.stringify(savedState));
     }
 
     const shiftState = {
@@ -664,7 +646,8 @@
       missedCount: 0,
       combo: 0,
       customers: [null, null, null, null],
-      currentDish: { base: null, hasBroth: false, toppings: new Set() }
+      // DÙNG MẢNG ARRAY THAY VÌ SET ĐỂ KHÔNG BỊ NUỐT MÓN
+      currentDish: { base: null, hasBroth: false, toppings: [] }
     };
 
     function formatMoney(amount) { return amount.toLocaleString('vi-VN') + 'đ'; }
@@ -774,7 +757,6 @@
       showToast('Đã rút 1 tô sứ men lam ra khay!');
     }
 
-    /* RENDER MÂM TOPPING VỚI HÌNH VẼ CHI TIẾT */
     function renderQuickPantry() {
       const grid = document.getElementById('quick-pantry-grid');
       grid.innerHTML = '';
@@ -784,7 +766,7 @@
         const it = ALL_ITEMS[k];
         const isUnlocked = savedState.day >= it.unlockDay;
         const btn = document.createElement('button');
-        btn.className = `p-1 rounded-2xl flex flex-col items-center justify-center transition border ${
+        btn.className = `p-1.5 rounded-2xl flex flex-col items-center justify-center transition border ${
           isUnlocked ? 'bg-stone-800 hover:bg-stone-700 border-stone-600 active:scale-95 shadow-sm' : 'bg-stone-900 border-stone-800 opacity-40 cursor-not-allowed'
         }`;
         btn.innerHTML = `
@@ -806,7 +788,7 @@
     function selectNoodle(type) {
       if (!shiftState.hasBowlOnTray) { showToast('Chạm vào "Lấy Tô 🥣" trước nhé!'); Sound.buzz(); return; }
       if (savedState.inventory[type] <= 0) { showToast('Đã hết sợi trong kho!'); Sound.buzz(); return; }
-      if (shiftState.currentDish.base) return;
+      if (shiftState.currentDish.base) { showToast('Đã chọn sợi rồi!'); return; }
       Sound.plop();
       savedState.inventory[type]--;
       shiftState.currentDish.base = type;
@@ -819,6 +801,7 @@
       if (shiftState.isPaused) return;
       if (!shiftState.hasBowlOnTray) { showToast('Chạm "Lấy Tô 🥣" trước!'); Sound.buzz(); return; }
       if (!shiftState.currentDish.base) { showToast('Hãy chọn Bún hoặc Bánh Đa trước!'); Sound.buzz(); return; }
+      if (shiftState.currentDish.hasBroth) { showToast('Tô đã chan đầy nước dùng rồi!'); return; }
       Sound.pour();
       shiftState.currentDish.hasBroth = true;
       updateBowlUI();
@@ -830,7 +813,8 @@
       if (savedState.inventory[key] <= 0) { showToast('Đã hết món này!'); Sound.buzz(); return; }
       Sound.plop();
       savedState.inventory[key]--;
-      shiftState.currentDish.toppings.add(key);
+      // Thêm vào mảng topping
+      shiftState.currentDish.toppings.push(key);
       if (key === 'rieu_cua') savedState.stats.totalCrabUsed++;
       updateBowlUI();
       renderQuickPantry();
@@ -841,7 +825,7 @@
         savedState.inventory.clean_bowls++;
       }
       shiftState.hasBowlOnTray = false;
-      shiftState.currentDish = { base: null, hasBroth: false, toppings: new Set() };
+      shiftState.currentDish = { base: null, hasBroth: false, toppings: [] };
       Sound.plop();
       updateBowlUI();
       updateHUD();
@@ -863,7 +847,7 @@
       }
     }
 
-    /* HIỂN THỊ TÔ BÚN NẤU CHÂN THỰC */
+    /* HIỂN THỊ TÔ BÚN NẤU VÀ DANH SÁCH HUY HIỆU TEXT */
     function updateBowlUI() {
       const bowl = shiftState.currentDish;
       const noBowlPrompt = document.getElementById('no-bowl-prompt');
@@ -872,6 +856,7 @@
       const brothEl = document.getElementById('broth-liquid');
       const ingsEl = document.getElementById('visual-ingredients');
       const statusText = document.getElementById('bowl-status-text');
+      const badgesContainer = document.getElementById('bowl-contents-badges');
 
       if (!shiftState.hasBowlOnTray) {
         statusText.textContent = 'Chưa Có Tô Trên Khay';
@@ -880,6 +865,7 @@
         noodlesEl.classList.add('hidden');
         brothEl.classList.add('hidden');
         ingsEl.innerHTML = '';
+        badgesContainer.innerHTML = '<span class="text-[9px] text-stone-500 font-bold">Trong tô có:</span><span class="text-[9px] text-stone-400 italic">Chưa có gì</span>';
         return;
       }
 
@@ -891,6 +877,7 @@
         noodlesEl.classList.add('hidden');
         brothEl.classList.add('hidden');
         ingsEl.innerHTML = '';
+        badgesContainer.innerHTML = '<span class="text-[9px] text-stone-500 font-bold">Trong tô có:</span><span class="text-[9px] text-amber-400 font-bold">Tô Sứ Trống</span>';
         return;
       }
 
@@ -898,7 +885,6 @@
       promptEl.classList.add('hidden');
       noodlesEl.classList.remove('hidden');
       
-      // Vẽ sợi bún/bánh đa cuộn tròn trong lòng tô
       if (bowl.base === 'bun') {
         noodlesEl.innerHTML = `
           <svg class="w-full h-full" viewBox="0 0 100 100">
@@ -919,6 +905,7 @@
       if (bowl.hasBroth) brothEl.classList.remove('hidden');
       else brothEl.classList.add('hidden');
 
+      // Render hình topping bồng bềnh
       ingsEl.innerHTML = '';
       bowl.toppings.forEach(topKey => {
         const item = ALL_ITEMS[topKey];
@@ -927,6 +914,17 @@
         span.innerHTML = item.svg;
         ingsEl.appendChild(span);
       });
+
+      // CẬP NHẬT DANH SÁCH HUY HIỆU TEXT MINH BẠCH
+      let badgesHTML = `<span class="text-[9px] text-stone-500 font-bold">Trong tô có:</span>`;
+      badgesHTML += `<span class="text-[9px] font-black bg-stone-800 text-stone-200 px-1.5 py-0.2 rounded border border-stone-700">${ALL_ITEMS[bowl.base].name}</span>`;
+      if (bowl.hasBroth) {
+        badgesHTML += `<span class="text-[9px] font-black bg-orange-950 text-orange-300 px-1.5 py-0.2 rounded border border-orange-700">Nước Dùng</span>`;
+      }
+      bowl.toppings.forEach(tKey => {
+        badgesHTML += `<span class="text-[9px] font-black bg-amber-950 text-amber-300 px-1.5 py-0.2 rounded border border-amber-700">${ALL_ITEMS[tKey].name}</span>`;
+      });
+      badgesContainer.innerHTML = badgesHTML;
     }
 
     /* ĐI CHỢ */
@@ -1297,31 +1295,49 @@
       });
     }
 
+    /* KIỂM TRA ĐƠN HÀNG THÔNG MINH - KHÔNG BỊ BẮT BẺ VÔ LÝ */
     function serveCustomer(idx) {
       if (shiftState.isPaused) { showToast('Bấm TIẾP TỤC để phục vụ khách!'); return; }
       if (!shiftState.hasBowlOnTray) { showToast('Bạn chưa có tô trên bàn!'); Sound.buzz(); return; }
       const c = shiftState.customers[idx];
-      if (!c) return;
+      if (!c) { showToast(`Bàn ${idx+1} hiện chưa có khách!`); return; }
 
       const dish = shiftState.currentDish;
-      if (!dish.base || !dish.hasBroth || dish.base !== c.base) {
+      
+      // 1. Kiểm tra sợi
+      if (!dish.base) {
         Sound.buzz();
-        showToast('Tô chưa đúng loại sợi hoặc thiếu nước dùng!');
+        showToast('Tô chưa có sợi bún hoặc bánh đa!');
+        return;
+      }
+      if (dish.base !== c.base) {
+        Sound.buzz();
+        showToast(`Khách gọi ${ALL_ITEMS[c.base].name}, bạn lại làm ${ALL_ITEMS[dish.base].name}!`);
         return;
       }
 
-      const reqSet = new Set(c.toppings);
-      let match = (dish.toppings.size === reqSet.size);
-      if (match) {
-        reqSet.forEach(t => { if (!dish.toppings.has(t)) match = false; });
-      }
-
-      if (!match) {
+      // 2. Kiểm tra nước dùng
+      if (!dish.hasBroth) {
         Sound.buzz();
-        showToast('Topping chưa đúng với yêu cầu của khách!');
+        showToast('Bạn quên chưa chan nước dùng vào tô!');
         return;
       }
 
+      // 3. Kiểm tra topping: CHỈ CẦN CÓ ĐỦ CÁC MÓN KHÁCH ĐÒI
+      const missingToppings = [];
+      c.toppings.forEach(reqKey => {
+        if (!dish.toppings.includes(reqKey)) {
+          missingToppings.push(ALL_ITEMS[reqKey].name);
+        }
+      });
+
+      if (missingToppings.length > 0) {
+        Sound.buzz();
+        showToast(`Tô còn thiếu: ${missingToppings.join(', ')}!`);
+        return;
+      }
+
+      // GIAO HÀNG THÀNH CÔNG!
       Sound.coin();
       savedState.cash += c.price;
       shiftState.todaySales += c.price;
@@ -1331,11 +1347,13 @@
         savedState.stats.maxCombo = shiftState.combo;
       }
 
+      // Khách ăn xong trả lại 1 tô sạch vào kho
       savedState.inventory.clean_bowls++;
 
+      // Xóa khách khỏi bàn và reset tô
       shiftState.customers[idx] = null;
       shiftState.hasBowlOnTray = false;
-      shiftState.currentDish = { base: null, hasBroth: false, toppings: new Set() };
+      shiftState.currentDish = { base: null, hasBroth: false, toppings: [] };
       
       renderCustomers();
       updateBowlUI();
@@ -1474,7 +1492,7 @@
                 shiftState.combo = 0;
                 updateHUD();
                 renderCustomers();
-                showToast('Khách chờ lâu nên đã bỏ về!');
+                showToast(`Khách ở Bàn ${idx+1} đợi lâu nên đã bỏ về!`);
                 if (shiftState.missedCount >= 3) {
                   showToast('Đã có 3 khách bỏ về! Đóng cửa ca sớm.');
                   showLedgerModal();
