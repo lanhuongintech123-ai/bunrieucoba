@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Tiệm Bún Riêu Cô Ba - Quán Ăn Mô Phỏng</title>
+  <title>Tiệm Bún Riêu & Bánh Đa Cua Cô Ba</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     body { 
@@ -19,7 +19,6 @@
     }
     .brand-font { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 900; }
 
-    /* Khói bốc mềm */
     @keyframes smokeFlow {
       0% { transform: translateY(0) scaleX(0.8) scaleY(1); opacity: 0; }
       20% { opacity: 0.6; }
@@ -29,7 +28,6 @@
     .steam-soft { animation: smokeFlow 2.6s infinite ease-out; }
     .steam-soft:nth-child(2) { animation-delay: 0.9s; }
 
-    /* Rung rinh bồng bềnh */
     @keyframes bobbing {
       0%, 100% { transform: translateY(0) rotate(0deg); }
       50% { transform: translateY(-3px) rotate(1.5deg); }
@@ -43,255 +41,323 @@
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
     .drop-item { animation: dropIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+    @keyframes drawBowl {
+      0% { transform: scale(0.6) translateY(20px); opacity: 0; }
+      70% { transform: scale(1.08) translateY(-4px); opacity: 1; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    .animate-bowl-spawn { animation: drawBowl 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     
-    .food-glow { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.18)); }
+    .food-glow { filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
   </style>
 </head>
 
 <body class="min-h-screen flex justify-center items-center p-0 sm:py-4">
-  <!-- KHUNG FORMAT APP SHELL (9:16 MOBILE CONTAINER) -->
   <div id="game-app" class="w-full max-w-[430px] h-[100dvh] sm:h-[860px] bg-stone-900 flex flex-col justify-between shadow-2xl relative overflow-hidden sm:rounded-[36px] sm:border-[6px] sm:border-stone-800">
     
-    <!-- 1. TOP STATUS BAR (FORMAT CHUẨN APP GAME) -->
-    <header class="bg-gradient-to-b from-stone-900 via-stone-900/95 to-transparent pt-3 px-3 pb-2 z-20 flex flex-col gap-1.5">
+    <!-- 1. TOP STATUS BAR -->
+    <header class="bg-stone-900/95 pt-3.5 px-3.5 pb-2.5 z-20 flex flex-col gap-2 border-b border-stone-800">
       <div class="flex items-center justify-between">
         <!-- Profile / Level Quán -->
-        <div class="flex items-center gap-2 bg-stone-800/90 border border-stone-700/80 pl-1 pr-3 py-1 rounded-full shadow-sm">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-amber-600 flex items-center justify-center text-white text-base shadow">
+        <div class="flex items-center gap-2.5 bg-stone-800 border border-stone-700 pl-1.5 pr-3.5 py-1.5 rounded-full shadow-sm">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-red-500 to-amber-600 flex items-center justify-center text-white text-lg shadow">
             🦀
           </div>
           <div>
-            <div class="flex items-center gap-1">
-              <span class="text-[11px] font-black text-white tracking-tight">CÔ BA</span>
-              <span id="hud-day" class="text-[9px] font-extrabold bg-amber-400 text-stone-950 px-1.5 rounded-full">Ngày 1</span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-sm font-black text-white tracking-tight">CÔ BA</span>
+              <span id="hud-day" class="text-xs font-black bg-amber-400 text-stone-950 px-2 py-0.5 rounded-full">Ngày 1</span>
             </div>
-            <div class="text-[9px] text-stone-400 font-semibold" id="shop-title-sub">Gánh Vỉa Hè</div>
+            <div class="text-[11px] text-stone-300 font-semibold" id="shop-title-sub">Gánh Vỉa Hè</div>
           </div>
         </div>
 
         <!-- Khối Tiền & Tiết Kiệm -->
-        <div class="flex items-center gap-1.5">
-          <div class="flex items-center gap-1 bg-stone-800/95 border border-amber-500/30 px-2.5 py-1 rounded-full shadow-xs">
-            <span class="text-xs">💵</span>
-            <span id="hud-money" class="font-mono text-xs font-black text-amber-300">300.000đ</span>
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5 bg-stone-800 border border-amber-500/40 px-3 py-1.5 rounded-full shadow-inner">
+            <span class="text-sm">💵</span>
+            <span id="hud-money" class="font-mono text-xs sm:text-sm font-black text-amber-300">300.000đ</span>
           </div>
-          <div class="flex items-center gap-1 bg-stone-800/95 border border-pink-500/30 px-2 py-1 rounded-full shadow-xs">
-            <span class="text-xs">🐷</span>
-            <span id="hud-piggy" class="font-mono text-xs font-black text-pink-300">0đ</span>
+          <div class="flex items-center gap-1.5 bg-stone-800 border border-pink-500/40 px-3 py-1.5 rounded-full shadow-inner">
+            <span class="text-sm">🐷</span>
+            <span id="hud-piggy" class="font-mono text-xs sm:text-sm font-black text-pink-300">0đ</span>
           </div>
         </div>
       </div>
 
-      <!-- Thanh Thời Gian Ca Bán & Chỉ Số Giận (Format HUD Bar) -->
-      <div class="flex items-center justify-between bg-stone-800/60 backdrop-blur-md px-3 py-1 rounded-xl border border-stone-700/50 text-[10px]">
-        <div class="flex items-center gap-1.5 text-stone-300 font-bold">
-          <span>⏱️ Ca bán:</span>
-          <span id="shift-timer" class="font-mono text-xs font-black text-yellow-400">03:00</span>
-          <button id="btn-toggle-pause" onclick="togglePauseGame()" class="ml-1 bg-stone-700 hover:bg-stone-600 text-yellow-300 px-2 py-0.5 rounded-md font-bold text-[9px]">
+      <!-- HUD Ca Bán -->
+      <div id="kitchen-hud-bar" class="hidden flex items-center justify-between bg-stone-800/90 px-3 py-1.5 rounded-xl border border-stone-700 text-xs font-bold">
+        <div class="flex items-center gap-2 text-stone-200">
+          <span>⏱️ Thời gian:</span>
+          <span id="shift-timer" class="font-mono text-sm font-black text-yellow-400">03:00</span>
+          <button id="btn-toggle-pause" onclick="togglePauseGame()" class="ml-1 bg-stone-700 hover:bg-stone-600 text-yellow-300 px-2.5 py-0.5 rounded-lg text-xs font-black">
             ⏸️ <span id="pause-text">Dừng</span>
           </button>
         </div>
-        <div class="text-red-400 font-extrabold">
-          💢 Khách bỏ về: <span id="shift-missed" class="font-mono text-white">0/3</span>
+        <div class="text-red-400 font-black">
+          💢 Bỏ về: <span id="shift-missed" class="font-mono text-white">0/3</span>
         </div>
       </div>
     </header>
 
-    <!-- 2. VÙNG HIỂN THỊ CHÍNH (THEO CÁC TAB NỘI DUNG) -->
-    <main class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col px-3 pb-2 pt-1 gap-2.5">
+    <!-- 2. VÙNG HIỂN THỊ CHÍNH -->
+    <main class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col p-3 gap-3">
       
-      <!-- TAB 1: SÂN KHẤU NẤU BÚN (KITCHEN SCENE) -->
-      <section id="view-kitchen" class="tab-view flex-1 flex flex-col justify-between gap-2 relative">
-        
-        <!-- Bàn Ghế Khách Ngồi (Khu Vực Phía Trên) -->
-        <div class="bg-gradient-to-b from-stone-800/80 to-stone-900/90 p-2 rounded-2xl border border-stone-700/80 shadow-md">
-          <div class="flex justify-between items-center mb-1 px-1">
-            <span class="text-[10px] font-black uppercase tracking-wider text-amber-200/80">Khu Vực Bàn Ăn</span>
-            <span class="text-[9px] text-stone-400 font-medium">Khách đợi thưởng thức</span>
+      <!-- TAB 0: DASHBOARD / SẢNH CHÍNH -->
+      <section id="view-dashboard" class="tab-view flex-1 flex flex-col justify-between gap-3">
+        <div class="bg-gradient-to-b from-amber-900/90 via-orange-950 to-stone-900 p-4 rounded-3xl border-2 border-amber-600/60 shadow-xl text-center flex flex-col items-center">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center text-3xl mb-2 shadow-lg border-2 border-yellow-300 animate-pulse">
+            🍲
           </div>
-          <!-- 4 Bàn ăn -->
-          <div id="customers-track" class="grid grid-cols-2 gap-1.5"></div>
+          <h2 class="brand-font text-xl text-yellow-300 uppercase tracking-wide">Tiệm Bún Riêu Cô Ba</h2>
+          <p class="text-xs text-amber-100 font-semibold mt-0.5">Đặc sản Cua đồng chuẩn vị truyền thống</p>
+          
+          <div class="grid grid-cols-2 gap-2 w-full mt-3.5 pt-3 border-t border-amber-700/50 text-left">
+            <div class="bg-black/40 p-2.5 rounded-xl border border-stone-700">
+              <span class="text-[11px] text-stone-400 block font-medium">Doanh thu tích lũy</span>
+              <span id="dash-total-served" class="text-sm font-black text-amber-300">0 tô phục vụ</span>
+            </div>
+            <div class="bg-black/40 p-2.5 rounded-xl border border-stone-700">
+              <span class="text-[11px] text-stone-400 block font-medium">Tô bát sạch sẵn sàng</span>
+              <span id="dash-bowl-count" class="text-sm font-black text-emerald-400">20 cái trong kho</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <button onclick="switchTab('market')" class="bg-stone-800 hover:bg-stone-700/90 border border-stone-700 p-3 rounded-2xl flex items-center gap-2.5 text-left transition active:scale-95 shadow-md">
+            <span class="text-2xl">🛒</span>
+            <div>
+              <div class="font-extrabold text-white text-sm">Đi Chợ</div>
+              <div class="text-[11px] text-stone-400">Mua bát & nguyên liệu</div>
+            </div>
+          </button>
+          <button onclick="switchTab('shop')" class="bg-stone-800 hover:bg-stone-700/90 border border-stone-700 p-3 rounded-2xl flex items-center gap-2.5 text-left transition active:scale-95 shadow-md">
+            <span class="text-2xl">🛠️</span>
+            <div>
+              <div class="font-extrabold text-white text-sm">Nâng Cấp</div>
+              <div class="text-[11px] text-stone-400">Thuê người & thiết bị</div>
+            </div>
+          </button>
+        </div>
+
+        <button onclick="startKitchenShift()" class="w-full bg-gradient-to-r from-red-600 via-amber-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-black py-4 rounded-2xl text-base shadow-2xl border-2 border-yellow-400 flex items-center justify-center gap-2.5 active:scale-95 transition">
+          <span class="text-2xl">🚀</span>
+          <span>MỞ CỬA BÁN CA 3 PHÚT</span>
+        </button>
+      </section>
+
+      <!-- TAB 1: SÂN KHẤU NẤU BÚN (CÓ CHỒNG BÁT ĐẾM TỒN KHO) -->
+      <section id="view-kitchen" class="tab-view hidden flex-1 flex flex-col justify-between gap-2.5 relative">
+        <!-- Bàn Ghế Khách Ngồi -->
+        <div class="bg-stone-800/90 p-2.5 rounded-2xl border border-stone-700 shadow-md">
+          <div class="flex justify-between items-center mb-1.5 px-1">
+            <span class="text-xs font-black uppercase text-amber-300">Bàn Ăn Của Khách</span>
+            <span class="text-[11px] text-stone-400 font-semibold">Phục vụ đúng yêu cầu</span>
+          </div>
+          <div id="customers-track" class="grid grid-cols-2 gap-2"></div>
         </div>
 
         <!-- Màn hình tạm dừng -->
-        <div id="pause-overlay" class="hidden absolute inset-0 bg-stone-950/85 backdrop-blur-md z-30 rounded-2xl flex flex-col items-center justify-center p-4 text-center">
-          <div class="text-3xl mb-1 animate-bounce">⏸️</div>
-          <h3 class="brand-font text-base text-yellow-400 uppercase tracking-wide">Đang Tạm Dừng</h3>
-          <p class="text-[11px] text-stone-300 mb-3 max-w-[220px]">Thời gian đã đóng băng. Bạn có thể sang tab Nâng Cấp hoặc tiếp tục.</p>
-          <button onclick="togglePauseGame(false)" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black py-2 px-5 rounded-xl text-xs shadow-lg">
+        <div id="pause-overlay" class="hidden absolute inset-0 bg-stone-950/90 backdrop-blur-md z-30 rounded-2xl flex flex-col items-center justify-center p-4 text-center">
+          <div class="text-4xl mb-2 animate-bounce">⏸️</div>
+          <h3 class="brand-font text-lg text-yellow-400 uppercase tracking-wide">Đang Tạm Dừng</h3>
+          <p class="text-xs text-stone-300 mb-4 max-w-[240px]">Thời gian đã đóng băng. Bạn có thể sang tab khác hoặc tiếp tục bán hàng.</p>
+          <button onclick="togglePauseGame(false)" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black py-2.5 px-6 rounded-xl text-sm shadow-lg">
             ▶️ TIẾP TỤC BÁN BÚN
           </button>
         </div>
 
-        <!-- Quầy Nấu Trung Tâm (Format Bát Bún To Bản & Nồi Nước) -->
-        <div class="bg-stone-800/60 rounded-3xl p-2.5 border border-stone-700/60 shadow-lg flex flex-col gap-1.5 relative backdrop-blur-xs">
+        <!-- QUẦY BẾP: CHỒNG BÁT + NỒI NƯỚC + BÁT ĐANG NẤU -->
+        <div class="bg-stone-800/80 rounded-3xl p-3 border border-stone-700 shadow-xl flex flex-col gap-2 relative">
           <div class="flex justify-between items-center px-1">
-            <span class="text-[10px] font-extrabold text-stone-300 uppercase">Tô Đang Làm</span>
-            <button onclick="trashBowl()" class="text-red-400 hover:text-red-300 text-[10px] font-bold bg-stone-900/70 border border-red-500/30 px-2 py-0.5 rounded-lg active:scale-95">🗑️ Đổ đi</button>
+            <span class="text-xs font-black text-stone-200 uppercase" id="bowl-status-text">Chưa Có Tô Trên Khay</span>
+            <button onclick="trashBowl()" class="text-red-400 hover:text-red-300 text-xs font-bold bg-stone-900 border border-red-500/40 px-2.5 py-1 rounded-lg active:scale-95">🗑️ Đổ đi</button>
           </div>
 
-          <div class="flex items-center justify-around py-1">
-            <!-- Nồi Nước Dùng Cua Bốc Khói -->
-            <button onclick="addBroth()" class="flex flex-col items-center bg-stone-900/80 p-2 rounded-2xl border border-amber-500/40 shadow-md active:scale-95 transition">
-              <div class="relative w-12 h-12 flex items-center justify-center">
-                <svg class="w-11 h-11 food-glow" viewBox="0 0 60 60">
-                  <circle cx="30" cy="30" r="26" fill="#475569" stroke="#1e293b" stroke-width="2.5"/>
-                  <circle cx="30" cy="30" r="22" fill="#ea580c"/>
-                  <ellipse cx="30" cy="28" rx="19" ry="13" fill="#c2410c" opacity="0.75"/>
-                  <path d="M21 24 Q28 19 33 25 Q27 32 21 24 Z" fill="#ef4444"/>
-                  <circle cx="27" cy="33" r="3" fill="#fdba74" opacity="0.9"/>
-                </svg>
-                <div class="absolute -top-1.5 flex gap-1 pointer-events-none">
-                  <div class="w-1.5 h-3 bg-white/70 rounded-full blur-[0.5px] steam-soft"></div>
-                  <div class="w-1 h-2.5 bg-white/60 rounded-full blur-[0.5px] steam-soft"></div>
+          <div class="flex items-center justify-between py-1 px-1">
+            <!-- CỘT TRÁI: CHỒNG BÁT ĐẾM TỒN KHO & NỒI CHAN NƯỚC -->
+            <div class="flex flex-col gap-2">
+              <!-- CHỒNG BÁT (BẤM ĐỂ RÚT TÔ RA KHAY) -->
+              <button onclick="drawBowlFromStack()" class="group flex flex-col items-center bg-stone-900 p-2 rounded-2xl border-2 border-stone-600 hover:border-amber-400 active:scale-90 transition shadow-lg relative">
+                <!-- Số lượng bát sạch còn trong kho -->
+                <span id="stack-bowl-count" class="absolute -top-2 -right-1 bg-amber-400 text-stone-950 font-black text-[10px] px-2 py-0.5 rounded-full border border-stone-900 shadow">
+                  x20
+                </span>
+                
+                <div class="relative w-12 h-12 flex items-center justify-center">
+                  <div class="absolute bottom-1 w-11 h-4 rounded-full border-2 border-amber-950 bg-stone-200 shadow"></div>
+                  <div class="absolute bottom-2.5 w-11 h-4 rounded-full border-2 border-amber-950 bg-stone-100 shadow"></div>
+                  <div class="absolute bottom-4 w-11 h-5 rounded-full border-2 border-amber-950 bg-gradient-to-b from-stone-50 to-amber-50 shadow-md flex items-center justify-center">
+                    <div class="w-6 h-1.5 rounded-full border border-sky-600/40 bg-sky-100/50"></div>
+                  </div>
                 </div>
-              </div>
-              <span class="text-[9px] font-black text-amber-200 mt-1 uppercase">Chan Nước</span>
-            </button>
+                <span class="text-[10px] font-black text-amber-300 mt-0.5 uppercase tracking-tighter">Lấy Tô 🥣</span>
+              </button>
 
-            <!-- Bát Bún Gốm Men Lam To Bản -->
-            <div class="relative w-36 h-36 rounded-full border-[6px] border-amber-950 bg-gradient-to-b from-stone-100 to-amber-50 shadow-2xl flex flex-col items-center justify-center overflow-hidden">
-              <div id="empty-prompt" class="text-stone-400 text-center text-[10px] font-bold px-2 z-0">
-                Chọn <b class="text-red-700">Sợi Bún</b> bên dưới
-              </div>
-              
-              <!-- Nền sợi -->
-              <div id="visual-noodles" class="hidden absolute inset-1.5 rounded-full flex items-center justify-center overflow-hidden z-10"></div>
-              
-              <!-- Lớp nước lèo sóng sánh -->
-              <div id="broth-liquid" class="hidden absolute inset-0 bg-gradient-to-t from-red-600/80 via-orange-500/60 to-amber-400/40 rounded-full pointer-events-none z-20"></div>
-              
-              <!-- Topping nổi bồng bềnh -->
-              <div id="visual-ingredients" class="absolute inset-0 p-2 flex flex-wrap content-center justify-center gap-1 pointer-events-none z-30"></div>
+              <!-- Nồi Nước Lèo Cua -->
+              <button onclick="addBroth()" class="flex flex-col items-center bg-stone-900 p-2 rounded-2xl border-2 border-amber-500/50 shadow-md active:scale-90 transition">
+                <div class="relative w-12 h-11 flex items-center justify-center">
+                  <svg class="w-11 h-11 food-glow" viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="26" fill="#475569" stroke="#1e293b" stroke-width="2.5"/>
+                    <circle cx="30" cy="30" r="22" fill="#ea580c"/>
+                    <ellipse cx="30" cy="28" rx="19" ry="13" fill="#c2410c" opacity="0.8"/>
+                    <path d="M21 24 Q28 19 33 25 Q27 32 21 24 Z" fill="#ef4444"/>
+                    <circle cx="27" cy="33" r="3" fill="#fdba74" opacity="0.9"/>
+                  </svg>
+                  <div class="absolute -top-1.5 flex gap-1 pointer-events-none">
+                    <div class="w-1.5 h-3 bg-white/70 rounded-full blur-[0.5px] steam-soft"></div>
+                  </div>
+                </div>
+                <span class="text-[10px] font-black text-amber-200 mt-0.5 uppercase">Chan Nước</span>
+              </button>
             </div>
 
-            <!-- Nút Phục Vụ 4 Bàn -->
-            <div class="grid grid-cols-2 gap-1 w-20">
-              <button onclick="serveCustomer(0)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-[10px] shadow active:scale-95">B1</button>
-              <button onclick="serveCustomer(1)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-[10px] shadow active:scale-95">B2</button>
-              <button onclick="serveCustomer(2)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-[10px] shadow active:scale-95">B3</button>
-              <button onclick="serveCustomer(3)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-[10px] shadow active:scale-95">B4</button>
+            <!-- Ở GIỮA: TÔ BÚN ĐANG LÀM -->
+            <div class="relative w-36 h-36 sm:w-40 sm:h-40 rounded-full border-[7px] border-amber-950 bg-gradient-to-b from-stone-100 to-amber-50 shadow-2xl flex flex-col items-center justify-center overflow-hidden" id="main-bowl-container">
+              <div id="no-bowl-prompt" class="text-stone-400 text-center text-xs font-bold px-2 z-0 leading-tight">
+                Chạm <b class="text-amber-500">"Lấy Tô 🥣"</b><br>để bắt đầu làm
+              </div>
+
+              <div id="empty-prompt" class="hidden text-stone-400 text-center text-xs font-bold px-2 z-0 leading-tight">
+                Chọn <b class="text-red-700">Sợi Bún</b> bên dưới
+              </div>
+
+              <div id="visual-noodles" class="hidden absolute inset-1.5 rounded-full flex items-center justify-center overflow-hidden z-10"></div>
+              <div id="broth-liquid" class="hidden absolute inset-0 bg-gradient-to-t from-red-600/80 via-orange-500/60 to-amber-400/40 rounded-full pointer-events-none z-20"></div>
+              <div id="visual-ingredients" class="absolute inset-0 p-2 flex flex-wrap content-center justify-center gap-1.5 pointer-events-none z-30"></div>
+            </div>
+
+            <!-- CỘT PHẢI: NÚT PHỤC VỤ 4 BÀN -->
+            <div class="grid grid-cols-1 gap-1.5 w-16">
+              <button onclick="serveCustomer(0)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-xs shadow active:scale-90">Bàn 1</button>
+              <button onclick="serveCustomer(1)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-xs shadow active:scale-90">Bàn 2</button>
+              <button onclick="serveCustomer(2)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-xs shadow active:scale-90">Bàn 3</button>
+              <button onclick="serveCustomer(3)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2 rounded-xl text-xs shadow active:scale-90">Bàn 4</button>
             </div>
           </div>
         </div>
 
-        <!-- Khay Nguyên Liệu Chọn Nhanh (Bottom Shelf) -->
-        <div class="bg-stone-900/90 rounded-2xl p-2 border border-stone-700 shadow-md flex flex-col gap-1">
+        <!-- Khay Nguyên Liệu Chọn Nhanh -->
+        <div class="bg-stone-900 rounded-2xl p-2 border border-stone-700 shadow-md flex flex-col gap-1">
           <div class="flex justify-between items-center px-1">
-            <span class="text-[9px] font-black uppercase text-amber-300">Khay Nguyên Liệu Đặc Sản:</span>
-            <span class="text-[8px] text-stone-400">Chạm gắp vào tô</span>
+            <span class="text-[11px] font-black uppercase text-amber-300">Khay Nguyên Liệu:</span>
+            <span class="text-[10px] text-stone-400">Chạm gắp vào tô</span>
           </div>
-          <div class="grid grid-cols-5 gap-1" id="quick-pantry-grid"></div>
+          <div class="grid grid-cols-5 gap-1.5" id="quick-pantry-grid"></div>
         </div>
       </section>
 
-      <!-- TAB 2: ĐI CHỢ ĐẦU MỐI (MARKET TAB) -->
-      <section id="view-market" class="tab-view hidden flex-1 flex flex-col gap-2">
+      <!-- TAB 2: ĐI CHỢ ĐẦU MỐI (CÓ BÁN TÔ BÁT SỨ BÁT TRÀNG) -->
+      <section id="view-market" class="tab-view hidden flex-1 flex flex-col gap-2.5">
         <div class="bg-gradient-to-r from-amber-700 to-orange-700 text-white p-3 rounded-2xl shadow-md">
-          <h2 class="brand-font text-sm uppercase">Chợ Đầu Mối Cua Cá</h2>
-          <p class="text-[10px] text-amber-200">🌤️ Giá cả hôm nay bình ổn, tranh thủ nhập kho</p>
+          <h2 class="brand-font text-base uppercase">Chợ Đầu Mối Cua Cá & Đồ Sứ</h2>
+          <p class="text-xs text-amber-100">🌤️ Mua bát đĩa, cua cá tươi rói chuẩn bị cho ca bán</p>
         </div>
 
-        <div class="flex-1 bg-stone-800/80 rounded-2xl p-2.5 border border-stone-700 shadow-sm flex flex-col justify-between overflow-y-auto no-scrollbar">
-          <div class="space-y-1.5" id="market-items-list"></div>
+        <div class="flex-1 bg-stone-800/90 rounded-2xl p-3 border border-stone-700 shadow-sm flex flex-col justify-between overflow-y-auto no-scrollbar">
+          <div class="space-y-2" id="market-items-list"></div>
           
-          <div class="pt-2 border-t border-stone-700 mt-2">
-            <div class="flex justify-between items-center text-xs font-bold mb-2 text-stone-200">
+          <div class="pt-2.5 border-t border-stone-700 mt-2">
+            <div class="flex justify-between items-center text-sm font-bold mb-2.5 text-stone-200">
               <span>Tổng thanh toán:</span>
-              <span id="market-bill" class="text-sm font-black text-amber-400">0đ</span>
+              <span id="market-bill" class="text-base font-black text-amber-400">0đ</span>
             </div>
-            <button onclick="checkoutMarket()" class="w-full bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 text-white font-black py-2.5 rounded-xl text-xs shadow active:scale-95">
+            <button onclick="checkoutMarket()" class="w-full bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 text-white font-black py-3 rounded-xl text-sm shadow active:scale-95">
               THANH TOÁN TIỀN CHỢ 🛒
             </button>
           </div>
         </div>
       </section>
 
-      <!-- TAB 3: CÂY NÂNG CẤP (UPGRADE TREE) -->
-      <section id="view-shop" class="tab-view hidden flex-1 flex flex-col gap-2">
-        <div class="bg-gradient-to-r from-yellow-600 to-amber-700 text-white p-2.5 rounded-2xl shadow-md flex justify-between items-center">
+      <!-- TAB 3: CÂY NÂNG CẤP -->
+      <section id="view-shop" class="tab-view hidden flex-1 flex flex-col gap-2.5">
+        <div class="bg-gradient-to-r from-yellow-600 to-amber-700 text-white p-3 rounded-2xl shadow-md flex justify-between items-center">
           <div>
-            <h2 class="brand-font text-sm uppercase">Cây Nâng Cấp Quán</h2>
-            <p class="text-[9px] text-yellow-100">Mở khóa theo Level / Mốc Ngày phục vụ</p>
+            <h2 class="brand-font text-base uppercase">Cây Nâng Cấp Quán</h2>
+            <p class="text-[11px] text-yellow-100">Mở khóa theo Level / Mốc Ngày phục vụ</p>
           </div>
           <div class="text-right">
-            <span class="text-[8px] text-yellow-200 block">Vốn ví:</span>
-            <span id="shop-cash-val" class="font-mono text-xs font-black text-emerald-300">300.000đ</span>
+            <span class="text-[10px] text-yellow-200 block">Vốn ví:</span>
+            <span id="shop-cash-val" class="font-mono text-sm font-black text-emerald-300">300.000đ</span>
           </div>
         </div>
 
-        <div class="flex gap-1">
-          <button onclick="filterShop('all')" class="shop-filter-btn flex-1 py-1 text-[9px] font-black rounded-lg bg-amber-700 text-white" id="filter-all">Tất Cả</button>
-          <button onclick="filterShop('staff')" class="shop-filter-btn flex-1 py-1 text-[9px] font-bold rounded-lg bg-stone-800 text-stone-400" id="filter-staff">Nhân Sự</button>
-          <button onclick="filterShop('kitchen')" class="shop-filter-btn flex-1 py-1 text-[9px] font-bold rounded-lg bg-stone-800 text-stone-400" id="filter-kitchen">Bếp & Kho</button>
-          <button onclick="filterShop('place')" class="shop-filter-btn flex-1 py-1 text-[9px] font-bold rounded-lg bg-stone-800 text-stone-400" id="filter-place">Không Gian</button>
+        <div class="flex gap-1.5">
+          <button onclick="filterShop('all')" class="shop-filter-btn flex-1 py-1.5 text-xs font-black rounded-xl bg-amber-700 text-white" id="filter-all">Tất Cả</button>
+          <button onclick="filterShop('staff')" class="shop-filter-btn flex-1 py-1.5 text-xs font-bold rounded-xl bg-stone-800 text-stone-400" id="filter-staff">Nhân Sự</button>
+          <button onclick="filterShop('kitchen')" class="shop-filter-btn flex-1 py-1.5 text-xs font-bold rounded-xl bg-stone-800 text-stone-400" id="filter-kitchen">Bếp & Kho</button>
+          <button onclick="filterShop('place')" class="shop-filter-btn flex-1 py-1.5 text-xs font-bold rounded-xl bg-stone-800 text-stone-400" id="filter-place">Không Gian</button>
         </div>
 
-        <div class="flex-1 bg-stone-800/80 rounded-2xl p-2 border border-stone-700 shadow-sm overflow-y-auto no-scrollbar space-y-1.5" id="shop-items-list"></div>
+        <div class="flex-1 bg-stone-800/90 rounded-2xl p-2.5 border border-stone-700 shadow-sm overflow-y-auto no-scrollbar space-y-2" id="shop-items-list"></div>
       </section>
 
-      <!-- TAB 4: HEO ĐẤT & BẢNG DANH HIỆU (PIGGY & BADGES) -->
-      <section id="view-piggy" class="tab-view hidden flex-1 flex flex-col gap-2">
-        <div class="bg-gradient-to-r from-pink-600 to-rose-700 text-white p-2.5 rounded-2xl shadow-md flex justify-between items-center">
+      <!-- TAB 4: HEO ĐẤT & BẢNG DANH HIỆU -->
+      <section id="view-piggy" class="tab-view hidden flex-1 flex flex-col gap-2.5">
+        <div class="bg-gradient-to-r from-pink-600 to-rose-700 text-white p-3 rounded-2xl shadow-md flex justify-between items-center">
           <div>
-            <h2 class="brand-font text-sm uppercase">Hũ Heo & Danh Hiệu</h2>
-            <p class="text-[9px] text-pink-100">Tích lũy quỹ an toàn & nhận thưởng thành tựu</p>
+            <h2 class="brand-font text-base uppercase">Hũ Heo & Danh Hiệu</h2>
+            <p class="text-[11px] text-pink-100">Tích lũy quỹ an toàn & nhận thưởng thành tựu</p>
           </div>
-          <span class="text-2xl">🏆</span>
+          <span class="text-3xl">🏆</span>
         </div>
 
-        <!-- Hũ heo -->
-        <div class="bg-stone-800/80 rounded-2xl p-2.5 border border-stone-700 shadow-sm flex flex-col gap-1.5">
+        <div class="bg-stone-800/90 rounded-2xl p-3 border border-stone-700 shadow-sm flex flex-col gap-2">
           <div class="flex justify-between items-center">
             <div>
-              <span class="text-[9px] font-bold text-stone-400 block">Số Dư Trong Heo:</span>
-              <div id="piggy-vault-val" class="text-base font-black text-pink-400">0đ</div>
+              <span class="text-[11px] font-bold text-stone-400 block">Số Dư Trong Heo:</span>
+              <div id="piggy-vault-val" class="text-lg font-black text-pink-400">0đ</div>
             </div>
-            <button onclick="smashPiggy()" class="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-extrabold py-1 px-3 rounded-lg text-[10px] shadow">
+            <button onclick="smashPiggy()" class="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-extrabold py-1.5 px-3.5 rounded-xl text-xs shadow">
               🔨 Đập Heo Lấy Vốn
             </button>
           </div>
 
-          <div class="bg-stone-900/80 p-2 rounded-xl border border-stone-700/80 text-left text-xs space-y-1">
-            <div class="flex justify-between text-[9px] text-stone-300">
+          <div class="bg-stone-900/90 p-2.5 rounded-xl border border-stone-700 text-left text-xs space-y-1.5">
+            <div class="flex justify-between text-[11px] text-stone-300">
               <span>Mục Tiêu Mua Nhà (Ngày 100):</span>
               <b class="text-amber-400">2.000.000đ</b>
             </div>
-            <div class="w-full bg-stone-700 h-1.5 rounded-full overflow-hidden">
+            <div class="w-full bg-stone-700 h-2 rounded-full overflow-hidden">
               <div id="piggy-progress" class="bg-pink-500 h-full rounded-full transition-all" style="width: 0%"></div>
             </div>
           </div>
         </div>
 
-        <!-- Bảng danh hiệu -->
-        <div class="flex-1 bg-stone-800/80 rounded-2xl p-2 border border-stone-700 shadow-sm overflow-y-auto no-scrollbar flex flex-col gap-1.5">
-          <div class="flex justify-between items-center border-b border-stone-700 pb-1 px-1">
-            <span class="text-[10px] font-black uppercase text-amber-300">Bảng Vinh Danh Danh Hiệu</span>
-            <span class="text-[9px] text-stone-400 font-bold" id="badge-count-text">0/8</span>
+        <div class="flex-1 bg-stone-800/90 rounded-2xl p-2.5 border border-stone-700 shadow-sm overflow-y-auto no-scrollbar flex flex-col gap-2">
+          <div class="flex justify-between items-center border-b border-stone-700 pb-1.5 px-1">
+            <span class="text-xs font-black uppercase text-amber-300">Bảng Vinh Danh Danh Hiệu</span>
+            <span class="text-xs text-stone-400 font-bold" id="badge-count-text">0/8</span>
           </div>
-          <div class="space-y-1.5" id="achievements-container"></div>
+          <div class="space-y-2" id="achievements-container"></div>
         </div>
       </section>
 
     </main>
 
-    <!-- 3. THANH ĐIỀU HƯỚNG DƯỚI ĐÁY (BOTTOM FLOATING DOCK) -->
-    <nav class="bg-stone-900/95 backdrop-blur-md border-t border-stone-800 py-2 px-4 flex justify-around items-center z-30 shadow-2xl">
-      <button onclick="switchTab('kitchen')" id="nav-kitchen" class="nav-btn flex flex-col items-center text-amber-400 font-black text-[9px] transition">
-        <span class="text-lg">🍜</span>
-        <span>Quán Bún</span>
+    <!-- 3. THANH ĐIỀU HƯỚNG DƯỚI ĐÁY -->
+    <nav class="bg-stone-900/95 border-t border-stone-800 py-2.5 px-3 flex justify-around items-center z-30 shadow-2xl">
+      <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn flex flex-col items-center text-amber-400 font-black text-xs transition">
+        <span class="text-xl">🏠</span>
+        <span>Sảnh Chính</span>
       </button>
-      <button onclick="switchTab('market')" id="nav-market" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-[9px] transition">
-        <span class="text-lg">🛒</span>
+      <button onclick="switchTab('kitchen')" id="nav-kitchen" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-xs transition">
+        <span class="text-xl">🍜</span>
+        <span>Vào Bếp</span>
+      </button>
+      <button onclick="switchTab('market')" id="nav-market" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-xs transition">
+        <span class="text-xl">🛒</span>
         <span>Đi Chợ</span>
       </button>
-      <button onclick="switchTab('shop')" id="nav-shop" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-[9px] transition">
-        <span class="text-lg">🛠️</span>
+      <button onclick="switchTab('shop')" id="nav-shop" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-xs transition">
+        <span class="text-xl">🛠️</span>
         <span>Nâng Cấp</span>
       </button>
-      <button onclick="switchTab('piggy')" id="nav-piggy" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-[9px] transition">
-        <span class="text-lg">🏆</span>
+      <button onclick="switchTab('piggy')" id="nav-piggy" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-xs transition">
+        <span class="text-xl">🏆</span>
         <span>Danh Hiệu</span>
       </button>
     </nav>
@@ -299,44 +365,44 @@
     <!-- MODAL SỔ THU CHI & ĐÚT HEO CUỐI CA -->
     <div id="modal-ledger" class="hidden fixed inset-0 z-50 bg-stone-950/85 backdrop-blur-md flex items-center justify-center p-3">
       <div class="bg-stone-900 rounded-3xl max-w-xs w-full p-4 text-white text-center border-2 border-yellow-500/80 shadow-2xl">
-        <div class="text-2xl mb-1">📖</div>
+        <div class="text-3xl mb-1">📖</div>
         <h3 id="ledger-title" class="brand-font text-base text-yellow-400 mb-0.5 tracking-wide uppercase">SỔ THU CHI NGÀY 1</h3>
-        <p class="text-[9px] text-stone-400 mb-2.5">Kết toán tài chính sau ca làm việc</p>
+        <p class="text-xs text-stone-400 mb-3">Kết toán tài chính sau ca bán hàng</p>
 
-        <div class="bg-stone-800/80 rounded-xl p-2.5 text-[11px] space-y-1 mb-2.5 border border-stone-700 text-left font-medium">
+        <div class="bg-stone-800/90 rounded-2xl p-3 text-xs space-y-1.5 mb-3 border border-stone-700 text-left font-medium">
           <div class="flex justify-between items-center text-stone-300"><span>Doanh thu ca:</span><span id="final-money" class="font-bold text-emerald-400">+0đ</span></div>
           <div class="flex justify-between items-center text-stone-300"><span>Tiền đi chợ:</span><span id="final-cost" class="font-bold text-red-400">-0đ</span></div>
           <div class="flex justify-between items-center text-stone-300"><span>Lương phụ việc:</span><span id="final-wage" class="font-bold text-red-400">-0đ</span></div>
-          <div class="h-px bg-stone-700 my-0.5"></div>
-          <div class="flex justify-between items-center font-black text-xs"><span>Lãi Ròng:</span><span id="final-net" class="text-yellow-300">0đ</span></div>
+          <div class="h-px bg-stone-700 my-1"></div>
+          <div class="flex justify-between items-center font-black text-sm"><span>Lãi Ròng:</span><span id="final-net" class="text-yellow-300">0đ</span></div>
         </div>
 
-        <div class="bg-stone-800/80 rounded-xl p-2 border border-pink-500/30 mb-2.5 text-left">
-          <div class="flex items-center justify-between mb-0.5">
-            <span class="text-[10px] font-bold text-pink-300">🐷 Trích Tiền Nuôi Heo</span>
-            <span id="piggy-save-pct" class="text-[9px] font-black text-pink-300 bg-pink-900/60 px-1.5 py-0.2 rounded-full border border-pink-400/40">30%</span>
+        <div class="bg-stone-800/90 rounded-2xl p-2.5 border border-pink-500/30 mb-3 text-left">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-pink-300">🐷 Trích Tiền Nuôi Heo</span>
+            <span id="piggy-save-pct" class="text-xs font-black text-pink-300 bg-pink-900/60 px-2 py-0.5 rounded-full border border-pink-400/40">30%</span>
           </div>
-          <input type="range" id="piggy-slider" min="0" max="100" value="30" class="w-full accent-pink-500 cursor-pointer mb-1">
-          <div class="flex justify-between text-[9px] text-stone-300">
-            <span>Giữ lại làm vốn</span>
+          <input type="range" id="piggy-slider" min="0" max="100" value="30" class="w-full accent-pink-500 cursor-pointer mb-1.5">
+          <div class="flex justify-between text-xs text-stone-300">
+            <span>Giữ làm vốn</span>
             <span>Bỏ ống: <b id="piggy-save-val" class="text-emerald-400 font-bold">0đ</b></span>
           </div>
         </div>
 
-        <button onclick="confirmLedgerAndNextDay()" class="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 text-stone-950 font-black py-2 rounded-xl text-xs shadow transition active:scale-95">
+        <button onclick="confirmLedgerAndNextDay()" class="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 text-stone-950 font-black py-2.5 rounded-xl text-xs shadow transition active:scale-95">
           ĐÚT HEO & QUA NGÀY MỚI ➔
         </button>
       </div>
     </div>
 
-    <!-- TOAST THÔNG BÁO -->
-    <div id="toast" class="fixed top-12 left-1/2 -translate-x-1/2 bg-stone-900/90 text-white px-4 py-1.5 rounded-full border border-yellow-400/80 shadow-xl text-[10px] font-bold pointer-events-none transition-all duration-300 opacity-0 -translate-y-2 z-50">
+    <!-- TOAST -->
+    <div id="toast" class="fixed top-14 left-1/2 -translate-x-1/2 bg-stone-900/90 text-white px-5 py-2 rounded-full border border-yellow-400/80 shadow-xl text-xs font-bold pointer-events-none transition-all duration-300 opacity-0 -translate-y-2 z-50">
       Thông báo
     </div>
   </div>
 
   <script>
-    /* ÂM THANH WEB AUDIO */
+    /* ÂM THANH */
     const Sound = {
       ctx: null,
       init() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
@@ -359,7 +425,7 @@
         const now = this.ctx.currentTime, osc1 = this.ctx.createOscillator(), osc2 = this.ctx.createOscillator(), gain = this.ctx.createGain();
         osc1.frequency.setValueAtTime(987.77, now); osc2.frequency.setValueAtTime(1318.51, now + 0.08);
         gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-        osc1.connect(gain); osc2.connect(gain); gain.connect(this.ctx.destination);
+        osc1.connect(gain); gain.connect(this.ctx.destination); osc2.connect(gain);
         osc1.start(now); osc1.stop(now + 0.15); osc2.start(now + 0.08); osc2.stop(now + 0.45);
       },
       buzz() {
@@ -372,47 +438,52 @@
       pig() { if (!this.ctx) return; this.coin(); setTimeout(() => this.plop(), 120); }
     };
 
-    /* DANH MỤC MÓN ĂN & SVG VECTOR */
+    /* DANH MỤC MÓN ĂN & TÔ BÁT ĐI CHỢ */
     const ALL_ITEMS = {
+      // BÁT SỨ LÀ MẶT HÀNG ĐI CHỢ MUA VỀ
+      clean_bowls: {
+        name: 'Tô Bát Sứ Bát Tràng', basePrice: 1000, type: 'supplies', unlockDay: 1,
+        svg: `<div class="w-8 h-8 rounded-full border-2 border-amber-950 bg-gradient-to-b from-stone-50 to-amber-50 shadow flex items-center justify-center"><div class="w-4 h-1 rounded-full bg-sky-200"></div></div>`
+      },
       bun: { 
         name: 'Bún Trắng', basePrice: 2000, type: 'noodle', unlockDay: 1,
-        svg: `<svg class="w-7 h-7 food-glow" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><path d="M10 18 Q22 30 34 18 M12 24 Q22 36 32 24" stroke="#e2e8f0" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M14 14 Q22 26 30 14" stroke="#ffffff" stroke-width="2.5" fill="none"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><path d="M10 18 Q22 30 34 18 M12 24 Q22 36 32 24" stroke="#e2e8f0" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M14 14 Q22 26 30 14" stroke="#ffffff" stroke-width="2.5" fill="none"/></svg>`
       },
       banh_da: { 
         name: 'Bánh Đa Đỏ', basePrice: 2500, type: 'noodle', unlockDay: 4,
-        svg: `<svg class="w-7 h-7 food-glow" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="#78350f" stroke="#451a03" stroke-width="2"/><rect x="8" y="14" width="28" height="4" rx="2" fill="#b45309"/><rect x="7" y="20" width="30" height="4.5" rx="2" fill="#d97706"/><rect x="9" y="26.5" width="26" height="4" rx="2" fill="#9a3412"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="#78350f" stroke="#451a03" stroke-width="2"/><rect x="8" y="14" width="28" height="4" rx="2" fill="#b45309"/><rect x="7" y="20" width="30" height="4.5" rx="2" fill="#d97706"/><rect x="9" y="26.5" width="26" height="4" rx="2" fill="#9a3412"/></svg>`
       },
       rieu_cua: { 
         name: 'Gạch Riêu', basePrice: 4000, type: 'meat', unlockDay: 1,
-        svg: `<svg class="w-7 h-7 food-glow" viewBox="0 0 44 44"><path d="M8 22 C6 14, 20 8, 32 14 C38 20, 36 30, 26 34 C16 38, 10 30, 8 22 Z" fill="#ea580c" stroke="#7c2d12" stroke-width="1.5"/><circle cx="16" cy="18" r="3" fill="#fdba74"/><circle cx="24" cy="22" r="4" fill="#fb923c"/><circle cx="28" cy="16" r="2.5" fill="#fef08a"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><path d="M8 22 C6 14, 20 8, 32 14 C38 20, 36 30, 26 34 C16 38, 10 30, 8 22 Z" fill="#ea580c" stroke="#7c2d12" stroke-width="1.5"/><circle cx="16" cy="18" r="3" fill="#fdba74"/><circle cx="24" cy="22" r="4" fill="#fb923c"/><circle cx="28" cy="16" r="2.5" fill="#fef08a"/></svg>`
       },
       dau_ran: { 
         name: 'Đậu Rán', basePrice: 2000, type: 'meat', unlockDay: 1,
-        svg: `<svg class="w-7 h-7 food-glow" viewBox="0 0 44 44"><rect x="8" y="11" width="28" height="22" rx="4" fill="#eab308" stroke="#713f12" stroke-width="2"/><line x1="15" y1="14" x2="15" y2="30" stroke="#ca8a04" stroke-width="2"/><line x1="22" y1="14" x2="22" y2="30" stroke="#ca8a04" stroke-width="2"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><rect x="8" y="11" width="28" height="22" rx="4" fill="#eab308" stroke="#713f12" stroke-width="2"/><line x1="15" y1="14" x2="15" y2="30" stroke="#ca8a04" stroke-width="2"/><line x1="22" y1="14" x2="22" y2="30" stroke="#ca8a04" stroke-width="2"/></svg>`
       },
       oc: { 
         name: 'Ốc Bươu', basePrice: 3500, type: 'meat', unlockDay: 4,
-        svg: `<svg class="w-7 h-7 food-glow" viewBox="0 0 44 44"><path d="M12 24 C10 13, 30 10, 32 23 C34 31, 24 34, 18 34 C12 34, 13 28, 12 24 Z" fill="#44403c" stroke="#0c0a09" stroke-width="2"/><ellipse cx="23" cy="22" rx="5" ry="7" fill="#d97706"/><circle cx="21" cy="18" r="1.5" fill="#fef3c7"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><path d="M12 24 C10 13, 30 10, 32 23 C34 31, 24 34, 18 34 C12 34, 13 28, 12 24 Z" fill="#44403c" stroke="#0c0a09" stroke-width="2"/><ellipse cx="23" cy="22" rx="5" ry="7" fill="#d97706"/><circle cx="21" cy="18" r="1.5" fill="#fef3c7"/></svg>`
       },
       cha_la_lot: { 
         name: 'Chả Lá Lốt', basePrice: 3000, type: 'meat', unlockDay: 8,
-        svg: `<svg class="w-7 h-7 food-glow" viewBox="0 0 44 44"><rect x="7" y="14" width="30" height="16" rx="7" fill="#15803d" stroke="#052e16" stroke-width="2"/><line x1="14" y1="14" x2="14" y2="30" stroke="#166534" stroke-width="2.5"/><line x1="22" y1="14" x2="22" y2="30" stroke="#166534" stroke-width="2.5"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><rect x="7" y="14" width="30" height="16" rx="7" fill="#15803d" stroke="#052e16" stroke-width="2"/><line x1="14" y1="14" x2="14" y2="30" stroke="#166534" stroke-width="2.5"/><line x1="22" y1="14" x2="22" y2="30" stroke="#166534" stroke-width="2.5"/></svg>`
       },
       bap_bo: { 
         name: 'Bắp Bò Hoa', basePrice: 6000, type: 'meat', unlockDay: 15,
-        svg: `<svg class="w-7 h-7 food-glow" viewBox="0 0 44 44"><path d="M10 24 C8 14, 28 8, 34 18 C38 26, 26 34, 16 32 Z" fill="#b91c1c" stroke="#450a0a" stroke-width="1.8"/><path d="M14 18 Q22 24 30 16" stroke="#fee2e2" stroke-width="2" fill="none"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><path d="M10 24 C8 14, 28 8, 34 18 C38 26, 26 34, 16 32 Z" fill="#b91c1c" stroke="#450a0a" stroke-width="1.8"/><path d="M14 18 Q22 24 30 16" stroke="#fee2e2" stroke-width="2" fill="none"/></svg>`
       },
       suon_sun: { 
         name: 'Sườn Sụn', basePrice: 5500, type: 'meat', unlockDay: 20,
-        svg: `<svg class="w-7 h-7 food-glow" viewBox="0 0 44 44"><path d="M10 22 C10 14, 30 11, 34 20 C34 28, 14 30, 10 22 Z" fill="#ea580c" stroke="#9a3412" stroke-width="2"/><ellipse cx="22" cy="21" rx="5" ry="3" fill="#ffffff"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><path d="M10 22 C10 14, 30 11, 34 20 C34 28, 14 30, 10 22 Z" fill="#ea580c" stroke="#9a3412" stroke-width="2"/><ellipse cx="22" cy="21" rx="5" ry="3" fill="#ffffff"/></svg>`
       },
       rau_song: { 
         name: 'Rau Muống', basePrice: 1000, type: 'garnish', unlockDay: 1,
-        svg: `<svg class="w-7 h-7 food-glow" viewBox="0 0 44 44"><circle cx="16" cy="18" r="6" fill="#22c55e"/><circle cx="26" cy="22" r="5.5" fill="#16a34a"/><circle cx="19" cy="27" r="5" fill="#4ade80"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><circle cx="16" cy="18" r="6" fill="#22c55e"/><circle cx="26" cy="22" r="5.5" fill="#16a34a"/><circle cx="19" cy="27" r="5" fill="#4ade80"/></svg>`
       },
       quay: { 
         name: 'Quẩy Giòn', basePrice: 2000, type: 'garnish', unlockDay: 1,
-        svg: `<svg class="w-7 h-7 food-glow" viewBox="0 0 44 44"><rect x="12" y="8" width="8" height="28" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="1.5"/><rect x="22" y="8" width="8" height="28" rx="4" fill="#d97706" stroke="#78350f" stroke-width="1.5"/></svg>`
+        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44"><rect x="12" y="8" width="8" height="28" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="1.5"/><rect x="22" y="8" width="8" height="28" rx="4" fill="#d97706" stroke="#78350f" stroke-width="1.5"/></svg>`
       }
     };
 
@@ -442,7 +513,10 @@
       stats: { totalServed: 0, totalCrabUsed: 0, maxCombo: 0 },
       unlockedBadges: {},
       claimedBadges: {},
-      inventory: { bun: 15, banh_da: 15, rieu_cua: 15, dau_ran: 15, oc: 15, cha_la_lot: 15, bap_bo: 15, suon_sun: 15, rau_song: 15, quay: 15 },
+      inventory: { 
+        clean_bowls: 20, // Bắt đầu có sẵn 20 bát sạch
+        bun: 15, banh_da: 15, rieu_cua: 15, dau_ran: 15, oc: 15, cha_la_lot: 15, bap_bo: 15, suon_sun: 15, rau_song: 15, quay: 15 
+      },
       upgrades: {
         fanLevel: 0, staffBusser: false, electricPotLevel: 0,
         crabMold: false, staffNoodle: false, fridgeLevel: 0,
@@ -455,17 +529,19 @@
     };
 
     function loadGame() {
-      const data = localStorage.getItem('bun_rieu_coba_nhatrang_style');
+      const data = localStorage.getItem('bun_rieu_coba_bowl_market_v3');
       if (data) {
         try { savedState = Object.assign(savedState, JSON.parse(data)); } catch (e) {}
       }
+      if (savedState.inventory.clean_bowls === undefined) savedState.inventory.clean_bowls = 20;
     }
     function persistGame() {
-      localStorage.setItem('bun_rieu_coba_nhatrang_style', JSON.stringify(savedState));
+      localStorage.setItem('bun_rieu_coba_bowl_market_v3', JSON.stringify(savedState));
     }
 
     const shiftState = {
       isPaused: false,
+      hasBowlOnTray: false,
       timeLeft: 180,
       todaySales: 0,
       missedCount: 0,
@@ -479,27 +555,25 @@
     function showToast(message) {
       const toast = document.getElementById('toast');
       toast.textContent = message;
-      toast.className = 'fixed top-12 left-1/2 -translate-x-1/2 bg-stone-900/90 text-white px-4 py-1.5 rounded-full border border-yellow-400/80 shadow-xl text-[10px] font-bold pointer-events-none transition-all duration-300 opacity-100 translate-y-0 z-50';
+      toast.className = 'fixed top-14 left-1/2 -translate-x-1/2 bg-stone-900/90 text-white px-5 py-2 rounded-full border border-yellow-400/80 shadow-xl text-xs font-bold pointer-events-none transition-all duration-300 opacity-100 translate-y-0 z-50';
       setTimeout(() => { toast.className = toast.className.replace('opacity-100 translate-y-0', 'opacity-0 -translate-y-2'); }, 1500);
     }
 
     function togglePauseGame(forceState = null) {
       shiftState.isPaused = forceState !== null ? forceState : !shiftState.isPaused;
       const overlay = document.getElementById('pause-overlay');
-      const icon = document.getElementById('pause-icon');
       const text = document.getElementById('pause-text');
 
       if (shiftState.isPaused) {
         overlay.classList.remove('hidden');
-        icon.textContent = '▶️';
         text.textContent = 'Tiếp';
       } else {
         overlay.classList.add('hidden');
-        icon.textContent = '⏸️';
         text.textContent = 'Dừng';
       }
     }
 
+    /* ĐIỀU HƯỚNG TAB */
     function switchTab(tabKey) {
       document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
       document.querySelectorAll('.nav-btn').forEach(b => {
@@ -509,14 +583,34 @@
 
       document.getElementById(`view-${tabKey}`).classList.remove('hidden');
       const activeNav = document.getElementById(`nav-${tabKey}`);
-      activeNav.classList.remove('text-stone-500', 'font-bold');
-      activeNav.classList.add('text-amber-400', 'font-black');
+      if (activeNav) {
+        activeNav.classList.remove('text-stone-500', 'font-bold');
+        activeNav.classList.add('text-amber-400', 'font-black');
+      }
 
-      if (tabKey !== 'kitchen' && !shiftState.isPaused) togglePauseGame(true);
+      const hudBar = document.getElementById('kitchen-hud-bar');
+      if (tabKey === 'kitchen') {
+        hudBar.classList.remove('hidden');
+      } else {
+        hudBar.classList.add('hidden');
+        if (!shiftState.isPaused) togglePauseGame(true);
+      }
 
+      if (tabKey === 'dashboard') renderDashboard();
       if (tabKey === 'market') renderMarketTab();
       if (tabKey === 'shop') renderShopTab();
       if (tabKey === 'piggy') renderPiggyAndAchievements();
+    }
+
+    function startKitchenShift() {
+      switchTab('kitchen');
+      togglePauseGame(false);
+      showToast('🚀 Bắt đầu ca! Chạm "Lấy Tô" để chuẩn bị món.');
+    }
+
+    function renderDashboard() {
+      document.getElementById('dash-total-served').textContent = `${savedState.stats.totalServed} tô đã bán`;
+      document.getElementById('dash-bowl-count').textContent = `${savedState.inventory.clean_bowls} cái trong kho`;
     }
 
     function updateHUD() {
@@ -525,15 +619,45 @@
       document.getElementById('hud-piggy').textContent = formatMoney(savedState.piggyBank);
       document.getElementById('shift-missed').textContent = `${shiftState.missedCount}/3`;
       document.getElementById('shop-cash-val').textContent = formatMoney(savedState.cash);
+      document.getElementById('stack-bowl-count').textContent = `x${savedState.inventory.clean_bowls}`;
+      
       const m = Math.floor(shiftState.timeLeft / 60), s = shiftState.timeLeft % 60;
       document.getElementById('shift-timer').textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
 
-      // Danh hiệu cấp bậc quán
       const subTitle = document.getElementById('shop-title-sub');
       if (savedState.day >= 100) subTitle.textContent = 'Nhà Hàng 5 Sao';
       else if (savedState.day >= 25) subTitle.textContent = 'Tiệm Lớn Phố Cổ';
       else if (savedState.day >= 8) subTitle.textContent = 'Quán Bún Cửa Hàng';
       else subTitle.textContent = 'Gánh Vỉa Hè';
+    }
+
+    /* CƠ CHẾ RÚT TÔ BÁT (CÓ TRỪ SỐ LƯỢNG TRONG KHO) */
+    function drawBowlFromStack() {
+      if (shiftState.isPaused) { showToast('Bấm TIẾP TỤC để bán hàng!'); return; }
+      if (shiftState.hasBowlOnTray) {
+        showToast('Đã có tô trên bàn rồi! Hãy gắp sợi và món ăn.');
+        return;
+      }
+      if (savedState.inventory.clean_bowls <= 0) {
+        showToast('Hết sạch tô bát rồi! Hãy sang tab "Đi Chợ" mua thêm bát sứ nhé.', false);
+        Sound.buzz();
+        return;
+      }
+
+      // Trừ 1 tô sạch trong kho
+      savedState.inventory.clean_bowls--;
+      shiftState.hasBowlOnTray = true;
+      Sound.plop();
+      
+      const bowlBox = document.getElementById('main-bowl-container');
+      bowlBox.classList.remove('animate-bowl-spawn');
+      void bowlBox.offsetWidth;
+      bowlBox.classList.add('animate-bowl-spawn');
+
+      updateHUD();
+      updateBowlUI();
+      persistGame();
+      showToast('Đã rút 1 tô sứ ra khay!');
     }
 
     /* RENDER QUẦY BẾP */
@@ -542,20 +666,21 @@
       grid.innerHTML = '';
 
       for (let k in ALL_ITEMS) {
+        if (k === 'clean_bowls') continue; // Bát sứ chỉ hiển thị ở chồng bát & ở chợ
         const it = ALL_ITEMS[k];
         const isUnlocked = savedState.day >= it.unlockDay;
         const btn = document.createElement('button');
-        btn.className = `p-1 rounded-xl flex flex-col items-center justify-center transition border ${
-          isUnlocked ? 'bg-stone-800/80 hover:bg-stone-700/80 border-stone-600 active:scale-95' : 'bg-stone-900 border-stone-800 opacity-40 cursor-not-allowed'
+        btn.className = `p-1.5 rounded-2xl flex flex-col items-center justify-center transition border ${
+          isUnlocked ? 'bg-stone-800 hover:bg-stone-700 border-stone-600 active:scale-95 shadow-sm' : 'bg-stone-900 border-stone-800 opacity-40 cursor-not-allowed'
         }`;
         btn.innerHTML = `
           ${it.svg}
-          <span class="text-[8px] font-black text-stone-200 truncate w-full text-center mt-0.5">${it.name}</span>
-          <span class="text-[7px] font-black text-amber-950 bg-amber-400 px-1 rounded-full mt-0.5">${isUnlocked ? savedState.inventory[k] : 'N.' + it.unlockDay}</span>
+          <span class="text-[10px] font-black text-stone-200 truncate w-full text-center mt-0.5">${it.name}</span>
+          <span class="text-[9px] font-black text-amber-950 bg-amber-400 px-1.5 py-0.2 rounded-full mt-0.5">${isUnlocked ? savedState.inventory[k] : 'N.' + it.unlockDay}</span>
         `;
         if (isUnlocked) {
           btn.onclick = () => {
-            if (shiftState.isPaused) { showToast('Hãy bấm TIẾP TỤC để bán hàng!'); return; }
+            if (shiftState.isPaused) { showToast('Bấm TIẾP TỤC để bán hàng!'); return; }
             if (it.type === 'noodle') selectNoodle(k);
             else addTopping(k);
           };
@@ -565,6 +690,7 @@
     }
 
     function selectNoodle(type) {
+      if (!shiftState.hasBowlOnTray) { showToast('Chạm vào "Lấy Tô 🥣" trước nhé!'); Sound.buzz(); return; }
       if (savedState.inventory[type] <= 0) { showToast('Đã hết sợi trong kho!'); Sound.buzz(); return; }
       if (shiftState.currentDish.base) return;
       Sound.plop();
@@ -577,6 +703,7 @@
 
     function addBroth() {
       if (shiftState.isPaused) return;
+      if (!shiftState.hasBowlOnTray) { showToast('Chạm "Lấy Tô 🥣" trước!'); Sound.buzz(); return; }
       if (!shiftState.currentDish.base) { showToast('Hãy chọn Bún hoặc Bánh Đa trước!'); Sound.buzz(); return; }
       Sound.pour();
       shiftState.currentDish.hasBroth = true;
@@ -584,6 +711,7 @@
     }
 
     function addTopping(key) {
+      if (!shiftState.hasBowlOnTray) { showToast('Chạm "Lấy Tô 🥣" trước!'); Sound.buzz(); return; }
       if (!shiftState.currentDish.base) { showToast('Hãy chọn sợi trước!'); Sound.buzz(); return; }
       if (savedState.inventory[key] <= 0) { showToast('Đã hết món này!'); Sound.buzz(); return; }
       Sound.plop();
@@ -595,19 +723,29 @@
     }
 
     function trashBowl() {
+      if (shiftState.hasBowlOnTray) {
+        // Đổ bỏ thì hoàn lại tô sạch
+        savedState.inventory.clean_bowls++;
+      }
+      shiftState.hasBowlOnTray = false;
       shiftState.currentDish = { base: null, hasBroth: false, toppings: new Set() };
       Sound.plop();
       updateBowlUI();
+      updateHUD();
       triggerAutoKitchen();
     }
 
+    /* PHỤ BẾP TỰ ĐỘNG BỐC BÁT */
     function triggerAutoKitchen() {
-      if (savedState.upgrades.staffNoodle && !shiftState.currentDish.base) {
-        if (savedState.inventory.bun > 0) {
+      if (savedState.upgrades.staffNoodle && !shiftState.hasBowlOnTray) {
+        if (savedState.inventory.clean_bowls > 0 && savedState.inventory.bun > 0) {
+          savedState.inventory.clean_bowls--;
+          shiftState.hasBowlOnTray = true;
           shiftState.currentDish.base = 'bun';
           savedState.inventory.bun--;
           if (savedState.upgrades.staffBroth) shiftState.currentDish.hasBroth = true;
           updateBowlUI();
+          updateHUD();
           renderQuickPantry();
         }
       }
@@ -615,12 +753,27 @@
 
     function updateBowlUI() {
       const bowl = shiftState.currentDish;
+      const noBowlPrompt = document.getElementById('no-bowl-prompt');
       const promptEl = document.getElementById('empty-prompt');
       const noodlesEl = document.getElementById('visual-noodles');
       const brothEl = document.getElementById('broth-liquid');
       const ingsEl = document.getElementById('visual-ingredients');
+      const statusText = document.getElementById('bowl-status-text');
+
+      if (!shiftState.hasBowlOnTray) {
+        statusText.textContent = 'Chưa Có Tô Trên Khay';
+        noBowlPrompt.classList.remove('hidden');
+        promptEl.classList.add('hidden');
+        noodlesEl.classList.add('hidden');
+        brothEl.classList.add('hidden');
+        ingsEl.innerHTML = '';
+        return;
+      }
+
+      noBowlPrompt.classList.add('hidden');
 
       if (!bowl.base) {
+        statusText.textContent = 'Tô Trống (Chọn Loại Sợi)';
         promptEl.classList.remove('hidden');
         noodlesEl.classList.add('hidden');
         brothEl.classList.add('hidden');
@@ -628,6 +781,7 @@
         return;
       }
 
+      statusText.textContent = `${ALL_ITEMS[bowl.base].name} ${bowl.hasBroth ? '(Đã Chan Nước)' : ''}`;
       promptEl.classList.add('hidden');
       noodlesEl.classList.remove('hidden');
       
@@ -661,7 +815,7 @@
       });
     }
 
-    /* ĐI CHỢ */
+    /* ĐI CHỢ (MUA NGUYÊN LIỆU & BÁT SỨ) */
     let tempCart = {};
     function renderMarketTab() {
       const list = document.getElementById('market-items-list');
@@ -677,19 +831,23 @@
         tempCart[k] = 0;
         const actualPrice = Math.round(it.basePrice * discount);
         const row = document.createElement('div');
-        row.className = 'flex justify-between items-center p-2 rounded-xl bg-stone-900/60 border border-stone-700/80';
+        row.className = `flex justify-between items-center p-2.5 rounded-2xl border ${
+          k === 'clean_bowls' ? 'bg-amber-950/40 border-amber-500/60' : 'bg-stone-900/80 border-stone-700'
+        }`;
         row.innerHTML = `
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2.5">
             ${it.svg}
             <div>
-              <div class="font-extrabold text-[11px] text-stone-200">${it.name}</div>
-              <div class="text-[9px] text-stone-400">Kho: <b>${savedState.inventory[k]}</b> • Giá: <b class="text-amber-400">${formatMoney(actualPrice)}</b></div>
+              <div class="font-extrabold text-xs sm:text-sm text-stone-200">
+                ${it.name} ${k === 'clean_bowls' ? '✨ (Vật tư)' : ''}
+              </div>
+              <div class="text-[11px] text-stone-400">Kho: <b>${savedState.inventory[k]}</b> • Giá: <b class="text-amber-400">${formatMoney(actualPrice)}</b></div>
             </div>
           </div>
-          <div class="flex items-center gap-1">
-            <button onclick="changeCart('${k}', -5)" class="w-5 h-5 bg-stone-700 text-stone-200 font-black rounded active:scale-90 text-xs">-</button>
-            <span id="cart-qty-${k}" class="font-mono font-bold text-xs w-5 text-center text-white">0</span>
-            <button onclick="changeCart('${k}', 5)" class="w-5 h-5 bg-amber-500 text-stone-950 font-black rounded active:scale-90 text-xs">+</button>
+          <div class="flex items-center gap-1.5">
+            <button onclick="changeCart('${k}', -5)" class="w-6 h-6 bg-stone-700 text-stone-200 font-black rounded-lg active:scale-90 text-sm">-</button>
+            <span id="cart-qty-${k}" class="font-mono font-bold text-xs w-6 text-center text-white">0</span>
+            <button onclick="changeCart('${k}', 5)" class="w-6 h-6 bg-amber-500 text-stone-950 font-black rounded-lg active:scale-90 text-sm">+</button>
           </div>
         `;
         list.appendChild(row);
@@ -725,7 +883,7 @@
       updateHUD();
       renderQuickPantry();
       renderMarketTab();
-      showToast('Đã nhập hàng thành công vào kho!');
+      showToast('Đã nhập hàng & bát đĩa thành công vào kho!');
     }
 
     /* TIỆM NÂNG CẤP */
@@ -743,11 +901,11 @@
     function getFullUpgradesTree() {
       return [
         { id: 'fanLevel', reqDay: 1, cat: 'place', icon: '💨', name: `Quạt Treo Tường [Cấp ${savedState.upgrades.fanLevel}/3]`, desc: '+4s thời gian khách kiên nhẫn chờ.', cost: 120000 * (savedState.upgrades.fanLevel + 1), maxed: savedState.upgrades.fanLevel >= 3 },
-        { id: 'staffBusser', reqDay: 1, cat: 'staff', icon: '🧹', name: 'Bé Dọn Bàn (Tự Động)', desc: 'Tự động dọn bàn & thu tiền khi khách ăn xong.', cost: 200000, owned: savedState.upgrades.staffBusser },
+        { id: 'staffBusser', reqDay: 1, cat: 'staff', icon: '🧹', name: 'Bé Dọn Bàn (Tự Động)', desc: 'Tự động dọn bàn, rửa bát & thu tiền khi khách ăn xong.', cost: 200000, owned: savedState.upgrades.staffBusser },
         { id: 'electricPotLevel', reqDay: 1, cat: 'kitchen', icon: '🍲', name: `Nồi Nước Inox [Cấp ${savedState.upgrades.electricPotLevel}/2]`, desc: 'Nước ngọt thơm, +2.000đ tiền tip/tô.', cost: 150000 * (savedState.upgrades.electricPotLevel + 1), maxed: savedState.upgrades.electricPotLevel >= 2 },
 
         { id: 'crabMold', reqDay: 4, cat: 'kitchen', icon: '🦀', name: 'Khuôn Ép Gạch Cua Hoa', desc: 'Miếng gạch cua đẹp mắt, +4.000đ tiền tip.', cost: 250000, owned: savedState.upgrades.crabMold },
-        { id: 'staffNoodle', reqDay: 4, cat: 'staff', icon: '👨‍🍳', name: 'Phụ Bếp Trần Sợi Sẵn', desc: 'Tự động bốc sẵn bún tươi vào tô trống.', cost: 300000, owned: savedState.upgrades.staffNoodle },
+        { id: 'staffNoodle', reqDay: 4, cat: 'staff', icon: '👨‍🍳', name: 'Phụ Bếp Bốc Sẵn Tô & Bún', desc: 'Tự động lấy tô sứ & bún tươi ra khay cho bạn.', cost: 300000, owned: savedState.upgrades.staffNoodle },
         { id: 'fridgeLevel', reqDay: 4, cat: 'kitchen', icon: '🧊', name: `Tủ Mát [Cấp ${savedState.upgrades.fridgeLevel}/3]`, desc: `Giữ lại ${savedState.upgrades.fridgeLevel === 0 ? '50%' : (savedState.upgrades.fridgeLevel === 1 ? '80%' : '100%')} đồ thừa.`, cost: 220000 * (savedState.upgrades.fridgeLevel + 1), maxed: savedState.upgrades.fridgeLevel >= 3 },
 
         { id: 'staffGuard', reqDay: 8, cat: 'staff', icon: '👮', name: 'Bác Bảo Vệ Trông Xe', desc: 'Mở khóa vị trí đón khách Bàn 3 & Bàn 4.', cost: 350000, owned: savedState.upgrades.staffGuard },
@@ -783,26 +941,26 @@
         const isUnlocked = savedState.day >= u.reqDay;
         const isBought = u.owned || u.maxed;
 
-        item.className = `flex justify-between items-center p-2 rounded-xl border ${
-          !isUnlocked ? 'bg-stone-900/60 border-stone-800 opacity-50' : 'bg-stone-900/90 border-stone-700/80'
+        item.className = `flex justify-between items-center p-2.5 rounded-2xl border ${
+          !isUnlocked ? 'bg-stone-900/60 border-stone-800 opacity-50' : 'bg-stone-900/90 border-stone-700'
         }`;
 
         let actionBtn = '';
         if (!isUnlocked) {
-          actionBtn = `<span class="bg-stone-700 text-stone-400 font-extrabold text-[8px] px-2 py-1 rounded-md">Mở N.${u.reqDay}</span>`;
+          actionBtn = `<span class="bg-stone-700 text-stone-400 font-extrabold text-[10px] px-2.5 py-1 rounded-lg">Mở N.${u.reqDay}</span>`;
         } else if (isBought) {
-          actionBtn = '<span class="text-emerald-400 font-extrabold text-[10px]">ĐÃ CÓ ✓</span>';
+          actionBtn = '<span class="text-emerald-400 font-extrabold text-xs">ĐÃ CÓ ✓</span>';
         } else {
-          actionBtn = `<button onclick="buyShopItem('${u.id}', ${u.cost}, ${u.reqDay})" class="bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-black text-[10px] px-2.5 py-1 rounded-lg shadow active:scale-95">MUA</button>`;
+          actionBtn = `<button onclick="buyShopItem('${u.id}', ${u.cost}, ${u.reqDay})" class="bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-black text-xs px-3 py-1.5 rounded-xl shadow active:scale-95">MUA</button>`;
         }
 
         item.innerHTML = `
-          <div class="flex items-center gap-2">
-            <span class="text-xl">${isUnlocked ? u.icon : '🔒'}</span>
+          <div class="flex items-center gap-2.5">
+            <span class="text-2xl">${isUnlocked ? u.icon : '🔒'}</span>
             <div class="text-left">
-              <div class="font-extrabold text-[11px] text-stone-200">${u.name}</div>
-              <div class="text-[9px] text-stone-400 leading-tight">${u.desc}</div>
-              ${isUnlocked && !isBought ? `<div class="text-[9px] text-amber-400 font-black mt-0.5">Giá: ${formatMoney(u.cost)}</div>` : ''}
+              <div class="font-extrabold text-xs sm:text-sm text-stone-200">${u.name}</div>
+              <div class="text-[11px] text-stone-400 leading-tight">${u.desc}</div>
+              ${isUnlocked && !isBought ? `<div class="text-[11px] text-amber-400 font-black mt-0.5">Giá: ${formatMoney(u.cost)}</div>` : ''}
             </div>
           </div>
           <div>${actionBtn}</div>
@@ -858,28 +1016,28 @@
         if (isCompleted) unlockedCount++;
 
         const card = document.createElement('div');
-        card.className = `p-1.5 rounded-xl border flex items-center justify-between transition ${
-          isClaimed ? 'bg-stone-900/60 border-stone-800' : (isCompleted ? 'bg-stone-800 border-yellow-500/80' : 'bg-stone-900/40 border-stone-800 opacity-60')
+        card.className = `p-2.5 rounded-2xl border flex items-center justify-between transition ${
+          isClaimed ? 'bg-stone-900/60 border-stone-800' : (isCompleted ? 'bg-stone-800 border-yellow-500/80 shadow-md' : 'bg-stone-900/40 border-stone-800 opacity-60')
         }`;
 
         const progressPct = Math.min(100, (currentVal / ach.target) * 100);
 
         let actionArea = '';
         if (isClaimed) {
-          actionArea = '<span class="text-[9px] font-black text-amber-400">ĐÃ NHẬN ✓</span>';
+          actionArea = '<span class="text-xs font-black text-amber-400">ĐÃ NHẬN ✓</span>';
         } else if (isCompleted) {
-          actionArea = `<button onclick="claimBadgeReward('${ach.id}', ${ach.reward})" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black text-[9px] px-2 py-0.5 rounded-md shadow">NHẬN ${formatMoney(ach.reward)}</button>`;
+          actionArea = `<button onclick="claimBadgeReward('${ach.id}', ${ach.reward})" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black text-xs px-2.5 py-1 rounded-lg shadow animate-bounce">NHẬN ${formatMoney(ach.reward)}</button>`;
         } else {
-          actionArea = `<span class="text-[8px] font-bold text-stone-400">${currentVal}/${ach.target}</span>`;
+          actionArea = `<span class="text-[11px] font-bold text-stone-400">${currentVal}/${ach.target}</span>`;
         }
 
         card.innerHTML = `
-          <div class="flex items-center gap-2">
-            <span class="text-xl">${ach.icon}</span>
+          <div class="flex items-center gap-2.5">
+            <span class="text-2xl">${ach.icon}</span>
             <div class="text-left">
-              <div class="font-extrabold text-[10px] text-stone-200">${ach.name}</div>
-              <div class="text-[8px] text-stone-400 leading-tight">${ach.desc}</div>
-              <div class="w-20 bg-stone-700 h-1 rounded-full overflow-hidden mt-0.5">
+              <div class="font-extrabold text-xs sm:text-sm text-stone-200">${ach.name}</div>
+              <div class="text-[11px] text-stone-400 leading-tight">${ach.desc}</div>
+              <div class="w-24 bg-stone-700 h-1.5 rounded-full overflow-hidden mt-1">
                 <div class="bg-amber-400 h-full" style="width: ${progressPct}%"></div>
               </div>
             </div>
@@ -950,7 +1108,7 @@
 
         const availTops = [];
         for (let k in ALL_ITEMS) {
-          if (ALL_ITEMS[k].type !== 'noodle' && savedState.day >= ALL_ITEMS[k].unlockDay) {
+          if (k !== 'clean_bowls' && ALL_ITEMS[k].type !== 'noodle' && savedState.day >= ALL_ITEMS[k].unlockDay) {
             availTops.push(k);
           }
         }
@@ -963,8 +1121,8 @@
 
         const bonusPatience = (savedState.upgrades.fanLevel * 4) + (savedState.upgrades.acLevel ? 8 : 0);
         let tipBonus = (savedState.upgrades.electricPotLevel * 2000) + 
-                       (savedState.upgrades.crabMold ? 4000 : 0) +
-                       (savedState.upgrades.inductionStove ? 6000 : 0) +
+                       (savedState.upgrades.crabMold ? 4000 : 0) + 
+                       (savedState.upgrades.inductionStove ? 6000 : 0) + 
                        (savedState.upgrades.luxuryTable ? 15000 : 0);
 
         if (savedState.upgrades.boughtHouse) tipBonus *= 2;
@@ -987,37 +1145,37 @@
 
       shiftState.customers.forEach((c, idx) => {
         const slot = document.createElement('div');
-        slot.className = 'bg-stone-900/90 rounded-xl p-1.5 border border-stone-700/80 flex flex-col justify-between min-h-[82px] text-white shadow-xs';
+        slot.className = 'bg-stone-900 rounded-2xl p-2 border border-stone-700 flex flex-col justify-between min-h-[92px] text-white shadow-sm';
         
         if (idx >= 2 && !savedState.upgrades.staffGuard) {
-          slot.className = 'bg-stone-900/40 rounded-xl p-1 border border-dashed border-stone-800 flex flex-col items-center justify-center min-h-[82px] text-stone-500 text-[9px] font-bold text-center';
+          slot.className = 'bg-stone-900/40 rounded-2xl p-2 border border-dashed border-stone-800 flex flex-col items-center justify-center min-h-[92px] text-stone-500 text-xs font-bold text-center';
           slot.innerHTML = '🔒 Bàn Khóa<br>(Mở ở Level 8)';
           track.appendChild(slot);
           return;
         }
 
         if (!c) {
-          slot.innerHTML = `<div class="text-stone-600 text-center py-4 text-[9px] font-bold">Bàn ${idx+1} Trống</div>`;
+          slot.innerHTML = `<div class="text-stone-500 text-center py-5 text-xs font-bold">Bàn ${idx+1} Trống</div>`;
         } else {
           const topsBadges = c.toppings.map(tKey => {
-            return `<span class="bg-stone-800 text-amber-200 border border-stone-700 px-1 py-0.2 rounded font-black text-[7px]">${ALL_ITEMS[tKey].name}</span>`;
+            return `<span class="bg-stone-800 text-amber-200 border border-stone-700 px-1.5 py-0.5 rounded font-black text-[9px]">${ALL_ITEMS[tKey].name}</span>`;
           }).join('');
 
           slot.innerHTML = `
             <div>
               <div class="flex items-center justify-between">
-                <div class="flex items-center gap-1">
-                  <span class="text-base">${c.avatar}</span>
-                  <div class="text-[9px] font-bold truncate max-w-[60px] text-stone-200">${c.name}</div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-lg">${c.avatar}</span>
+                  <div class="text-xs font-bold truncate max-w-[70px] text-stone-200">${c.name}</div>
                 </div>
-                <span class="text-[8px] font-black text-amber-400">${formatMoney(c.price)}</span>
+                <span class="text-xs font-black text-amber-400">${formatMoney(c.price)}</span>
               </div>
-              <div class="bg-stone-950/80 rounded p-1 text-[8px] font-bold mt-1 border border-stone-800">
-                <div class="text-red-400 text-[8px] font-black uppercase">${ALL_ITEMS[c.base].name}</div>
-                <div class="flex flex-wrap gap-0.5 mt-0.5">${topsBadges}</div>
+              <div class="bg-stone-950 rounded-xl p-1.5 text-xs font-bold mt-1 border border-stone-800">
+                <div class="text-red-400 text-[10px] font-black uppercase">${ALL_ITEMS[c.base].name}</div>
+                <div class="flex flex-wrap gap-1 mt-0.5">${topsBadges}</div>
               </div>
             </div>
-            <div class="w-full bg-stone-800 h-1 rounded-full overflow-hidden mt-1">
+            <div class="w-full bg-stone-800 h-1.5 rounded-full overflow-hidden mt-1.5">
               <div class="bg-emerald-500 h-full transition-all duration-300 rounded-full" style="width: ${(c.patience/c.maxPatience)*100}%"></div>
             </div>
           `;
@@ -1027,7 +1185,8 @@
     }
 
     function serveCustomer(idx) {
-      if (shiftState.isPaused) { showToast('Hãy bấm TIẾP TỤC để phục vụ khách!'); return; }
+      if (shiftState.isPaused) { showToast('Bấm TIẾP TỤC để phục vụ khách!'); return; }
+      if (!shiftState.hasBowlOnTray) { showToast('Bạn chưa có tô trên bàn!'); Sound.buzz(); return; }
       const c = shiftState.customers[idx];
       if (!c) return;
 
@@ -1059,11 +1218,18 @@
         savedState.stats.maxCombo = shiftState.combo;
       }
 
+      // Khách ăn xong trả lại 1 tô sạch vào kho
+      savedState.inventory.clean_bowls++;
+
       shiftState.customers[idx] = null;
-      trashBowl();
+      shiftState.hasBowlOnTray = false;
+      shiftState.currentDish = { base: null, hasBroth: false, toppings: new Set() };
+      
       renderCustomers();
+      updateBowlUI();
       updateHUD();
       updateAchievementsState();
+      triggerAutoKitchen();
       showToast(`+${formatMoney(c.price)} Đã phục vụ Bàn ${idx+1}!`);
     }
 
@@ -1074,12 +1240,13 @@
           savedState.cash += Math.round(c.price * 0.9);
           shiftState.todaySales += Math.round(c.price * 0.9);
           savedState.stats.totalServed++;
+          savedState.inventory.clean_bowls++; // Bé dọn bàn rửa và trả bát về kho
           shiftState.customers[idx] = null;
           Sound.coin();
           renderCustomers();
           updateHUD();
           updateAchievementsState();
-          showToast(`🧹 Bé Dọn Bàn đã hỗ trợ phục vụ Bàn ${idx+1}!`);
+          showToast(`🧹 Bé Dọn Bàn đã rửa bát & dọn Bàn ${idx+1}!`);
         }
       });
     }
@@ -1128,9 +1295,12 @@
         Sound.pig();
       }
 
+      // Giữ lại đồ thừa theo cấp tủ mát (Bát đĩa là đồ gốm sứ nên được giữ lại 100%)
       const keepRate = savedState.upgrades.fridgeLevel === 0 ? 0.4 : (savedState.upgrades.fridgeLevel === 1 ? 0.7 : 1.0);
       for (let k in savedState.inventory) {
-        savedState.inventory[k] = Math.floor(savedState.inventory[k] * keepRate);
+        if (k !== 'clean_bowls') {
+          savedState.inventory[k] = Math.floor(savedState.inventory[k] * keepRate);
+        }
       }
 
       savedState.day++;
@@ -1146,21 +1316,25 @@
       updateHUD();
       updateAchievementsState();
       document.getElementById('modal-ledger').classList.add('hidden');
-      togglePauseGame(false);
+      switchTab('dashboard');
       showToast(`Chào mừng đến Ngày ${savedState.day}!`);
     }
 
-    /* VÒNG LẶP CHÍNH */
+    /* KHỞI ĐỘNG */
     window.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('click', () => Sound.init(), { once: true });
       loadGame();
       updateHUD();
       renderQuickPantry();
       renderCustomers();
-      triggerAutoKitchen();
+      renderDashboard();
+      updateBowlUI();
+
+      switchTab('dashboard');
 
       setInterval(() => {
-        if (!shiftState.isPaused) {
+        const kitchenVisible = !document.getElementById('view-kitchen').classList.contains('hidden');
+        if (kitchenVisible && !shiftState.isPaused) {
           if (shiftState.timeLeft > 0) {
             shiftState.timeLeft--;
             updateHUD();
@@ -1171,10 +1345,14 @@
       }, 1000);
 
       const spawnInterval = savedState.upgrades.marketingCampaign ? 2800 : 4500;
-      setInterval(spawnCustomer, spawnInterval);
+      setInterval(() => {
+        const kitchenVisible = !document.getElementById('view-kitchen').classList.contains('hidden');
+        if (kitchenVisible && !shiftState.isPaused) spawnCustomer();
+      }, spawnInterval);
 
       setInterval(() => {
-        if (!shiftState.isPaused) {
+        const kitchenVisible = !document.getElementById('view-kitchen').classList.contains('hidden');
+        if (kitchenVisible && !shiftState.isPaused) {
           const decay = savedState.upgrades.retroRadio ? 0.35 : 0.5;
           shiftState.customers.forEach((c, idx) => {
             if (c) {
