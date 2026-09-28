@@ -141,11 +141,8 @@
             <span class="text-[10px] font-black text-amber-200 mt-0.5">Tô Sứ</span>
           </button>
 
-          <!-- 2. Hộp App Mang Về -->
-          <button onclick="drawContainer('box')" class="bg-card-brown border border-orange-500/60 rounded-2xl p-1.5 flex flex-col items-center justify-center relative active:scale-95 shadow">
-            <span class="text-xl">🥡</span>
-            <span class="text-[10px] font-black text-orange-300 mt-0.5">Hộp App</span>
-          </button>
+          <!-- 2. Hộp App Mang Về (Khóa Ngày 1-2, Mở Ngày 3) -->
+          <div id="btn-box-wrapper" class="w-full h-full"></div>
 
           <!-- 3. Nồi Lẩu VIP (Mở Ngày 25) -->
           <div id="btn-hotpot-wrapper" class="w-full h-full"></div>
@@ -167,7 +164,7 @@
           </button>
         </div>
 
-        <!-- HÀNG GIỮA: BỘ 3 SỢI (TRÁI) - TÔ BÚN GỐM SỨ (GIỮA) - QUẦY NƯỚC & GIA VỊ (PHẢI) -->
+        <!-- HÀNG GIỮA: SỢI (TRÁI) - TÔ BÚN GỐM SỨ (GIỮA) - QUẦY NƯỚC & GIA VỊ (PHẢI) -->
         <div class="grid grid-cols-12 gap-2 items-center my-0.5">
           
           <!-- Cột trái: Bộ 3 loại sợi (Bún, Bánh Đa, Miến) -->
@@ -312,7 +309,7 @@
       buzz() { this.play(140, 'sawtooth', 0.2); }
     };
 
-    /* 4 LOẠI NƯỚC UỐNG CHUẨN VECTOR VỚI CỐC THỦY TINH MẮT DỨA */
+    /* 4 LOẠI NƯỚC UỐNG */
     const DRINKS = {
       tea: {
         name: 'Trà Đá', unlockDay: 1, price: 5000,
@@ -449,6 +446,7 @@
           <rect x="4" y="11" width="36" height="22" rx="10" fill="#14532d" stroke="#022c22" stroke-width="2"/>
           <line x1="12" y1="11" x2="12" y2="33" stroke="#16a34a" stroke-width="2.5"/>
           <line x1="21" y1="11" x2="21" y2="33" stroke="#16a34a" stroke-width="2.5"/>
+          <line x1="30" y1="11" x2="30" y2="33" stroke="#16a34a" stroke-width="2.5"/>
         </svg>` 
       },
       { 
@@ -463,6 +461,7 @@
         iconSvg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
           <circle cx="14" cy="16" r="8" fill="#22c55e" stroke="#14532d" stroke-width="2"/>
           <circle cx="29" cy="22" r="7.5" fill="#16a34a" stroke="#14532d" stroke-width="2"/>
+          <circle cx="19" cy="29" r="7" fill="#4ade80" stroke="#15803d" stroke-width="2"/>
         </svg>` 
       },
       { 
@@ -573,10 +572,30 @@
       showToast(`Đã rót sẵn 1 ly ${DRINKS[key].name}!`);
     }
 
+    /* RENDER MÂM TOPPING & VẬT CHỨA & SỢI */
     function renderPantry() {
       renderPantryRow('pantry-row-1', TOPPINGS_ROW_1);
       renderPantryRow('pantry-row-2', TOPPINGS_ROW_2);
 
+      // Hộp App Mang Về (Khóa Ngày 1-2, Mở Ngày 3)
+      const boxWrapper = document.getElementById('btn-box-wrapper');
+      if (STATE.day >= 3) {
+        boxWrapper.innerHTML = `
+          <button onclick="drawContainer('box')" class="w-full h-full bg-card-brown border border-orange-500/60 rounded-2xl p-1.5 flex flex-col items-center justify-center relative active:scale-95 shadow">
+            <span class="text-xl">🥡</span>
+            <span class="text-[10px] font-black text-orange-300 mt-0.5">Hộp App</span>
+          </button>
+        `;
+      } else {
+        boxWrapper.innerHTML = `
+          <div class="w-full h-full bg-slot-item/40 border border-stone-800 rounded-2xl p-1.5 flex flex-col items-center justify-center opacity-40 shadow">
+            <span class="text-base text-stone-500">🔒</span>
+            <span class="text-[9px] font-bold text-stone-500 mt-0.5">Mở N.3</span>
+          </div>
+        `;
+      }
+
+      // Nồi Lẩu VIP (Mở Ngày 25)
       const hotpotWrapper = document.getElementById('btn-hotpot-wrapper');
       if (STATE.day >= 25) {
         hotpotWrapper.innerHTML = `
@@ -595,6 +614,7 @@
         `;
       }
 
+      // Sợi 2: Bánh Đa Đỏ (Mở Ngày 4)
       const banhDaWrapper = document.getElementById('btn-banhda-wrapper');
       if (STATE.day >= 4) {
         banhDaWrapper.innerHTML = `
@@ -615,6 +635,7 @@
         `;
       }
 
+      // Sợi 3: Miến Dong (Mở Ngày 7)
       const mienWrapper = document.getElementById('btn-mien-wrapper');
       if (STATE.day >= 7) {
         mienWrapper.innerHTML = `
@@ -913,16 +934,19 @@
       updateHUD();
     }
 
+    /* SINH KHÁCH THEO ĐÚNG TIẾN TRÌNH UNLOCK (CHỈ MỞ ĐƠN ONLINE TỪ NGÀY 3) */
     function spawnCustomer() {
       if (STATE.isPaused) return;
       const emptyIdx = STATE.tables.findIndex(t => t === null);
       if (emptyIdx === -1) return;
 
+      // 1. Lọc loại Sợi theo Ngày mở khóa
       const availBases = ['bun'];
       if (STATE.day >= 4) availBases.push('banh_da');
       if (STATE.day >= 7) availBases.push('mien_dong');
       const chosenBase = availBases[Math.floor(Math.random() * availBases.length)];
 
+      // 2. Lọc Topping đã mở khóa
       const unlockedToppings = ALL_TOPPINGS_LIST.filter(t => STATE.day >= t.unlockDay);
 
       let toppingCount = 2;
@@ -939,6 +963,7 @@
         chosenTops[0] = 'rieu_cua';
       }
 
+      // 3. Lọc Đồ uống đã mở khóa
       const unlockedDrinkKeys = Object.keys(DRINKS).filter(k => STATE.day >= DRINKS[k].unlockDay);
       let chosenDrinkKey = null;
       if (Math.random() < 0.45 && unlockedDrinkKeys.length > 0) {
@@ -947,12 +972,13 @@
 
       const needShrimp = Math.random() < 0.35;
 
+      // 4. KIỂM TRA ĐIỀU KIỆN ĐƠN ONLINE: CHỈ MỞ TỪ NGÀY 3 TRỞ ĐI
       let isBox = false;
       let isHotpot = false;
       if (STATE.day >= 25 && Math.random() < 0.2) {
         isHotpot = true;
-      } else {
-        isBox = Math.random() < 0.3;
+      } else if (STATE.day >= 3) {
+        isBox = Math.random() < 0.35; // Ngày 3 trở đi mới nổ đơn mang đi!
       }
 
       let totalPrice = 25000;
@@ -1015,6 +1041,7 @@
       if (STATE.selectedTableIdx === emptyIdx) renderOrderBalloon();
     }
 
+    /* MODAL TIỆN ÍCH */
     function openModal(type) {
       const container = document.getElementById('modal-container');
       const title = document.getElementById('modal-title');
@@ -1045,7 +1072,7 @@
             <button onclick="showToast('Bé Na đã vào ca dọn bàn!'); closeModal();" class="mt-2 w-full bg-yellow-500 text-stone-950 font-black py-2 rounded-xl">Thuê Bé Na (Đã có sẵn)</button>
           </div>
           <div class="p-3 bg-stone-800 rounded-xl border border-stone-700">
-            <b>🗓️ Sang ngày tiếp theo:</b> Mở khóa Bánh đa (N.4), Trà tắc (N.6), Miến dong (N.7), Bò hoa, Sườn sụn...
+            <b>🗓️ Sang ngày tiếp theo:</b> Mở khóa Đơn mang về (N.3), Bánh đa (N.4), Trà tắc (N.6), Miến dong (N.7)...
             <button onclick="advanceNextDay(); closeModal();" class="mt-2 w-full bg-emerald-600 text-white font-black py-2 rounded-xl">Qua Ngày Mới (+1 Ngày)</button>
           </div>
         `;
@@ -1100,7 +1127,7 @@
       renderOrderBalloon();
       updatePrepMat();
 
-      // Khách mở hàng đầu ca
+      // Bàn 1 có khách mở hàng chuẩn món Ngày 1 (Bún riêu + Đậu rán + Rau muống + Trà đá)
       STATE.tables[0] = {
         name: 'Bà Lam', avatar: '👵',
         dialogueText: 'Cho bà 1 tô bún riêu + <b class="text-amber-300">Gạch riêu</b> + <b class="text-amber-300">Đậu rán</b> + <b class="text-amber-300">Rau muống</b> + ly <b class="text-emerald-300">Trà Đá</b> nha!',
