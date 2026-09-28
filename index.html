@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Tiệm Bún Riêu Cô Ba - Bản Hoàn Thiện Master</title>
+  <title>Bún Riêu Cô Ba - Chuẩn Layout Mobile</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -15,37 +15,22 @@
       user-select: none; 
       -webkit-user-select: none; 
       touch-action: manipulation;
-      background-color: #0c0a09;
+      background-color: #120508;
     }
     .brand-font { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 900; }
 
-    @keyframes smokeFlow {
-      0% { transform: translateY(0) scaleX(0.7) scaleY(0.9); opacity: 0; }
-      25% { opacity: 0.55; }
-      50% { transform: translateY(-16px) scaleX(1.2) scaleY(1.1); opacity: 0.35; }
-      100% { transform: translateY(-34px) scaleX(1.6) scaleY(1.4); opacity: 0; }
-    }
-    .steam-soft { animation: smokeFlow 2.8s infinite ease-out; }
-
-    @keyframes bobbing {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-3px) rotate(1.2deg); }
-    }
-    .float-broth { animation: bobbing 3.2s infinite ease-in-out; }
+    /* Bảng màu chuẩn theo game mẫu */
+    .bg-game-main { background-color: #271017; }
+    .bg-game-card { background-color: #3b1924; }
+    .bg-game-slot { background-color: #4a212f; }
+    .border-game { border-color: #5d2b3c; }
 
     @keyframes dropIn {
-      0% { transform: scale(0.3) translateY(-25px); opacity: 0; }
-      65% { transform: scale(1.1) translateY(3px); opacity: 1; }
+      0% { transform: scale(0.4) translateY(-15px); opacity: 0; }
+      70% { transform: scale(1.1) translateY(2px); opacity: 1; }
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
-    .drop-item { animation: dropIn 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-
-    @keyframes drawBowl {
-      0% { transform: scale(0.6) translateY(20px); opacity: 0; }
-      70% { transform: scale(1.06) translateY(-4px); opacity: 1; }
-      100% { transform: scale(1) translateY(0); opacity: 1; }
-    }
-    .animate-bowl-spawn { animation: drawBowl 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .drop-item { animation: dropIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
     @keyframes slurpAnim {
       0%, 100% { transform: scale(1) translateY(0); }
@@ -53,469 +38,324 @@
     }
     .slurping-eating { animation: slurpAnim 0.35s infinite ease-in-out; }
 
-    @keyframes feverGlow {
-      0%, 100% { box-shadow: inset 0 0 25px #ea580c, 0 0 20px #f59e0b; border-color: #f97316; }
-      50% { box-shadow: inset 0 0 35px #dc2626, 0 0 30px #ef4444; border-color: #ef4444; }
-    }
-    .fever-active {
-      animation: feverGlow 1s infinite alternate;
-      border: 3px solid #f97316 !important;
-    }
-
-    @keyframes vipSparkle {
-      0%, 100% { filter: drop-shadow(0 0 8px #facc15); transform: scale(1); }
-      50% { filter: drop-shadow(0 0 16px #f59e0b); transform: scale(1.03); }
-    }
-    .vip-card-sparkle { animation: vipSparkle 1.2s infinite ease-in-out; }
-    
-    .food-glow { filter: drop-shadow(0 3px 5px rgba(0,0,0,0.35)); }
-    .bowl-depth {
-      box-shadow: inset 0 8px 18px rgba(0,0,0,0.45), 0 12px 28px rgba(0,0,0,0.7);
-    }
-    .box-depth {
-      box-shadow: inset 0 6px 14px rgba(120,53,15,0.4), 0 10px 24px rgba(0,0,0,0.6);
-    }
-    .hotpot-depth {
-      box-shadow: inset 0 8px 20px rgba(180,83,9,0.5), 0 12px 30px rgba(234,88,12,0.6);
-    }
+    .food-shadow { filter: drop-shadow(0 3px 4px rgba(0,0,0,0.45)); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
   </style>
 </head>
 
-<body class="min-h-screen flex justify-center items-center p-0 sm:py-4">
-  <div id="game-app" class="w-full max-w-[430px] h-[100dvh] sm:h-[860px] bg-stone-900 flex flex-col justify-between shadow-2xl relative overflow-hidden sm:rounded-[36px] sm:border-[6px] sm:border-stone-800 transition-all">
+<body class="min-h-screen flex justify-center items-center p-0 sm:py-2">
+  <div id="game-app" class="w-full max-w-[430px] h-[100dvh] sm:h-[880px] bg-game-main text-stone-100 flex flex-col justify-between shadow-2xl relative overflow-hidden sm:rounded-[36px] sm:border-[6px] sm:border-stone-800">
     
-    <!-- 1. TOP HEADER -->
-    <header class="bg-stone-900/95 pt-3 px-3 pb-2 z-20 flex flex-col gap-1.5 border-b border-stone-800">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2 bg-stone-800 border border-stone-700 pl-1 pr-3 py-1 rounded-full shadow-sm">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-amber-600 flex items-center justify-center text-white text-base shadow">
-            🦀
+    <!-- 1. TOP HEADER THEO ẢNH MẪU -->
+    <header class="pt-3 px-4 pb-2 z-20 flex items-center justify-between border-b border-game">
+      <!-- Cột trái: Pause & Ngày giờ -->
+      <div class="flex items-center gap-2">
+        <button onclick="togglePauseGame()" class="text-amber-200 font-black text-sm bg-game-card w-8 h-8 rounded-xl border border-game flex items-center justify-center active:scale-95">
+          <span id="pause-icon">⏸</span>
+        </button>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-sm font-black text-white" id="hud-day">Ngày 1</span>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 font-bold px-1.5 py-0.2 rounded" id="shift-clock">03:00</span>
           </div>
-          <div>
-            <div class="flex items-center gap-1">
-              <span class="text-xs font-black text-white tracking-tight">CÔ BA</span>
-              <span id="hud-day" class="text-[10px] font-black bg-amber-400 text-stone-950 px-1.5 py-0.2 rounded-full">Ngày 1</span>
-            </div>
-            <div class="text-[10px] text-stone-300 font-semibold flex items-center gap-1" id="shop-title-sub">
-              <span>Gánh Vỉa Hè</span>
-              <span id="weather-badge" class="text-[10px] bg-blue-950 text-blue-300 px-1.5 py-0.2 rounded border border-blue-700">☀️ Nắng Đẹp</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Banner Fever Mode -->
-        <div id="fever-banner" class="hidden flex items-center gap-1 bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[10px] px-2.5 py-1 rounded-full animate-bounce shadow">
-          🔥 BỐC LỬA x1.5 (<span id="fever-timer">20</span>s)
-        </div>
-
-        <div class="flex items-center gap-1.5">
-          <div class="flex items-center gap-1 bg-stone-800 border border-amber-500/40 px-2.5 py-1 rounded-full shadow-inner">
-            <span class="text-xs">💵</span>
-            <span id="hud-money" class="font-mono text-xs font-black text-amber-300">300.000đ</span>
-          </div>
-          <div class="flex items-center gap-1 bg-stone-800 border border-pink-500/40 px-2.5 py-1 rounded-full shadow-inner cursor-pointer" onclick="switchTab('piggy')">
-            <span class="text-xs" id="hud-piggy-icon">🐷</span>
-            <span id="hud-piggy" class="font-mono text-xs font-black text-pink-300">0đ</span>
-          </div>
+          <div class="text-[10px] text-stone-400 font-semibold" id="shop-title-sub">Gánh Vỉa Hè</div>
         </div>
       </div>
 
-      <!-- HUD Ca Bán -->
-      <div id="kitchen-hud-bar" class="hidden flex items-center justify-between bg-stone-800/90 px-2.5 py-1 rounded-xl border border-stone-700 text-[11px] font-bold">
-        <div class="flex items-center gap-1.5 text-stone-200">
-          <span>⏱️</span>
-          <span id="shift-timer" class="font-mono text-xs font-black text-yellow-400">03:00</span>
-          <button id="btn-toggle-pause" onclick="togglePauseGame()" class="ml-1 bg-stone-700 hover:bg-stone-600 text-yellow-300 px-2 py-0.2 rounded-md text-[10px] font-black">
-            ⏸️ <span id="pause-text">Dừng</span>
-          </button>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="text-amber-400 font-extrabold text-[11px]" id="combo-display">Combo: x0</span>
-          <div class="text-red-400 font-black text-[11px]">
-            💢 Hủy: <span id="shift-missed" class="font-mono text-white">0/3</span>
-          </div>
+      <!-- Cột giữa: Két tiền -->
+      <div class="text-center">
+        <div class="text-[10px] font-black uppercase tracking-widest text-amber-300/80">KÉT</div>
+        <div class="font-mono text-sm sm:text-base font-black text-amber-300" id="hud-money">300.000đ</div>
+      </div>
+
+      <!-- Cột phải: Đánh giá sao & Heo đất -->
+      <div class="flex items-center gap-1.5 text-right">
+        <div class="cursor-pointer bg-game-card px-2 py-1 rounded-xl border border-game" onclick="switchTab('piggy')">
+          <div class="text-amber-300 text-xs font-black">★★★★★</div>
+          <div class="text-[9px] text-stone-300 font-bold" id="hud-piggy">Heo: 0đ</div>
         </div>
       </div>
     </header>
 
-    <!-- 2. VÙNG NỘI DUNG CHÍNH -->
-    <main class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col p-2.5 gap-2">
+    <!-- 2. KHU VỰC QUÁN ĂN (MÁI HIÊN, BẢNG HIỆU & 3 BÀN KHÁCH) -->
+    <section class="px-3 pt-1 flex flex-col gap-1.5">
+      <!-- Mái hiên và Bảng hiệu tiệm -->
+      <div class="relative bg-gradient-to-b from-rose-900 to-amber-950 rounded-2xl pt-2 pb-2.5 px-3 border border-amber-600/40 shadow-md">
+        <!-- Rèm mái che cong -->
+        <div class="absolute -top-1 left-0 right-0 flex justify-around overflow-hidden h-2.5 pointer-events-none opacity-80">
+          <div class="w-7 h-3 bg-red-600 rounded-b-full shadow"></div>
+          <div class="w-7 h-3 bg-amber-100 rounded-b-full shadow"></div>
+          <div class="w-7 h-3 bg-red-600 rounded-b-full shadow"></div>
+          <div class="w-7 h-3 bg-amber-100 rounded-b-full shadow"></div>
+          <div class="w-7 h-3 bg-red-600 rounded-b-full shadow"></div>
+          <div class="w-7 h-3 bg-amber-100 rounded-b-full shadow"></div>
+        </div>
+
+        <div class="bg-stone-950/80 border border-amber-500/60 rounded-xl py-1 px-3 text-center mx-auto max-w-[200px] shadow">
+          <div class="text-xs font-black text-amber-300 tracking-wide">Bún riêu Cô Ba</div>
+          <div class="text-[9px] font-bold text-amber-100 uppercase tracking-widest">ĐỆ NHẤT BÚN RIÊU</div>
+        </div>
+
+        <!-- 3 Bàn khách ngồi (theo layout mẫu) -->
+        <div class="grid grid-cols-3 gap-2 mt-2" id="tables-row">
+          <!-- Bàn 1 -->
+          <div id="table-slot-0" onclick="selectTable(0)" class="table-slot bg-game-card/80 border border-game rounded-2xl p-1.5 flex flex-col items-center justify-center min-h-[64px] cursor-pointer transition active:scale-95">
+            <span class="text-xs text-stone-500 font-bold">Bàn trống</span>
+          </div>
+          <!-- Bàn 2 -->
+          <div id="table-slot-1" onclick="selectTable(1)" class="table-slot bg-game-card/80 border border-game rounded-2xl p-1.5 flex flex-col items-center justify-center min-h-[64px] cursor-pointer transition active:scale-95">
+            <span class="text-xs text-stone-500 font-bold">Bàn trống</span>
+          </div>
+          <!-- Bàn 3 -->
+          <div id="table-slot-2" onclick="selectTable(2)" class="table-slot bg-game-card/80 border border-game rounded-2xl p-1.5 flex flex-col items-center justify-center min-h-[64px] cursor-pointer transition active:scale-95">
+            <span class="text-xs text-stone-500 font-bold">Bàn trống</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BONG BÓNG LỜI THOẠI & ĐƠN HÀNG (ORDER BALLOON) -->
+      <div id="order-balloon" class="bg-game-card border border-game rounded-2xl p-2.5 shadow-md flex flex-col gap-1.5">
+        <div class="flex items-center gap-2.5">
+          <div class="w-11 h-11 bg-game-slot rounded-xl border border-game flex items-center justify-center text-2xl flex-shrink-0" id="order-bowl-icon">
+            🥣
+          </div>
+          <div class="flex-1 text-xs text-stone-200 leading-snug" id="order-dialogue-text">
+            Chưa có khách gọi món. Hãy chờ khách vào bàn nhé con!
+          </div>
+        </div>
+        <!-- Thanh kiên nhẫn màu xanh lá chạy ngay dưới lời thoại -->
+        <div class="w-full bg-stone-900 h-1.5 rounded-full overflow-hidden">
+          <div id="patience-bar" class="bg-emerald-500 h-full rounded-full transition-all duration-300" style="width: 100%"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. KHU CHẾ BIẾN BẾP (KITCHEN WORKSPACE) -->
+    <main class="flex-1 flex flex-col justify-between px-3 py-1 gap-1.5">
       
-      <!-- TAB 0: SẢNH CHÍNH -->
-      <section id="view-dashboard" class="tab-view flex-1 flex flex-col justify-between gap-2.5 p-1">
-        <div class="bg-gradient-to-b from-amber-900/90 via-orange-950 to-stone-900 p-3.5 rounded-3xl border-2 border-amber-600/60 shadow-xl text-center flex flex-col items-center">
-          <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center text-3xl mb-1.5 shadow-lg border-2 border-yellow-300 animate-pulse">
-            🍲
-          </div>
-          <h2 class="brand-font text-lg text-yellow-300 uppercase tracking-wide">Tiệm Bún Riêu Cô Ba</h2>
-          <p class="text-xs text-amber-100 font-semibold">Đặc sản Cua Đồng Phố Cổ - Trọn Vị Truyền Thống</p>
-          
-          <div class="grid grid-cols-2 gap-2 w-full mt-2.5 pt-2.5 border-t border-amber-700/50 text-left">
-            <div class="bg-black/40 p-2 rounded-xl border border-stone-700">
-              <span class="text-[10px] text-stone-400 block font-medium">Doanh thu tích lũy</span>
-              <span id="dash-total-served" class="text-xs font-black text-amber-300">0 đơn phục vụ</span>
-            </div>
-            <div class="bg-black/40 p-2 rounded-xl border border-stone-700">
-              <span class="text-[10px] text-stone-400 block font-medium">Tô bát sạch sẵn sàng</span>
-              <span id="dash-bowl-count" class="text-xs font-black text-emerald-400">20 cái trong kho</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- BẢN TIN THỜI TIẾT BUỔI SÁNG -->
-        <div class="bg-stone-850 p-2.5 rounded-2xl border border-amber-500/40 shadow-md text-left flex items-start gap-2.5">
-          <span class="text-2xl" id="morning-news-icon">📰</span>
-          <div>
-            <div class="text-[11px] font-black text-amber-300 uppercase tracking-wide" id="morning-news-title">Bản Tin Phố Cổ Buổi Sáng</div>
-            <p class="text-[10px] text-stone-300 leading-snug mt-0.5" id="morning-news-desc">Hôm nay trời nắng đẹp, khách đến lai rai, giá cả tại chợ đầu mối ổn định.</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2 text-xs">
-          <button onclick="switchTab('market')" class="bg-stone-800 hover:bg-stone-700/90 border border-stone-700 p-2.5 rounded-2xl flex items-center gap-2 text-left transition active:scale-95 shadow-md">
-            <span class="text-2xl">🛒</span>
-            <div>
-              <div class="font-extrabold text-white text-xs">Đi Chợ</div>
-              <div class="text-[10px] text-stone-400">Hải sản & sườn sụn</div>
-            </div>
-          </button>
-          <button onclick="switchTab('shop')" class="bg-stone-800 hover:bg-stone-700/90 border border-stone-700 p-2.5 rounded-2xl flex items-center gap-2 text-left transition active:scale-95 shadow-md">
-            <span class="text-2xl">🏛️</span>
-            <div>
-              <div class="font-extrabold text-white text-xs">Cơ Ngơi</div>
-              <div class="text-[10px] text-stone-400">Mua Nhà & Nâng Cấp</div>
-            </div>
-          </button>
-        </div>
-
-        <button onclick="startKitchenShift()" class="w-full bg-gradient-to-r from-red-600 via-amber-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-black py-3.5 rounded-2xl text-sm shadow-2xl border-2 border-yellow-400 flex items-center justify-center gap-2 active:scale-95 transition">
-          <span class="text-xl">🚀</span>
-          <span>MỞ CỬA BÁN CA 3 PHÚT</span>
+      <!-- HÀNG 1: CHỒNG TÔ & CÁC NỒI NƯỚC DÙNG -->
+      <div class="grid grid-cols-5 gap-1.5">
+        <!-- Chồng tô -->
+        <button onclick="drawContainer('bowl')" class="bg-game-card border border-game rounded-2xl p-1 flex flex-col items-center justify-center relative active:scale-95">
+          <span id="badge-bowls" class="absolute -top-1 -right-1 bg-red-600 text-white font-black text-[9px] px-1.5 rounded-full">20</span>
+          <span class="text-xl">🥣</span>
+          <span class="text-[9px] font-black text-stone-300 mt-0.5">Lấy tô</span>
         </button>
-      </section>
 
-      <!-- TAB 1: SÂN KHẤU BẾP NẤU MASTER -->
-      <section id="view-kitchen" class="tab-view hidden flex-1 flex flex-col justify-between gap-1.5 relative">
-        
-        <!-- HÀNG KHÁCH ĐỢI (CHẠM VÀO ĐỂ GIAO ĐƠN) -->
-        <div class="bg-stone-950/80 p-2 rounded-2xl border border-stone-700/80 shadow-md">
-          <div class="flex justify-between items-center px-1 mb-1">
-            <span class="text-[11px] font-black uppercase text-amber-300">Khách Tại Quán, VIP & Đơn App:</span>
-            <span class="text-[10px] text-emerald-400 font-extrabold animate-pulse">👉 CHẠM VÀO ĐỂ GIAO</span>
-          </div>
-          <div id="customers-track" class="grid grid-cols-4 gap-1.5 items-stretch min-h-[84px]"></div>
-        </div>
+        <!-- Hộp App Mang Về -->
+        <button onclick="drawContainer('box')" class="bg-game-card border border-game rounded-2xl p-1 flex flex-col items-center justify-center relative active:scale-95">
+          <span class="text-xl">🥡</span>
+          <span class="text-[9px] font-black text-orange-300 mt-0.5">Hộp về</span>
+        </button>
 
-        <!-- SỰ CỐ: MÈO CHÔM ĐẬU -->
-        <div id="cat-event-box" class="hidden absolute top-28 left-6 z-40 bg-amber-950/95 border-2 border-amber-400 p-2 rounded-2xl shadow-2xl flex items-center gap-2.5 animate-bounce cursor-pointer" onclick="scareCat()">
-          <span class="text-3xl">🐱</span>
-          <div class="text-left leading-tight">
-            <span class="text-xs font-black text-amber-300 block">MÈO MƯỚP RÌNH ĐẬU!</span>
-            <span class="text-[10px] text-white font-bold">Chạm nhanh để xua đuổi!</span>
-          </div>
-        </div>
+        <!-- Nồi Riêu Cua Đồng -->
+        <button onclick="addBroth('rieu_cua')" class="bg-game-card border-2 border-amber-500/70 rounded-2xl p-1 flex flex-col items-center justify-center relative active:scale-95">
+          <span class="text-xl">🍲</span>
+          <span class="text-[9px] font-black text-amber-300 mt-0.5">Nước cua</span>
+        </button>
 
-        <!-- SỰ CỐ: HẾT GAS -->
-        <div id="gas-event-box" class="hidden absolute inset-0 bg-stone-950/85 backdrop-blur-sm z-40 rounded-3xl flex flex-col items-center justify-center p-4 text-center">
-          <div class="text-4xl mb-1 animate-pulse">💨</div>
-          <h3 class="brand-font text-base text-red-400 uppercase tracking-wide">BẾP HẾT GAS GIỮA CHỪNG!</h3>
-          <p class="text-xs text-stone-300 mb-3 max-w-[220px]">Nồi nước dùng đã tắt lửa. Gõ nhanh vào bình gas để bật lại!</p>
-          <button id="btn-fix-gas" onclick="tapGasCylinder()" class="bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 active:scale-90 text-white font-black py-2.5 px-6 rounded-2xl text-xs shadow-lg border border-yellow-300">
-            🔥 GÕ BÌNH GAS (Còn <span id="gas-clicks-left">2</span> nhịp)
+        <!-- Nồi Lẩu Thái Cua (Mở theo cấp) -->
+        <button onclick="drawContainer('hotpot')" class="bg-game-card border border-game rounded-2xl p-1 flex flex-col items-center justify-center relative active:scale-95">
+          <span class="absolute -top-1 -right-1 bg-red-500 text-white font-black text-[8px] px-1 rounded-full">VIP</span>
+          <span class="text-xl">🥘</span>
+          <span class="text-[9px] font-black text-rose-300 mt-0.5">Nồi lẩu</span>
+        </button>
+
+        <!-- Quầy Trà Đá / Trà Tắc -->
+        <button onclick="pourDrink()" class="bg-game-card border border-emerald-500/50 rounded-2xl p-1 flex flex-col items-center justify-center relative active:scale-95">
+          <span id="badge-drink" class="hidden absolute -top-1 -right-1 bg-emerald-400 text-stone-950 font-black text-[8px] px-1 rounded-full">✓</span>
+          <span class="text-xl">🧊</span>
+          <span class="text-[9px] font-black text-emerald-300 mt-0.5">Trà đá</span>
+        </button>
+      </div>
+
+      <!-- HÀNG 2: BÀN TRẦN SỢI (TRÁI) - THỚT NẤU TRUNG TÂM - LỌ MẮM TÔM/ỚT (PHẢI) -->
+      <div class="grid grid-cols-12 gap-2 items-center">
+        <!-- Cột trái: Nồi trần sợi & Rổ bún chín -->
+        <div class="col-span-3 flex flex-col gap-1.5">
+          <button onclick="selectNoodle('bun')" class="bg-game-card border border-game rounded-2xl p-1.5 flex flex-col items-center justify-center relative active:scale-95">
+            <span class="text-2xl">🍜</span>
+            <span class="text-[9px] font-black text-stone-200 mt-0.5">Bún trắng</span>
+            <span id="badge-bun" class="text-[8px] font-black text-amber-400">15</span>
+          </button>
+
+          <button onclick="selectNoodle('banh_da')" class="bg-game-card border border-game rounded-2xl p-1.5 flex flex-col items-center justify-center relative active:scale-95">
+            <span class="text-2xl">🥢</span>
+            <span class="text-[9px] font-black text-red-300 mt-0.5">Bánh đa</span>
+            <span id="badge-banh_da" class="text-[8px] font-black text-amber-400">15</span>
           </button>
         </div>
 
-        <!-- Pause Overlay -->
-        <div id="pause-overlay" class="hidden absolute inset-0 bg-stone-950/90 backdrop-blur-md z-30 rounded-2xl flex flex-col items-center justify-center p-4 text-center">
-          <div class="text-4xl mb-2 animate-bounce">⏸️</div>
-          <h3 class="brand-font text-lg text-yellow-400 uppercase tracking-wide">Đang Tạm Dừng</h3>
-          <p class="text-xs text-stone-300 mb-4 max-w-[240px]">Thời gian đã đóng băng. Bạn có thể sang tab khác hoặc tiếp tục bán hàng.</p>
-          <button onclick="togglePauseGame(false)" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black py-2.5 px-6 rounded-xl text-sm shadow-lg">
-            ▶️ TIẾP TỤC BÁN BÚN
+        <!-- Ở giữa: Thớt nấu trung tâm (Prep Mat) -->
+        <div class="col-span-6 bg-amber-950/40 border-2 border-amber-600/50 rounded-3xl p-2.5 h-[155px] flex flex-col items-center justify-center relative shadow-inner overflow-hidden" id="prep-mat">
+          <div id="prep-prompt" class="text-stone-400 text-center text-xs font-bold leading-relaxed">
+            Chưa có tô.<br><span class="text-amber-400">Chạm chồng tô</span> để lấy.
+          </div>
+
+          <!-- Lớp hiển thị tô và món -->
+          <div id="visual-dish" class="hidden relative w-32 h-32 rounded-full border-4 border-blue-900 bg-white/95 flex items-center justify-center overflow-hidden shadow-lg">
+            <div id="visual-broth" class="hidden absolute inset-0 bg-gradient-to-t from-red-600/80 via-orange-500/60 to-amber-400/40 z-10 pointer-events-none"></div>
+            <div id="visual-noodle-layer" class="absolute inset-1 flex items-center justify-center text-3xl z-0">🍜</div>
+            <div id="visual-toppings-layer" class="absolute inset-0 p-2 flex flex-wrap items-center justify-center gap-1 z-20 pointer-events-none"></div>
+          </div>
+        </div>
+
+        <!-- Cột phải: Hũ Mắm tôm & Sa tế ớt chưng -->
+        <div class="col-span-3 flex flex-col gap-1.5">
+          <button onclick="addShrimpPaste()" class="bg-game-card border border-purple-500/60 rounded-2xl p-1.5 flex flex-col items-center justify-center relative active:scale-95">
+            <span id="badge-shrimp" class="hidden absolute -top-1 -right-1 bg-purple-400 text-stone-950 font-black text-[8px] px-1 rounded-full">✓</span>
+            <span class="text-2xl">🫙</span>
+            <span class="text-[9px] font-black text-purple-300 mt-0.5">Mắm tôm</span>
+          </button>
+
+          <button onclick="addChiliSauce()" class="bg-game-card border border-red-500/60 rounded-2xl p-1.5 flex flex-col items-center justify-center relative active:scale-95">
+            <span id="badge-chili" class="hidden absolute -top-1 -right-1 bg-red-400 text-white font-black text-[8px] px-1 rounded-full">✓</span>
+            <span class="text-2xl">🌶️</span>
+            <span class="text-[9px] font-black text-red-400 mt-0.5">Ớt sa tế</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- HÀNG 3: NÚT GIAO MÓN TO XANH LÁ & ĐỔ TÔ -->
+      <div class="flex items-center gap-2">
+        <button onclick="serveCurrentDish()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black py-2.5 rounded-2xl shadow-lg border border-emerald-400 flex items-center justify-center gap-2 text-sm">
+          <span>🛎️</span>
+          <span>Giao món</span>
+        </button>
+        <button onclick="trashDish()" class="bg-game-card border border-red-500/40 hover:bg-red-950/60 active:scale-95 text-red-400 font-bold px-3 py-2.5 rounded-2xl text-xs flex items-center gap-1">
+          <span>🗑️</span>
+          <span>Đổ tô</span>
+        </button>
+      </div>
+
+      <!-- HÀNG 4 & 5: KHAY TOPPING 2 HÀNG BO GÓC CHUẨN ẢNH MẪU -->
+      <div class="bg-game-card rounded-2xl p-1.5 border border-game shadow-md">
+        <!-- Hàng topping 1 -->
+        <div class="grid grid-cols-7 gap-1 mb-1">
+          <!-- Gạch cua -->
+          <button onclick="addTopping('rieu_cua')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-rieu_cua">15</span>
+            <span class="text-base">🦀</span>
+            <span class="text-[8px] font-black text-stone-200">Gạch riêu</span>
+          </button>
+          <!-- Đậu rán -->
+          <button onclick="addTopping('dau_ran')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-dau_ran">15</span>
+            <span class="text-base">🧈</span>
+            <span class="text-[8px] font-black text-stone-200">Đậu rán</span>
+          </button>
+          <!-- Tiết luộc -->
+          <button onclick="addTopping('tiet_luoc')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-tiet_luoc">15</span>
+            <span class="text-base">🩸</span>
+            <span class="text-[8px] font-black text-stone-200">Tiết luộc</span>
+          </button>
+          <!-- Trứng vịt lộn -->
+          <button onclick="addTopping('trung_lon')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-trung_lon">10</span>
+            <span class="text-base">🥚</span>
+            <span class="text-[8px] font-black text-stone-200">Trứng lộn</span>
+          </button>
+          <!-- Chả cá -->
+          <button onclick="addTopping('cha_ca')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-cha_ca">15</span>
+            <span class="text-base">🐟</span>
+            <span class="text-[8px] font-black text-stone-200">Chả cá</span>
+          </button>
+          <!-- Mọc nấm -->
+          <button onclick="addTopping('moc_nam')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-moc_nam">15</span>
+            <span class="text-base">🧆</span>
+            <span class="text-[8px] font-black text-stone-200">Mọc nấm</span>
+          </button>
+          <!-- Ốc bươu -->
+          <button onclick="addTopping('oc')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-oc">15</span>
+            <span class="text-base">🐌</span>
+            <span class="text-[8px] font-black text-stone-200">Ốc bươu</span>
           </button>
         </div>
 
-        <!-- BẾP TRUNG TÂM -->
-        <div id="central-kitchen-wrapper" class="bg-gradient-to-b from-stone-800 to-stone-850 rounded-3xl p-2.5 border border-stone-700 shadow-xl flex flex-col gap-1.5 relative transition-all">
-          <div class="flex justify-between items-center px-1">
-            <span class="text-[10px] font-black text-amber-300 uppercase tracking-tight" id="bowl-status-text">Chưa Có Vật Chứa Trên Khay</span>
-            <div class="flex items-center gap-1.5">
-              <button id="btn-quick-wash" onclick="quickWashBowls()" class="hidden text-emerald-400 hover:text-emerald-300 text-[10px] font-bold bg-stone-900 border border-emerald-500/40 px-2 py-0.5 rounded-lg active:scale-95 animate-pulse">
-                🧼 Rửa Bát (+3)
-              </button>
-              <button onclick="trashBowl()" class="text-red-400 hover:text-red-300 text-[10px] font-bold bg-stone-900 border border-red-500/40 px-2 py-0.5 rounded-lg active:scale-95">🗑️ Đổ đi</button>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-between py-0.5">
-            <!-- CỘT TRÁI: 3 LOẠI VẬT CHỨA & CHAN NƯỚC -->
-            <div class="flex flex-col gap-1">
-              <div class="flex gap-1">
-                <button onclick="drawBowlFromStack('bowl')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-stone-600 hover:border-amber-400 active:scale-90 transition shadow-md relative w-9">
-                  <span id="stack-bowl-count" class="absolute -top-1.5 -right-1 bg-amber-400 text-stone-950 font-black text-[8px] px-1 rounded-full">x20</span>
-                  <span class="text-sm">🥣</span>
-                  <span class="text-[7px] font-black text-amber-300">Tô</span>
-                </button>
-
-                <button onclick="drawBowlFromStack('box')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-orange-500/60 hover:border-orange-400 active:scale-90 transition shadow-md relative w-9">
-                  <span class="text-sm">🥡</span>
-                  <span class="text-[7px] font-black text-orange-300">Hộp</span>
-                </button>
-
-                <button onclick="drawBowlFromStack('hotpot')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-red-500/70 hover:border-red-400 active:scale-90 transition shadow-md relative w-9">
-                  <span class="absolute -top-1.5 -right-1 bg-red-600 text-white font-black text-[7px] px-1 rounded-full">VIP</span>
-                  <span class="text-sm">🍲</span>
-                  <span class="text-[7px] font-black text-red-300">Lẩu</span>
-                </button>
-              </div>
-
-              <button onclick="addBroth()" class="flex flex-col items-center bg-stone-900 p-1.5 rounded-2xl border-2 border-amber-500/50 shadow-md active:scale-90 transition w-full">
-                <div class="relative w-8 h-8 flex items-center justify-center">
-                  <svg class="w-8 h-8 food-glow" viewBox="0 0 60 60">
-                    <circle cx="30" cy="30" r="27" fill="#475569" stroke="#1e293b" stroke-width="2.5"/>
-                    <circle cx="30" cy="30" r="23" fill="#ea580c"/>
-                    <ellipse cx="30" cy="27" rx="19" ry="13" fill="#c2410c" opacity="0.85"/>
-                    <circle cx="36" cy="23" r="4" fill="#fb923c" opacity="0.9"/>
-                  </svg>
-                  <div id="pot-steam" class="absolute -top-1 flex gap-1 pointer-events-none">
-                    <div class="w-1.5 h-2.5 bg-white/70 rounded-full blur-[0.5px] steam-soft"></div>
-                  </div>
-                </div>
-                <span class="text-[8px] font-black text-amber-200 mt-0.5 uppercase">Chan Nước</span>
-              </button>
-            </div>
-
-            <!-- Ở GIỮA: VẬT CHỨA -->
-            <div id="main-container-viewport" class="relative w-40 h-40 rounded-full border-[8px] border-blue-950 bg-gradient-to-b from-stone-100 via-white to-blue-50 bowl-depth flex flex-col items-center justify-center overflow-hidden transition-all duration-300">
-              <div id="inner-rim" class="absolute inset-1 rounded-full border border-blue-600/30 pointer-events-none z-10"></div>
-              
-              <div id="no-bowl-prompt" class="text-stone-400 text-center text-xs font-bold px-3 z-0 leading-tight">
-                Chạm <b class="text-amber-500">"Tô"</b>, <b class="text-orange-400">"Hộp"</b> hoặc <b class="text-red-400">"Lẩu"</b>
-              </div>
-
-              <div id="empty-prompt" class="hidden text-stone-400 text-center text-xs font-bold px-3 z-0 leading-tight">
-                Chọn <b class="text-red-700">Sợi Bún</b> bên dưới
-              </div>
-
-              <div id="visual-noodles" class="hidden absolute inset-2 rounded-full flex items-center justify-center overflow-hidden z-10"></div>
-              <div id="broth-liquid" class="hidden absolute inset-0 bg-gradient-to-t from-red-600/85 via-orange-500/65 to-amber-400/45 rounded-full pointer-events-none z-20 shadow-inner"></div>
-              <div id="visual-ingredients" class="absolute inset-0 p-3 flex flex-wrap content-center justify-center gap-1 pointer-events-none z-30"></div>
-            </div>
-
-            <!-- CỘT PHẢI: QUẦY ĐỒ UỐNG 4 MÓN & MẮM TÔM -->
-            <div class="grid grid-cols-2 gap-1 w-24">
-              <button onclick="selectDrink('tea')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-emerald-500/60 hover:border-emerald-400 active:scale-90 transition relative">
-                <span id="drink-check-tea" class="hidden absolute -top-1 -right-1 bg-emerald-400 text-stone-950 font-black text-[8px] px-1 rounded-full">✓</span>
-                <span class="text-sm">🧊</span>
-                <span class="text-[8px] font-black text-emerald-300">Trà Đá</span>
-              </button>
-
-              <button onclick="selectDrink('kumquat')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-yellow-500/60 hover:border-yellow-400 active:scale-90 transition relative">
-                <span id="drink-check-kumquat" class="hidden absolute -top-1 -right-1 bg-yellow-400 text-stone-950 font-black text-[8px] px-1 rounded-full">✓</span>
-                <span class="text-sm">🍋</span>
-                <span class="text-[8px] font-black text-yellow-300">Trà Tắc</span>
-              </button>
-
-              <button onclick="selectDrink('soya')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-stone-400/60 hover:border-stone-200 active:scale-90 transition relative">
-                <span id="drink-check-soya" class="hidden absolute -top-1 -right-1 bg-white text-stone-950 font-black text-[8px] px-1 rounded-full">✓</span>
-                <span class="text-sm">🥛</span>
-                <span class="text-[8px] font-black text-stone-200">Đậu Nành</span>
-              </button>
-
-              <button onclick="selectDrink('soda')" class="flex flex-col items-center bg-stone-900 p-1 rounded-xl border border-red-500/60 hover:border-red-400 active:scale-90 transition relative">
-                <span id="drink-check-soda" class="hidden absolute -top-1 -right-1 bg-red-400 text-white font-black text-[8px] px-1 rounded-full">✓</span>
-                <span class="text-sm">🥤</span>
-                <span class="text-[8px] font-black text-red-300">Xá Xị</span>
-              </button>
-
-              <button onclick="addShrimpPaste()" class="col-span-2 flex items-center justify-center gap-1 bg-stone-900 py-1 rounded-xl border border-purple-500/60 hover:border-purple-400 active:scale-90 transition">
-                <span class="text-sm">🫙</span>
-                <span class="text-[9px] font-black text-purple-300">Mắm Tôm</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- THANH HIỂN THỊ CÁC MÓN ĐÃ BỎ VÀO TÔ -->
-          <div id="bowl-contents-badges" class="bg-stone-900/90 rounded-xl px-2 py-1 min-h-[26px] flex flex-wrap items-center gap-1 border border-stone-700/80">
-            <span class="text-[9px] text-stone-500 font-bold">Khay có:</span>
-            <span class="text-[9px] text-stone-400 italic" id="empty-content-text">Chưa có gì</span>
-          </div>
-        </div>
-
-        <!-- MÂM NGUYÊN LIỆU (GRID 5 CỘT THÔNG THOÁNG DỄ BẤM) -->
-        <div class="bg-stone-900 rounded-2xl p-2 border border-stone-700 shadow-md flex flex-col gap-1 max-h-[145px] overflow-y-auto no-scrollbar">
-          <div class="flex justify-between items-center px-1">
-            <span class="text-[11px] font-black uppercase text-amber-300">Khay Nguyên Liệu Đặc Sản:</span>
-            <span class="text-[10px] text-stone-400">Chạm gắp vào khay</span>
-          </div>
-          <div class="grid grid-cols-5 gap-1.5" id="quick-pantry-grid"></div>
-        </div>
-      </section>
-
-      <!-- TAB 2: ĐI CHỢ ĐẦU MỐI -->
-      <section id="view-market" class="tab-view hidden flex-1 flex flex-col gap-2.5">
-        <div class="bg-gradient-to-r from-amber-700 to-orange-700 text-white p-3 rounded-2xl shadow-md">
-          <h2 class="brand-font text-base uppercase">Chợ Đầu Mối Cua Cá & Đồ Sứ</h2>
-          <p class="text-xs text-amber-100" id="market-weather-notice">🌤️ Hôm nay trời quang đãng, nguồn hải sản tươi rói!</p>
-        </div>
-
-        <div class="flex-1 bg-stone-800/90 rounded-2xl p-3 border border-stone-700 shadow-sm flex flex-col justify-between overflow-y-auto no-scrollbar">
-          <div class="space-y-2" id="market-items-list"></div>
-          
-          <div class="pt-2.5 border-t border-stone-700 mt-2">
-            <div class="flex justify-between items-center text-sm font-bold mb-2.5 text-stone-200">
-              <span>Tổng thanh toán:</span>
-              <span id="market-bill" class="text-base font-black text-amber-400">0đ</span>
-            </div>
-            <button onclick="checkoutMarket()" class="w-full bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 text-white font-black py-3 rounded-xl text-sm shadow active:scale-95">
-              THANH TOÁN TIỀN CHỢ 🛒
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 3: TIỆM NÂNG CẤP & CƠ NGƠI -->
-      <section id="view-shop" class="tab-view hidden flex-1 flex flex-col gap-2.5">
-        <div class="bg-gradient-to-r from-yellow-600 to-amber-700 text-white p-3 rounded-2xl shadow-md flex justify-between items-center">
-          <div>
-            <h2 class="brand-font text-base uppercase">Biệt Đội Phụ Quán & Cơ Ngơi</h2>
-            <p class="text-[11px] text-yellow-100">Mua đứt nhà mặt phố Phố Cổ 200.000.000đ</p>
-          </div>
-          <div class="text-right">
-            <span class="text-[10px] text-yellow-200 block">Vốn ví:</span>
-            <span id="shop-cash-val" class="font-mono text-sm font-black text-emerald-300">300.000đ</span>
-          </div>
-        </div>
-
-        <!-- HỐT HỤI -->
-        <div class="bg-gradient-to-r from-red-950 to-amber-950 p-2.5 rounded-2xl border-2 border-yellow-500/70 shadow-md flex justify-between items-center">
-          <div class="text-left">
-            <div class="flex items-center gap-1.5">
-              <span class="text-lg">🤝</span>
-              <span class="text-xs font-black text-yellow-300 uppercase">Hốt Hụi Phường Chợ</span>
-            </div>
-            <p class="text-[10px] text-stone-300 mt-0.5">Nhận ngay <b class="text-emerald-400">2.000.000đ</b> tiền vốn, trả lãi 50.000đ/ngày.</p>
-          </div>
-          <button id="btn-hui-action" onclick="takeHuiLoan()" class="bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-black text-xs px-3 py-1.5 rounded-xl shadow active:scale-95">
-            HỐT HỤI
+        <!-- Hàng topping 2 -->
+        <div class="grid grid-cols-7 gap-1">
+          <!-- Bắp bò hoa -->
+          <button onclick="addTopping('bap_bo')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-bap_bo">15</span>
+            <span class="text-base">🥩</span>
+            <span class="text-[8px] font-black text-stone-200">Bắp bò</span>
           </button>
-        </div>
-
-        <div class="flex gap-1.5">
-          <button onclick="filterShop('all')" class="shop-filter-btn flex-1 py-1.5 text-xs font-black rounded-xl bg-amber-700 text-white" id="filter-all">Tất Cả</button>
-          <button onclick="filterShop('staff')" class="shop-filter-btn flex-1 py-1.5 text-xs font-bold rounded-xl bg-stone-800 text-stone-400" id="filter-staff">Nhân Sự</button>
-          <button onclick="filterShop('kitchen')" class="shop-filter-btn flex-1 py-1.5 text-xs font-bold rounded-xl bg-stone-800 text-stone-400" id="filter-kitchen">Bếp & Kho</button>
-          <button onclick="filterShop('place')" class="shop-filter-btn flex-1 py-1.5 text-xs font-bold rounded-xl bg-stone-800 text-stone-400" id="filter-place">Không Gian</button>
-        </div>
-
-        <div class="flex-1 bg-stone-800/90 rounded-2xl p-2.5 border border-stone-700 shadow-sm overflow-y-auto no-scrollbar space-y-2" id="shop-items-list"></div>
-      </section>
-
-      <!-- TAB 4: HŨ TIẾT KIỆM ĐA TẦNG & TỦ LƯU NIỆM -->
-      <section id="view-piggy" class="tab-view hidden flex-1 flex flex-col gap-2.5">
-        <div class="bg-gradient-to-r from-pink-600 to-rose-700 text-white p-3 rounded-2xl shadow-md flex justify-between items-center">
-          <div>
-            <h2 class="brand-font text-base uppercase">Hũ Tiết Kiệm Đa Tầng</h2>
-            <p class="text-[11px] text-pink-100">✨ Lãi suất qua đêm: <b class="text-yellow-300">+2%/ngày</b> trên số dư hũ</p>
+          <!-- Sườn sụn -->
+          <button onclick="addTopping('suon_sun')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-suon_sun">15</span>
+            <span class="text-base">🥓</span>
+            <span class="text-[8px] font-black text-stone-200">Sườn sụn</span>
+          </button>
+          <!-- Chả lá lốt -->
+          <button onclick="addTopping('cha_la_lot')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-cha_la_lot">15</span>
+            <span class="text-base">🌯</span>
+            <span class="text-[8px] font-black text-stone-200">Lá lốt</span>
+          </button>
+          <!-- Rau muống -->
+          <button onclick="addTopping('rau_song')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-rau_song">15</span>
+            <span class="text-base">🥬</span>
+            <span class="text-[8px] font-black text-stone-200">Rau sống</span>
+          </button>
+          <!-- Quẩy giòn -->
+          <button onclick="addTopping('quay')" class="bg-game-slot border border-game rounded-xl p-1 flex flex-col items-center justify-between min-h-[50px] relative active:scale-90">
+            <span class="absolute -top-1 -right-1 bg-stone-900 border border-stone-700 text-amber-300 font-black text-[8px] px-1 rounded-full" id="cnt-quay">15</span>
+            <span class="text-base">🥖</span>
+            <span class="text-[8px] font-black text-stone-200">Quẩy giòn</span>
+          </button>
+          <!-- Nấm hương (Khóa) -->
+          <div class="bg-game-slot/40 border border-stone-800 rounded-xl p-1 flex flex-col items-center justify-center opacity-40">
+            <span class="text-base">🔒</span>
+            <span class="text-[8px] font-bold text-stone-500">Nấm</span>
           </div>
-          <span class="text-3xl" id="tier-piggy-badge">🐷</span>
-        </div>
-
-        <div class="bg-stone-800/90 rounded-2xl p-3 border border-stone-700 shadow-sm flex flex-col gap-2">
-          <div class="flex justify-between items-center">
-            <div>
-              <span class="text-[11px] font-bold text-stone-400 block" id="current-tier-name">Mốc 1: Heo Đất Làng Gốm Bát Tràng</span>
-              <div id="piggy-vault-val" class="text-xl font-black text-pink-400">0đ</div>
-            </div>
-            <button onclick="smashPiggy()" class="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-extrabold py-1.5 px-3.5 rounded-xl text-xs shadow">
-              🔨 Đập Heo Lấy Vốn
-            </button>
-          </div>
-
-          <div class="bg-stone-900/90 p-2.5 rounded-xl border border-stone-700 text-left text-xs space-y-1.5">
-            <div class="flex justify-between text-[11px] text-stone-300">
-              <span id="tier-goal-title">Mục Tiêu Mốc 1 (Xe Wave Đi Chợ):</span>
-              <b class="text-amber-400" id="tier-goal-val">2.000.000đ</b>
-            </div>
-            <div class="w-full bg-stone-700 h-2.5 rounded-full overflow-hidden">
-              <div id="piggy-progress" class="bg-gradient-to-r from-pink-500 to-yellow-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-            </div>
+          <!-- Bò viên (Khóa) -->
+          <div class="bg-game-slot/40 border border-stone-800 rounded-xl p-1 flex flex-col items-center justify-center opacity-40">
+            <span class="text-base">🔒</span>
+            <span class="text-[8px] font-bold text-stone-500">Bò viên</span>
           </div>
         </div>
-
-        <div class="flex-1 bg-stone-800/90 rounded-2xl p-2.5 border border-stone-700 shadow-sm overflow-y-auto no-scrollbar flex flex-col gap-2">
-          <div class="flex justify-between items-center border-b border-stone-700 pb-1.5 px-1">
-            <span class="text-xs font-black uppercase text-amber-300">Tủ Kính Lưu Niệm & Danh Hiệu</span>
-            <span class="text-xs text-stone-400 font-bold" id="badge-count-text">0/8</span>
-          </div>
-          <div class="space-y-2" id="achievements-container"></div>
-        </div>
-      </section>
+      </div>
 
     </main>
 
-    <!-- 3. THANH ĐIỀU HƯỚNG DƯỚI ĐÁY -->
-    <nav class="bg-stone-900/95 border-t border-stone-800 py-2.5 px-3 flex justify-around items-center z-30 shadow-2xl">
-      <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn flex flex-col items-center text-amber-400 font-black text-xs transition">
-        <span class="text-xl">🏠</span>
-        <span>Sảnh Chính</span>
+    <!-- 4. THANH TIỆN ÍCH DƯỚI CÙNG: ĐI CHỢ - THUÊ NGƯỜI - HỦ HEO -->
+    <footer class="bg-stone-950/95 border-t border-game py-2 px-4 flex justify-around items-center z-30">
+      <button onclick="openModal('market')" class="flex flex-col items-center text-xs text-amber-300 font-bold active:scale-95">
+        <span class="text-lg">🛒</span>
+        <span>Đi chợ</span>
       </button>
-      <button onclick="switchTab('kitchen')" id="nav-kitchen" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-xs transition">
-        <span class="text-xl">🍜</span>
-        <span>Vào Bếp</span>
+      <button onclick="openModal('shop')" class="flex flex-col items-center text-xs text-stone-400 font-bold active:scale-95">
+        <span class="text-lg">👥</span>
+        <span>Thuê người</span>
       </button>
-      <button onclick="switchTab('market')" id="nav-market" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-xs transition">
-        <span class="text-xl">🛒</span>
-        <span>Đi Chợ</span>
+      <button onclick="openModal('hui')" class="flex flex-col items-center text-xs text-stone-400 font-bold active:scale-95">
+        <span class="text-lg">🤝</span>
+        <span>Hốt hụi</span>
       </button>
-      <button onclick="switchTab('shop')" id="nav-shop" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-xs transition">
-        <span class="text-xl">🏛️</span>
-        <span>Cơ Ngơi</span>
+      <button onclick="openModal('piggy')" class="flex flex-col items-center text-xs text-stone-400 font-bold active:scale-95">
+        <span class="text-lg">🐷</span>
+        <span>Nuôi heo</span>
       </button>
-      <button onclick="switchTab('piggy')" id="nav-piggy" class="nav-btn flex flex-col items-center text-stone-500 font-bold text-xs transition">
-        <span class="text-xl">🐷</span>
-        <span>Nuôi Heo</span>
-      </button>
-    </nav>
+    </footer>
 
-    <!-- MODAL SỔ THU CHI -->
-    <div id="modal-ledger" class="hidden fixed inset-0 z-50 bg-stone-950/85 backdrop-blur-md flex items-center justify-center p-3">
-      <div class="bg-stone-900 rounded-3xl max-w-xs w-full p-4 text-white text-center border-2 border-yellow-500/80 shadow-2xl">
-        <div class="text-3xl mb-1">📖</div>
-        <h3 id="ledger-title" class="brand-font text-base text-yellow-400 mb-0.5 tracking-wide uppercase">SỔ THU CHI NGÀY 1</h3>
-        <p class="text-xs text-stone-400 mb-2">Kết toán doanh thu ca & tính lãi qua đêm</p>
-
-        <div class="bg-stone-800/90 rounded-2xl p-2.5 text-xs space-y-1 mb-2 border border-stone-700 text-left font-medium">
-          <div class="flex justify-between items-center text-stone-300"><span>Doanh thu ca:</span><span id="final-money" class="font-bold text-emerald-400">+0đ</span></div>
-          <div class="flex justify-between items-center text-stone-300"><span>Tiền đi chợ:</span><span id="final-cost" class="font-bold text-red-400">-0đ</span></div>
-          <div class="flex justify-between items-center text-stone-300"><span>Lương nhân sự:</span><span id="final-wage" class="font-bold text-red-400">-0đ</span></div>
-          <div id="ledger-hui-row" class="hidden flex justify-between items-center text-orange-400"><span>Tiền họ hụi ngày:</span><span class="font-bold text-orange-300">-50.000đ</span></div>
-          <div class="flex justify-between items-center text-yellow-400"><span>Lãi đẻ từ Hũ Heo (+2%):</span><span id="final-interest" class="font-bold text-yellow-300">+0đ</span></div>
-          <div class="h-px bg-stone-700 my-1"></div>
-          <div class="flex justify-between items-center font-black text-sm"><span>Lãi Ròng Ca:</span><span id="final-net" class="text-yellow-300">0đ</span></div>
+    <!-- POPUP MODAL ĐI CHỢ & NÂNG CẤP -->
+    <div id="modal-container" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3">
+      <div class="bg-game-main border-2 border-amber-600 rounded-3xl max-w-sm w-full p-4 flex flex-col gap-3 shadow-2xl max-h-[85vh]">
+        <div class="flex justify-between items-center border-b border-game pb-2">
+          <h3 id="modal-title" class="text-base font-black text-amber-300 uppercase">TIÊU ĐỀ</h3>
+          <button onclick="closeModal()" class="w-7 h-7 bg-game-card rounded-full text-stone-300 font-black">✕</button>
         </div>
-
-        <div class="bg-stone-800/90 rounded-2xl p-2.5 border border-pink-500/30 mb-3 text-left">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-pink-300">🐷 Trích Tiền Đút Heo</span>
-            <span id="piggy-save-pct" class="text-xs font-black text-pink-300 bg-pink-900/60 px-2 py-0.5 rounded-full border border-pink-400/40">30%</span>
-          </div>
-          <input type="range" id="piggy-slider" min="0" max="100" value="30" class="w-full accent-pink-500 cursor-pointer mb-1.5">
-          <div class="flex justify-between text-xs text-stone-300">
-            <span>Giữ làm vốn</span>
-            <span>Bỏ ống: <b id="piggy-save-val" class="text-emerald-400 font-bold">0đ</b></span>
-          </div>
-        </div>
-
-        <button onclick="confirmLedgerAndNextDay()" class="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 text-stone-950 font-black py-2.5 rounded-xl text-xs shadow transition active:scale-95">
-          ĐÚT HEO & QUA NGÀY MỚI ➔
-        </button>
+        <div id="modal-content" class="flex-1 overflow-y-auto no-scrollbar space-y-2 text-xs"></div>
       </div>
     </div>
 
     <!-- TOAST -->
-    <div id="toast" class="fixed top-14 left-1/2 -translate-x-1/2 bg-stone-900/90 text-white px-5 py-2 rounded-full border border-yellow-400/80 shadow-xl text-xs font-bold pointer-events-none transition-all duration-300 opacity-0 -translate-y-2 z-50">
+    <div id="toast" class="fixed top-12 left-1/2 -translate-x-1/2 bg-stone-900/95 text-white px-4 py-2 rounded-full border border-amber-400 shadow-xl text-xs font-bold pointer-events-none transition-all duration-300 opacity-0 -translate-y-2 z-50">
       Thông báo
     </div>
   </div>
@@ -525,1599 +365,452 @@
     const Sound = {
       ctx: null,
       init() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
-      plop() {
+      playTone(freq, type = 'sine', duration = 0.15) {
         if (!this.ctx) return;
         const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'sine'; osc.frequency.setValueAtTime(320, now); osc.frequency.exponentialRampToValueAtTime(140, now + 0.12);
-        gain.gain.setValueAtTime(0.3, now); gain.gain.linearRampToValueAtTime(0, now + 0.12);
-        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.12);
+        osc.type = type; osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
+        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + duration);
       },
-      pour() {
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'triangle'; osc.frequency.setValueAtTime(180, now); osc.frequency.linearRampToValueAtTime(260, now + 0.25);
-        gain.gain.setValueAtTime(0.25, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.3);
-      },
-      ice() {
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'sine'; osc.frequency.setValueAtTime(1200, now); osc.frequency.exponentialRampToValueAtTime(600, now + 0.08);
-        gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0, now + 0.08);
-        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.08);
-      },
-      slurp() {
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(280, now); osc.frequency.linearRampToValueAtTime(420, now + 0.2);
-        gain.gain.setValueAtTime(0.18, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
-        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.25);
-      },
-      cameraFlash() {
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'square'; osc.frequency.setValueAtTime(1500, now); osc.frequency.exponentialRampToValueAtTime(400, now + 0.08);
-        gain.gain.setValueAtTime(0.25, now); gain.gain.linearRampToValueAtTime(0, now + 0.08);
-        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.08);
-      },
-      tingting() {
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'sine'; osc.frequency.setValueAtTime(880, now); osc.frequency.setValueAtTime(1760, now + 0.1);
-        gain.gain.setValueAtTime(0.25, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.5);
-      },
-      meow() {
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'sine'; osc.frequency.setValueAtTime(450, now); osc.frequency.linearRampToValueAtTime(750, now + 0.2); osc.frequency.linearRampToValueAtTime(520, now + 0.4);
-        gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
-        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.4);
-      },
-      coin() {
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime, osc1 = this.ctx.createOscillator(), osc2 = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc1.frequency.setValueAtTime(987.77, now); osc2.frequency.setValueAtTime(1318.51, now + 0.08);
-        gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-        osc1.connect(gain); gain.connect(this.ctx.destination); osc2.connect(gain);
-        osc1.start(now); osc1.stop(now + 0.15); osc2.start(now + 0.08); osc2.stop(now + 0.45);
-      },
-      buzz() {
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(130, now);
-        gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
-        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.35);
-      },
-      fever() {
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime, osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'square'; osc.frequency.setValueAtTime(523.25, now); osc.frequency.setValueAtTime(659.25, now + 0.1); osc.frequency.setValueAtTime(783.99, now + 0.2);
-        gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
-        osc.connect(gain); gain.connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.45);
-      },
-      pig() { if (!this.ctx) return; this.coin(); setTimeout(() => this.plop(), 120); }
+      plop() { this.playTone(320, 'sine', 0.1); },
+      pour() { this.playTone(220, 'triangle', 0.25); },
+      coin() { this.playTone(987, 'sine', 0.3); },
+      buzz() { this.playTone(130, 'sawtooth', 0.25); }
     };
 
-    /* HỆ THỐNG NGUYÊN LIỆU ĐẦY ĐỦ 100% */
-    const ALL_ITEMS = {
-      clean_bowls: {
-        name: 'Tô Bát Sứ', basePrice: 1000, type: 'supplies', unlockDay: 1,
-        svg: `<div class="w-8 h-8 rounded-full border-2 border-blue-900 bg-gradient-to-b from-white to-blue-50 shadow-md flex items-center justify-center"><div class="w-5 h-1.5 rounded-full border border-blue-600/40 bg-blue-100"></div></div>`
-      },
-      bun: { 
-        name: 'Bún Trắng', basePrice: 2000, type: 'noodle', unlockDay: 1,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <circle cx="22" cy="22" r="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
-          <path d="M9 17 Q22 31 35 17 M11 23 Q22 37 33 23" stroke="#e2e8f0" stroke-width="3" fill="none" stroke-linecap="round"/>
-        </svg>`
-      },
-      banh_da: { 
-        name: 'Bánh Đa Đỏ', basePrice: 2500, type: 'noodle', unlockDay: 4,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <circle cx="22" cy="22" r="18" fill="#3f1301" stroke="#250901" stroke-width="2"/>
-          <rect x="7" y="12" width="30" height="4.5" rx="2" fill="#881337"/>
-          <rect x="6" y="19" width="32" height="5" rx="2" fill="#9f1239"/>
-        </svg>`
-      },
-      rieu_cua: { 
-        name: 'Gạch Riêu', basePrice: 4000, type: 'meat', unlockDay: 1,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <path d="M8 20 C6 14, 15 9, 23 8 C31 8, 38 13, 37 20 C36 26, 32 30, 26 34 C18 36, 12 33, 9 27 Z" fill="#c2410c" stroke="#451a03" stroke-width="1.5"/>
-          <circle cx="16" cy="17" r="3.2" fill="#fed7aa" opacity="0.95"/>
-          <circle cx="26" cy="19" r="3.8" fill="#f97316" opacity="0.9"/>
-        </svg>`
-      },
-      dau_ran: { 
-        name: 'Đậu Rán', basePrice: 2000, type: 'meat', unlockDay: 1,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <rect x="6" y="9" width="32" height="26" rx="5" fill="#eab308" stroke="#451a03" stroke-width="2"/>
-          <line x1="13" y1="12" x2="13" y2="32" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>`
-      },
-      tiet_luoc: { 
-        name: 'Tiết Luộc', basePrice: 2500, type: 'meat', unlockDay: 2,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <rect x="7" y="10" width="30" height="24" rx="6" fill="#450a0a" stroke="#2b0000" stroke-width="1.8"/>
-          <ellipse cx="16" cy="16" rx="5" ry="2.5" fill="#ef4444" opacity="0.4" transform="rotate(-10 16 16)"/>
-        </svg>`
-      },
-      trung_lon: { 
-        name: 'Trứng Vịt Lộn', basePrice: 4500, type: 'meat', unlockDay: 4,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <ellipse cx="22" cy="22" rx="14" ry="17" fill="#eab308" stroke="#451a03" stroke-width="1.8"/>
-          <circle cx="20" cy="18" r="5.5" fill="#ea580c" opacity="0.9"/>
-        </svg>`
-      },
-      cha_ca: {
-        name: 'Chả Cá Chiên', basePrice: 3500, type: 'meat', unlockDay: 6,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <ellipse cx="22" cy="22" rx="17" ry="12" fill="#ca8a04" stroke="#713f12" stroke-width="1.8"/>
-          <circle cx="15" cy="20" r="1.5" fill="#15803d"/>
-          <circle cx="22" cy="17" r="1.8" fill="#166534"/>
-        </svg>`
-      },
-      moc_nam: {
-        name: 'Mọc Nấm', basePrice: 4000, type: 'meat', unlockDay: 8,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <circle cx="22" cy="22" r="15" fill="#fecdd3" stroke="#9f1239" stroke-width="1.8"/>
-          <circle cx="17" cy="18" r="2.5" fill="#451a03"/>
-          <circle cx="21" cy="27" r="3" fill="#451a03"/>
-        </svg>`
-      },
-      suon_sun: {
-        name: 'Sườn Sụn Non', basePrice: 5500, type: 'meat', unlockDay: 10,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <path d="M8 22 C8 12, 31 9, 36 18 C36 28, 12 32, 8 22 Z" fill="#c2410c" stroke="#7c2d12" stroke-width="2"/>
-          <ellipse cx="24" cy="20" rx="7" ry="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-        </svg>`
-      },
-      oc: { 
-        name: 'Ốc Bươu', basePrice: 3500, type: 'meat', unlockDay: 5,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <path d="M11 25 C9 13, 31 9, 34 21 C36 30, 25 35, 17 35 C11 35, 12 29, 11 25 Z" fill="#292524" stroke="#0c0a09" stroke-width="2"/>
-          <ellipse cx="24" cy="22" rx="5.5" ry="7" fill="#c2410c" transform="rotate(-15 24 22)"/>
-        </svg>`
-      },
-      cha_la_lot: { 
-        name: 'Chả Lá Lốt', basePrice: 3000, type: 'meat', unlockDay: 8,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <rect x="5" y="12" width="34" height="20" rx="9" fill="#14532d" stroke="#022c22" stroke-width="2"/>
-          <line x1="12" y1="12" x2="12" y2="32" stroke="#16a34a" stroke-width="2"/>
-        </svg>`
-      },
-      bap_bo: { 
-        name: 'Bắp Bò Hoa', basePrice: 6000, type: 'meat', unlockDay: 12,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <path d="M8 24 C6 13, 26 7, 35 15 C40 24, 28 35, 16 33 Z" fill="#b91c1c" stroke="#450a0a" stroke-width="2"/>
-          <path d="M12 17 Q22 25 32 15" stroke="#ffffff" stroke-width="2.2" fill="none"/>
-        </svg>`
-      },
-      rau_song: { 
-        name: 'Rau Muống', basePrice: 1000, type: 'garnish', unlockDay: 1,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <circle cx="15" cy="17" r="7" fill="#22c55e" stroke="#14532d" stroke-width="1.8"/>
-          <circle cx="28" cy="22" r="6.5" fill="#16a34a" stroke="#14532d" stroke-width="1.8"/>
-        </svg>`
-      },
-      quay: { 
-        name: 'Quẩy Giòn', basePrice: 2000, type: 'garnish', unlockDay: 1,
-        svg: `<svg class="w-8 h-8 food-glow" viewBox="0 0 44 44">
-          <rect x="10" y="7" width="10" height="30" rx="4.5" fill="#f59e0b" stroke="#78350f" stroke-width="2"/>
-          <rect x="22" y="7" width="10" height="30" rx="4.5" fill="#d97706" stroke="#78350f" stroke-width="2"/>
-        </svg>`
-      }
-    };
-
-    /* HỆ THỐNG ĐỒ UỐNG */
-    const DRINKS_DATA = {
-      tea: { name: 'Trà Đá Hà Nội', price: 5000, icon: '🧊', badgeClass: 'bg-emerald-950 text-emerald-300 border-emerald-600' },
-      kumquat: { name: 'Trà Tắc Mật Ong', price: 10000, icon: '🍋', badgeClass: 'bg-yellow-950 text-yellow-300 border-yellow-600' },
-      soya: { name: 'Sữa Đậu Nành', price: 8000, icon: '🥛', badgeClass: 'bg-stone-800 text-stone-200 border-stone-500' },
-      soda: { name: 'Lon Xá Xị', price: 12000, icon: '🥤', badgeClass: 'bg-red-950 text-red-300 border-red-600' }
-    };
-
-    /* BIẾN ĐỘNG THỜI TIẾT */
-    const WEATHER_TYPES = [
-      { id: 'sunny', title: 'Hôm Nay Nắng Đẹp', desc: 'Trời quang đãng, khách ghé ăn lai rai. Giá chợ đầu mối bình ổn.', icon: '☀️', crabMod: 1.0, vegMod: 1.0, patienceMod: 1.0 },
-      { id: 'rainy', title: 'Mưa Lạnh Phố Cổ (+50% Khách)', desc: 'Trời se lạnh, khách thèm ăn bún nóng tăng vọt! Giá rau muống ở chợ tăng gấp đôi (+100%).', icon: '🌧️', crabMod: 1.0, vegMod: 2.0, patienceMod: 1.15 },
-      { id: 'flood', title: 'Mùa Nước Nổi Cua Rẻ (-40%)', desc: 'Thuyền cua đồng về đầy chợ! Giá gạch riêu giảm sốc 40%.', icon: '🦀', crabMod: 0.6, vegMod: 1.0, patienceMod: 1.0 }
-    ];
-
-    /* LỘ TRÌNH 4 MỐC HŨ HEO */
-    const PIGGY_TIERS = [
-      { id: 1, name: 'Mốc 1: Heo Đất Làng Gốm Bát Tràng', goalName: 'Mua Xe Máy Wave Cũ Đi Chợ', target: 2000000, icon: '🐷' },
-      { id: 2, name: 'Mốc 2: Heo Vàng Tài Lộc Phố Hàng Bạc', goalName: 'Sửa Mặt Bằng & Máy Lạnh Daikin', target: 10000000, icon: '🐖' },
-      { id: 3, name: 'Mốc 3: Két Sắt Chống Cháy Việt Tiệp', goalName: 'Mở Quán Bún 2 Tầng Ngã Tư', target: 50000000, icon: '💼' },
-      { id: 4, name: 'Mốc 4: Sổ Đỏ Lồng Kính Mạ Vàng', goalName: 'Mua Đứt Căn Nhà Mặt Phố Hàng Bè', target: 200000000, icon: '🏛️' }
-    ];
-
-    const ACHIEVEMENTS = [
-      { id: 'first_serve', name: 'Khai Trương Hồng Phát', desc: 'Phục vụ thành công 10 tô đầu tiên.', icon: '🍜', target: 10, reward: 50000 },
-      { id: 'vip_lover', name: 'Ngôi Sao Mạng Xã Hội', desc: 'Làm hài lòng 5 Food Reviewer 5 sao.', icon: '🌟', target: 5, reward: 250000 },
-      { id: 'hotpot_master', name: 'Đại Tiệc Lẩu Cua', desc: 'Phục vụ 5 Nồi Lẩu Riêu Cua VIP.', icon: '🍲', target: 5, reward: 300000 },
-      { id: 'online_master', name: 'Chiến Thần Đơn App', desc: 'Đóng gói thành công 10 đơn mang đi.', icon: '🥡', target: 10, reward: 100000 },
-      { id: 'drink_master', name: 'Vua Giải Khát', desc: 'Phục vụ 20 cốc nước giải khát.', icon: '🍹', target: 20, reward: 120000 },
-      { id: 'reach_day_15', name: 'Trụ Vững Phố Cổ', desc: 'Kinh doanh liên tiếp đến Ngày 15.', icon: '🗓️', target: 15, reward: 350000 },
-      { id: 'fever_hero', name: 'Cơn Lốc Bốc Lửa', desc: 'Đạt chuỗi Combo liên tiếp x5 trong ca.', icon: '🔥', target: 5, reward: 200000 },
-      { id: 'buy_house_ultimate', name: 'Chủ Nhân Phố Cổ', desc: 'Mua đứt nhà mặt phố (200.000.000đ).', icon: '🏛️', target: 200000000, reward: 5000000 }
-    ];
-
-    let savedState = {
+    /* DỮ LIỆU GAME */
+    const STATE = {
       day: 1,
       cash: 300000,
       piggyBank: 0,
-      piggyTier: 1,
-      todayMarketCost: 0,
-      currentWeatherId: 'sunny',
-      hasHuiLoan: false,
-      boughtHouseUltimate: false,
-      stats: { totalServed: 0, totalCrabUsed: 0, totalDrinksServed: 0, totalOnlineServed: 0, totalVipServed: 0, totalHotpotServed: 0, maxCombo: 0 },
-      unlockedBadges: {},
-      claimedBadges: {},
-      inventory: { 
-        clean_bowls: 20,
-        bun: 15, banh_da: 15, rieu_cua: 15, dau_ran: 15, tiet_luoc: 15, trung_lon: 10, cha_ca: 15, moc_nam: 15, suon_sun: 15, oc: 15, cha_la_lot: 15, bap_bo: 15, rau_song: 15, quay: 15 
-      },
-      upgrades: {
-        fanLevel: 0, staffBusser: false, staffTea: false, staffShipper: false, staffNoodle: false, 
-        staffGuard: false, staffChefSix: false, electricPotLevel: 0, crabMold: false, fridgeLevel: 0, 
-        staffBroth: false, bikeDelivery: false, acLevel: 0, truckDelivery: false
-      }
-    };
-
-    function loadGame() {
-      const data = localStorage.getItem('bun_rieu_phase4_final_v14');
-      if (data) {
-        try { savedState = Object.assign(savedState, JSON.parse(data)); } catch (e) {}
-      }
-      // Bảo đảm bù đủ mọi trường kho hàng nếu chơi tiếp từ save cũ
-      for (let k in ALL_ITEMS) {
-        if (savedState.inventory[k] === undefined) {
-          savedState.inventory[k] = (k === 'clean_bowls' ? 20 : 15);
-        }
-      }
-      if (savedState.piggyTier === undefined) savedState.piggyTier = 1;
-      if (savedState.currentWeatherId === undefined) savedState.currentWeatherId = 'sunny';
-    }
-    function persistGame() {
-      localStorage.setItem('bun_rieu_phase4_final_v14', JSON.stringify(savedState));
-    }
-
-    const shiftState = {
-      isPaused: false,
-      containerType: null,
-      hasContainer: false,
-      timeLeft: 180,
       todaySales: 0,
-      missedCount: 0,
-      combo: 0,
-      feverTime: 0,
-      gasOut: false,
-      gasClicks: 2,
-      catActive: false,
-      customers: [null, null, null, null],
-      currentDish: { 
-        base: null, 
-        hasBroth: false, 
-        toppings: [], 
-        drink: null, 
-        hasShrimpPaste: false 
+      todayMarketCost: 0,
+      timeLeft: 180,
+      isPaused: false,
+      selectedTableIdx: 0,
+      tables: [null, null, null],
+      inventory: {
+        clean_bowls: 20, bun: 15, banh_da: 15, rieu_cua: 15, dau_ran: 15, tiet_luoc: 15,
+        trung_lon: 10, cha_ca: 15, moc_nam: 15, suon_sun: 15, oc: 15, cha_la_lot: 15,
+        bap_bo: 15, rau_song: 15, quay: 15
+      },
+      currentDish: {
+        container: null, // 'bowl', 'box', 'hotpot'
+        base: null,
+        hasBroth: false,
+        toppings: [],
+        hasDrink: false,
+        hasShrimpPaste: false,
+        hasChili: false
       }
     };
 
-    function formatMoney(amount) { return amount.toLocaleString('vi-VN') + 'đ'; }
+    const TOPPING_NAMES = {
+      rieu_cua: 'Gạch cua', dau_ran: 'Đậu rán', tiet_luoc: 'Tiết luộc', trung_lon: 'Trứng lộn',
+      cha_ca: 'Chả cá', moc_nam: 'Mọc nấm', suon_sun: 'Sườn sụn', oc: 'Ốc bươu',
+      cha_la_lot: 'Lá lốt', bap_bo: 'Bắp bò', rau_song: 'Rau sống', quay: 'Quẩy'
+    };
 
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.className = 'fixed top-14 left-1/2 -translate-x-1/2 bg-stone-900/90 text-white px-5 py-2 rounded-full border border-yellow-400/80 shadow-xl text-xs font-bold pointer-events-none transition-all duration-300 opacity-100 translate-y-0 z-50';
-      setTimeout(() => { toast.className = toast.className.replace('opacity-100 translate-y-0', 'opacity-0 -translate-y-2'); }, 1500);
+    const TOPPING_ICONS = {
+      rieu_cua: '🦀', dau_ran: '🧈', tiet_luoc: '🩸', trung_lon: '🥚',
+      cha_ca: '🐟', moc_nam: '🧆', suon_sun: '🥓', oc: '🐌',
+      cha_la_lot: '🌯', bap_bo: '🥩', rau_song: '🥬', quay: '🥖'
+    };
+
+    const CUSTOMER_TEMPLATES = [
+      { name: 'Bà Lam', avatar: '👵', text: 'Cho bà 1 tô bún riêu cua, bắp bò, nhiều rau nha con!', base: 'bun', tops: ['rieu_cua', 'bap_bo', 'rau_song'], price: 45000 },
+      { name: 'Anh Nam', avatar: '👨‍💼', text: '1 suất bánh đa đỏ thập cẩm, thêm mắm tôm và trà đá nhé!', base: 'banh_da', tops: ['rieu_cua', 'bap_bo', 'suon_sun'], needDrink: true, needShrimp: true, price: 65000 },
+      { name: 'Shipper Shopee', avatar: '🛵', text: 'Đơn mang đi: 1 hộp bánh đa cua chả lá lốt gấp nhé!', isBox: true, base: 'banh_da', tops: ['rieu_cua', 'cha_la_lot'], price: 50000 },
+      { name: 'Cậu Bé', avatar: '👦', text: 'Cô ơi cho cháu 1 tô bún đậu rán, trứng vịt lộn ngọt nước!', base: 'bun', tops: ['dau_ran', 'trung_lon'], price: 38000 }
+    ];
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'fixed top-12 left-1/2 -translate-x-1/2 bg-stone-900/95 text-white px-4 py-2 rounded-full border border-amber-400 shadow-xl text-xs font-bold pointer-events-none transition-all duration-300 opacity-100 translate-y-0 z-50';
+      setTimeout(() => { t.className = t.className.replace('opacity-100 translate-y-0', 'opacity-0 -translate-y-2'); }, 1500);
     }
 
-    function togglePauseGame(forceState = null) {
-      shiftState.isPaused = forceState !== null ? forceState : !shiftState.isPaused;
-      const overlay = document.getElementById('pause-overlay');
-      const text = document.getElementById('pause-text');
-
-      if (shiftState.isPaused) {
-        overlay.classList.remove('hidden');
-        text.textContent = 'Tiếp';
-      } else {
-        overlay.classList.add('hidden');
-        text.textContent = 'Dừng';
-      }
-    }
-
-    function switchTab(tabKey) {
-      document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
-      document.querySelectorAll('.nav-btn').forEach(b => {
-        b.classList.remove('text-amber-400', 'font-black');
-        b.classList.add('text-stone-500', 'font-bold');
-      });
-
-      document.getElementById(`view-${tabKey}`).classList.remove('hidden');
-      const activeNav = document.getElementById(`nav-${tabKey}`);
-      if (activeNav) {
-        activeNav.classList.remove('text-stone-500', 'font-bold');
-        activeNav.classList.add('text-amber-400', 'font-black');
-      }
-
-      const hudBar = document.getElementById('kitchen-hud-bar');
-      if (tabKey === 'kitchen') {
-        hudBar.classList.remove('hidden');
-      } else {
-        hudBar.classList.add('hidden');
-        if (!shiftState.isPaused) togglePauseGame(true);
-      }
-
-      if (tabKey === 'dashboard') renderDashboard();
-      if (tabKey === 'market') renderMarketTab();
-      if (tabKey === 'shop') renderShopTab();
-      if (tabKey === 'piggy') renderPiggyAndAchievements();
-    }
-
-    function startKitchenShift() {
-      switchTab('kitchen');
-      togglePauseGame(false);
-      showToast('🚀 Mở cửa ca! Khách VIP & các đơn đố mẹo đang tới.');
-    }
-
-    function renderDashboard() {
-      document.getElementById('dash-total-served').textContent = `${savedState.stats.totalServed} đơn đã giao`;
-      document.getElementById('dash-bowl-count').textContent = `${savedState.inventory.clean_bowls} cái trong kho`;
-
-      const weather = WEATHER_TYPES.find(w => w.id === savedState.currentWeatherId) || WEATHER_TYPES[0];
-      document.getElementById('morning-news-icon').textContent = weather.icon;
-      document.getElementById('morning-news-title').textContent = `Bản Tin: ${weather.title}`;
-      document.getElementById('morning-news-desc').textContent = weather.desc;
-      document.getElementById('weather-badge').textContent = `${weather.icon} ${weather.title}`;
+    function togglePauseGame() {
+      STATE.isPaused = !STATE.isPaused;
+      document.getElementById('pause-icon').textContent = STATE.isPaused ? '▶' : '⏸';
+      showToast(STATE.isPaused ? 'Đã tạm dừng ca bán' : 'Tiếp tục bán bún');
     }
 
     function updateHUD() {
-      document.getElementById('hud-day').textContent = `Ngày ${savedState.day}`;
-      document.getElementById('hud-money').textContent = formatMoney(savedState.cash);
-      document.getElementById('hud-piggy').textContent = formatMoney(savedState.piggyBank);
-      document.getElementById('shift-missed').textContent = `${shiftState.missedCount}/3`;
-      document.getElementById('combo-display').textContent = `Combo: x${shiftState.combo}`;
-      document.getElementById('shop-cash-val').textContent = formatMoney(savedState.cash);
-      document.getElementById('stack-bowl-count').textContent = `x${savedState.inventory.clean_bowls}`;
-      
-      const washBtn = document.getElementById('btn-quick-wash');
-      if (savedState.inventory.clean_bowls <= 0) washBtn.classList.remove('hidden');
-      else washBtn.classList.add('hidden');
+      document.getElementById('hud-day').textContent = `Ngày ${STATE.day}`;
+      document.getElementById('hud-money').textContent = STATE.cash.toLocaleString('vi-VN') + 'đ';
+      document.getElementById('hud-piggy').textContent = `Heo: ${STATE.piggyBank.toLocaleString('vi-VN')}đ`;
+      document.getElementById('badge-bowls').textContent = STATE.inventory.clean_bowls;
+      document.getElementById('badge-bun').textContent = STATE.inventory.bun;
+      document.getElementById('badge-banh_da').textContent = STATE.inventory.banh_da;
 
-      const currentTier = PIGGY_TIERS[savedState.piggyTier - 1] || PIGGY_TIERS[PIGGY_TIERS.length - 1];
-      document.getElementById('hud-piggy-icon').textContent = currentTier.icon;
+      for (let k in TOPPING_NAMES) {
+        const el = document.getElementById(`cnt-${k}`);
+        if (el) el.textContent = STATE.inventory[k];
+      }
 
-      const m = Math.floor(shiftState.timeLeft / 60), s = shiftState.timeLeft % 60;
-      document.getElementById('shift-timer').textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
-
-      const subTitleSpan = document.querySelector('#shop-title-sub span:first-child');
-      if (savedState.boughtHouseUltimate) subTitleSpan.textContent = '👑 Nhà Hàng 5 Sao Phố Cổ';
-      else if (savedState.day >= 25) subTitleSpan.textContent = 'Tiệm Lớn Phố Cổ';
-      else if (savedState.day >= 8) subTitleSpan.textContent = 'Quán Bún Cửa Hàng';
-      else subTitleSpan.textContent = 'Gánh Vỉa Hè';
+      const m = Math.floor(STATE.timeLeft / 60), s = STATE.timeLeft % 60;
+      document.getElementById('shift-clock').textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
     }
 
-    function quickWashBowls() {
-      if (shiftState.isPaused) return;
-      Sound.pour();
-      savedState.inventory.clean_bowls += 3;
-      updateHUD();
-      showToast('🧼 Đã cọ sạch cấp tốc 3 chiếc bát đưa vào kho!');
+    /* CHỌN BÀN ĂN & CẬP NHẬT ORDER BALLOON */
+    function selectTable(idx) {
+      STATE.selectedTableIdx = idx;
+      renderTables();
+      renderOrderBalloon();
     }
 
-    function drawBowlFromStack(type) {
-      if (shiftState.isPaused) { showToast('Bấm TIẾP TỤC để bán hàng!'); return; }
-      if (shiftState.hasContainer) { showToast('Đã có vật chứa trên khay rồi!'); return; }
+    function renderTables() {
+      for (let i = 0; i < 3; i++) {
+        const slot = document.getElementById(`table-slot-${i}`);
+        const cust = STATE.tables[i];
+        const isSelected = STATE.selectedTableIdx === i;
 
+        if (cust) {
+          slot.className = `table-slot rounded-2xl p-1.5 flex flex-col items-center justify-center min-h-[64px] cursor-pointer transition ${
+            isSelected ? 'bg-amber-950 border-2 border-amber-400 shadow-md' : 'bg-game-card border border-game'
+          }`;
+          slot.innerHTML = `
+            <div class="relative">
+              <span class="text-2xl">${cust.avatar}</span>
+              ${cust.isBox ? '<span class="absolute -top-1 -right-2 text-[9px] bg-orange-600 px-1 rounded-full text-white font-bold">App</span>' : ''}
+            </div>
+            <span class="text-[10px] font-black text-amber-200 mt-0.5 truncate max-w-[70px]">${cust.name}</span>
+          `;
+        } else {
+          slot.className = `table-slot rounded-2xl p-1.5 flex flex-col items-center justify-center min-h-[64px] cursor-pointer transition ${
+            isSelected ? 'bg-stone-900 border-2 border-amber-400/80' : 'bg-game-card/50 border border-game/40'
+          }`;
+          slot.innerHTML = `<span class="text-[10px] text-stone-500 font-bold">Bàn trống</span>`;
+        }
+      }
+    }
+
+    function renderOrderBalloon() {
+      const cust = STATE.tables[STATE.selectedTableIdx];
+      const textEl = document.getElementById('order-dialogue-text');
+      const iconEl = document.getElementById('order-bowl-icon');
+      const barEl = document.getElementById('patience-bar');
+
+      if (cust) {
+        iconEl.textContent = cust.isBox ? '🥡' : '🥣';
+        textEl.innerHTML = `<b class="text-amber-300 font-extrabold">${cust.name}:</b> "${cust.text}"`;
+        barEl.style.width = `${(cust.patience / cust.maxPatience) * 100}%`;
+      } else {
+        iconEl.textContent = '🥣';
+        textEl.textContent = 'Bàn này đang trống. Hãy bấm chọn bàn khác hoặc chờ khách ghé nhé!';
+        barEl.style.width = '100%';
+      }
+    }
+
+    /* THAO TÁC NẤU BẾP */
+    function drawContainer(type) {
+      if (STATE.currentDish.container) {
+        showToast('Đã có vật chứa trên thớt rồi!');
+        return;
+      }
       if (type === 'bowl') {
-        if (savedState.inventory.clean_bowls <= 0) {
-          showToast('Hết bát sạch! Chạm "Rửa Bát (+3)" ở góc trên ngay!', false);
+        if (STATE.inventory.clean_bowls <= 0) {
+          showToast('Hết bát sạch! Bấm Rửa bát hoặc vào Chợ mua thêm.');
           Sound.buzz();
           return;
         }
-        savedState.inventory.clean_bowls--;
-        shiftState.containerType = 'bowl';
-        showToast('Đã lấy 1 Tô Sứ cho khách ăn tại chỗ!');
-      } else if (type === 'box') {
-        shiftState.containerType = 'box';
-        showToast('Đã lấy 1 Hộp Bã Mía đóng đơn mang về!');
-      } else if (type === 'hotpot') {
-        shiftState.containerType = 'hotpot';
-        showToast('Đã chuẩn bị Nồi Lẩu Riêu Cua Đại Tiệc!');
+        STATE.inventory.clean_bowls--;
       }
-
-      shiftState.hasContainer = true;
+      STATE.currentDish.container = type;
       Sound.plop();
-      
-      const bowlBox = document.getElementById('main-container-viewport');
-      bowlBox.classList.remove('animate-bowl-spawn');
-      void bowlBox.offsetWidth;
-      bowlBox.classList.add('animate-bowl-spawn');
-
+      updatePrepMat();
       updateHUD();
-      updateBowlUI();
-      persistGame();
-    }
-
-    function renderQuickPantry() {
-      const grid = document.getElementById('quick-pantry-grid');
-      grid.innerHTML = '';
-
-      for (let k in ALL_ITEMS) {
-        if (k === 'clean_bowls') continue;
-        const it = ALL_ITEMS[k];
-        const isUnlocked = savedState.day >= it.unlockDay;
-        const btn = document.createElement('button');
-        btn.className = `p-1 rounded-2xl flex flex-col items-center justify-center transition border ${
-          isUnlocked ? 'bg-stone-800 hover:bg-stone-700 border-stone-600 active:scale-95 shadow-sm' : 'bg-stone-900 border-stone-800 opacity-40 cursor-not-allowed'
-        }`;
-        btn.innerHTML = `
-          ${it.svg}
-          <span class="text-[9px] font-black text-stone-200 truncate w-full text-center mt-0.5">${it.name}</span>
-          <span class="text-[8px] font-black text-amber-950 bg-amber-400 px-1 py-0.2 rounded-full mt-0.5">${isUnlocked ? savedState.inventory[k] : 'N.' + it.unlockDay}</span>
-        `;
-        if (isUnlocked) {
-          btn.onclick = () => {
-            if (shiftState.isPaused) { showToast('Bấm TIẾP TỤC để bán hàng!'); return; }
-            if (it.type === 'noodle') selectNoodle(k);
-            else addTopping(k);
-          };
-        }
-        grid.appendChild(btn);
-      }
+      showToast(`Đã lấy ${type === 'bowl' ? 'Tô Sứ' : (type === 'box' ? 'Hộp Mang Về' : 'Nồi Lẩu')} lên thớt!`);
     }
 
     function selectNoodle(type) {
-      if (!shiftState.hasContainer) { showToast('Lấy Tô, Hộp hoặc Nồi Lẩu trước nhé!'); Sound.buzz(); return; }
-      if (savedState.inventory[type] <= 0) { showToast('Đã hết sợi trong kho!'); Sound.buzz(); return; }
-      if (shiftState.currentDish.base) { showToast('Đã chọn sợi rồi!'); return; }
+      if (!STATE.currentDish.container) { showToast('Lấy tô trước khi chọn bún!'); Sound.buzz(); return; }
+      if (STATE.currentDish.base) { showToast('Đã có sợi trong tô rồi!'); return; }
+      if (STATE.inventory[type] <= 0) { showToast('Đã hết loại sợi này trong kho!'); Sound.buzz(); return; }
+      STATE.inventory[type]--;
+      STATE.currentDish.base = type;
       Sound.plop();
-      savedState.inventory[type]--;
-      shiftState.currentDish.base = type;
-      if (savedState.upgrades.staffBroth && !shiftState.gasOut) shiftState.currentDish.hasBroth = true;
-      updateBowlUI();
-      renderQuickPantry();
-      triggerChefSixHelper();
+      updatePrepMat();
+      updateHUD();
     }
 
-    function addBroth() {
-      if (shiftState.isPaused) return;
-      if (shiftState.gasOut) { showToast('Bếp đang tắt gas! Hãy gõ vào bình gas trước!'); Sound.buzz(); return; }
-      if (!shiftState.hasContainer) { showToast('Lấy Tô, Hộp hoặc Nồi Lẩu trước!'); Sound.buzz(); return; }
-      if (!shiftState.currentDish.base) { showToast('Hãy chọn Bún hoặc Bánh Đa trước!'); Sound.buzz(); return; }
-      if (shiftState.currentDish.hasBroth) { showToast('Đã chan đầy nước dùng rồi!'); return; }
+    function addBroth(type) {
+      if (!STATE.currentDish.container) { showToast('Lấy tô trước khi chan nước!'); Sound.buzz(); return; }
+      if (!STATE.currentDish.base) { showToast('Cho bún vào tô trước đã!'); Sound.buzz(); return; }
+      if (STATE.currentDish.hasBroth) { showToast('Tô đã chan đầy nước dùng rồi!'); return; }
+      STATE.currentDish.hasBroth = true;
       Sound.pour();
-      shiftState.currentDish.hasBroth = true;
-      updateBowlUI();
+      updatePrepMat();
     }
 
-    function addTopping(key) {
-      if (!shiftState.hasContainer) { showToast('Lấy vật chứa trước!'); Sound.buzz(); return; }
-      if (!shiftState.currentDish.base) { showToast('Hãy chọn sợi trước!'); Sound.buzz(); return; }
-      if (savedState.inventory[key] <= 0) { showToast('Đã hết món này!'); Sound.buzz(); return; }
+    function addTopping(k) {
+      if (!STATE.currentDish.container) { showToast('Lấy tô trước khi gắp topping!'); Sound.buzz(); return; }
+      if (!STATE.currentDish.base) { showToast('Cho bún vào trước đã!'); Sound.buzz(); return; }
+      if (STATE.inventory[k] <= 0) { showToast(`Đã hết ${TOPPING_NAMES[k]}!`); Sound.buzz(); return; }
+      STATE.inventory[k]--;
+      STATE.currentDish.toppings.push(k);
       Sound.plop();
-      savedState.inventory[key]--;
-      shiftState.currentDish.toppings.push(key);
-      if (key === 'rieu_cua') savedState.stats.totalCrabUsed++;
-      updateBowlUI();
-      renderQuickPantry();
+      updatePrepMat();
+      updateHUD();
     }
 
-    function selectDrink(drinkKey) {
-      if (shiftState.isPaused) return;
-      Sound.ice();
-      shiftState.currentDish.drink = drinkKey;
-      
-      ['tea', 'kumquat', 'soya', 'soda'].forEach(dk => {
-        const el = document.getElementById(`drink-check-${dk}`);
-        if (el) {
-          if (dk === drinkKey) el.classList.remove('hidden');
-          else el.classList.add('hidden');
-        }
-      });
-
-      updateBowlUI();
-      showToast(`Đã rót: ${DRINKS_DATA[drinkKey].name}!`);
+    function pourDrink() {
+      STATE.currentDish.hasDrink = true;
+      document.getElementById('badge-drink').classList.remove('hidden');
+      Sound.pour();
+      showToast('Đã rót 1 cốc Trà đá chuẩn bị giao kèm!');
     }
 
     function addShrimpPaste() {
-      if (shiftState.isPaused) return;
-      if (!shiftState.hasContainer) { showToast('Lấy tô trước khi nêm mắm tôm!'); Sound.buzz(); return; }
-      if (shiftState.currentDish.hasShrimpPaste) { showToast('Tô đã nêm mắm tôm rồi!'); return; }
+      if (!STATE.currentDish.container) return;
+      STATE.currentDish.hasShrimpPaste = true;
+      document.getElementById('badge-shrimp').classList.remove('hidden');
       Sound.plop();
-      shiftState.currentDish.hasShrimpPaste = true;
-      updateBowlUI();
-      showToast('Đã thêm 1 thìa Mắm Tôm bông xốp thơm lừng!');
+      showToast('Đã thêm 1 thìa Mắm tôm thơm lừng!');
     }
 
-    function trashBowl() {
-      // Chỉ trả lại bát sứ nếu hủy đúng loại tô sứ
-      if (shiftState.hasContainer && shiftState.containerType === 'bowl') {
-        savedState.inventory.clean_bowls++;
-      }
-      shiftState.hasContainer = false;
-      shiftState.containerType = null;
-      shiftState.currentDish = { base: null, hasBroth: false, toppings: [], drink: null, hasShrimpPaste: false };
-      ['tea', 'kumquat', 'soya', 'soda'].forEach(dk => {
-        const el = document.getElementById(`drink-check-${dk}`);
-        if (el) el.classList.add('hidden');
-      });
+    function addChiliSauce() {
+      if (!STATE.currentDish.container) return;
+      STATE.currentDish.hasChili = true;
+      document.getElementById('badge-chili').classList.remove('hidden');
       Sound.plop();
-      updateBowlUI();
+      showToast('Đã thêm Ớt sa tế cay nồng!');
+    }
+
+    function trashDish() {
+      if (STATE.currentDish.container === 'bowl') STATE.inventory.clean_bowls++;
+      STATE.currentDish = { container: null, base: null, hasBroth: false, toppings: [], hasDrink: false, hasShrimpPaste: false, hasChili: false };
+      document.getElementById('badge-drink').classList.add('hidden');
+      document.getElementById('badge-shrimp').classList.add('hidden');
+      document.getElementById('badge-chili').classList.add('hidden');
+      Sound.plop();
+      updatePrepMat();
       updateHUD();
-      triggerAutoKitchen();
+      showToast('Đã dọn sạch thớt chế biến!');
     }
 
-    function triggerAutoKitchen() {
-      if (savedState.upgrades.staffNoodle && !shiftState.hasContainer) {
-        if (savedState.inventory.clean_bowls > 0 && savedState.inventory.bun > 0) {
-          savedState.inventory.clean_bowls--;
-          shiftState.hasContainer = true;
-          shiftState.containerType = 'bowl';
-          shiftState.currentDish.base = 'bun';
-          savedState.inventory.bun--;
-          if (savedState.upgrades.staffBroth && !shiftState.gasOut) shiftState.currentDish.hasBroth = true;
-          updateBowlUI();
-          updateHUD();
-          renderQuickPantry();
-          triggerChefSixHelper();
-        }
-      }
-      if (savedState.upgrades.staffTea && !shiftState.currentDish.drink) {
-        selectDrink('tea');
-      }
-    }
+    function updatePrepMat() {
+      const pMat = document.getElementById('prep-mat');
+      const promptEl = document.getElementById('prep-prompt');
+      const visualEl = document.getElementById('visual-dish');
+      const brothEl = document.getElementById('visual-broth');
+      const noodleEl = document.getElementById('visual-noodle-layer');
+      const topsEl = document.getElementById('visual-toppings-layer');
 
-    function triggerChefSixHelper() {
-      if (!savedState.upgrades.staffChefSix || !shiftState.hasContainer || !shiftState.currentDish.base) return;
-      if (shiftState.currentDish.toppings.length === 0) {
-        if (savedState.inventory.dau_ran > 0) {
-          savedState.inventory.dau_ran--;
-          shiftState.currentDish.toppings.push('dau_ran');
-          updateBowlUI();
-          renderQuickPantry();
-          showToast('👨‍🍳 Bác Sáu Bếp Phó đã gắp sẵn Đậu Rán vào tô!');
-        }
-      }
-    }
-
-    function updateBowlUI() {
-      const bowl = shiftState.currentDish;
-      const viewport = document.getElementById('main-container-viewport');
-      const innerRim = document.getElementById('inner-rim');
-      const noBowlPrompt = document.getElementById('no-bowl-prompt');
-      const promptEl = document.getElementById('empty-prompt');
-      const noodlesEl = document.getElementById('visual-noodles');
-      const brothEl = document.getElementById('broth-liquid');
-      const ingsEl = document.getElementById('visual-ingredients');
-      const statusText = document.getElementById('bowl-status-text');
-      const badgesContainer = document.getElementById('bowl-contents-badges');
-
-      if (!shiftState.hasContainer) {
-        statusText.textContent = 'Chưa Có Vật Chứa Trên Khay';
-        viewport.className = 'relative w-40 h-40 rounded-full border-[8px] border-blue-950 bg-gradient-to-b from-stone-100 via-white to-blue-50 bowl-depth flex flex-col items-center justify-center overflow-hidden transition-all duration-300';
-        innerRim.className = 'absolute inset-1 rounded-full border border-blue-600/30 pointer-events-none z-10';
-        noBowlPrompt.classList.remove('hidden');
-        promptEl.classList.add('hidden');
-        noodlesEl.classList.add('hidden');
-        brothEl.classList.add('hidden');
-        ingsEl.innerHTML = '';
-        badgesContainer.innerHTML = '<span class="text-[9px] text-stone-500 font-bold">Khay:</span><span class="text-[9px] text-stone-400 italic">Trống</span>';
-        return;
-      }
-
-      noBowlPrompt.classList.add('hidden');
-
-      let containerLabel = 'Tô Sứ';
-      if (shiftState.containerType === 'box') {
-        containerLabel = 'Hộp Mang Về';
-        viewport.className = 'relative w-40 h-40 rounded-3xl border-[8px] border-amber-900 bg-gradient-to-b from-amber-50 to-orange-100 box-depth flex flex-col items-center justify-center overflow-hidden transition-all duration-300';
-        innerRim.className = 'absolute inset-1 rounded-2xl border border-amber-600/40 pointer-events-none z-10';
-      } else if (shiftState.containerType === 'hotpot') {
-        containerLabel = 'Nồi Lẩu Cua';
-        viewport.className = 'relative w-40 h-40 rounded-full border-[10px] border-amber-600 bg-gradient-to-b from-amber-100 via-orange-100 to-yellow-50 hotpot-depth flex flex-col items-center justify-center overflow-hidden transition-all duration-300 animate-pulse';
-        innerRim.className = 'absolute inset-1 rounded-full border-2 border-red-500/50 pointer-events-none z-10';
-      } else {
-        containerLabel = 'Tô Sứ';
-        viewport.className = 'relative w-40 h-40 rounded-full border-[8px] border-blue-950 bg-gradient-to-b from-stone-100 via-white to-blue-50 bowl-depth flex flex-col items-center justify-center overflow-hidden transition-all duration-300';
-        innerRim.className = 'absolute inset-1 rounded-full border border-blue-600/30 pointer-events-none z-10';
-      }
-
-      if (!bowl.base) {
-        statusText.textContent = `${containerLabel} Trống (Chọn Sợi)`;
+      if (!STATE.currentDish.container) {
         promptEl.classList.remove('hidden');
-        noodlesEl.classList.add('hidden');
-        brothEl.classList.add('hidden');
-        ingsEl.innerHTML = '';
-        badgesContainer.innerHTML = `<span class="text-[9px] text-stone-500 font-bold">Khay:</span><span class="text-[9px] text-amber-400 font-bold">${containerLabel} Trống</span>`;
+        visualEl.classList.add('hidden');
         return;
       }
 
-      statusText.textContent = `${containerLabel}: ${ALL_ITEMS[bowl.base].name} ${bowl.hasBroth ? '(Đã Chan)' : ''}`;
       promptEl.classList.add('hidden');
-      noodlesEl.classList.remove('hidden');
-      
-      if (bowl.base === 'bun') {
-        noodlesEl.innerHTML = `
-          <svg class="w-full h-full" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="47" fill="#f8fafc"/>
-            <path d="M10 32 Q50 66 90 32 M14 48 Q50 82 86 48 M10 64 Q50 98 90 64" stroke="#e2e8f0" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-          </svg>`;
-      } else {
-        noodlesEl.innerHTML = `
-          <svg class="w-full h-full" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="47" fill="#3f1301"/>
-            <line x1="16" y1="26" x2="84" y2="26" stroke="#881337" stroke-width="9" stroke-linecap="round"/>
-            <line x1="10" y1="46" x2="90" y2="46" stroke="#9f1239" stroke-width="9" stroke-linecap="round"/>
-          </svg>`;
-      }
+      visualEl.classList.remove('hidden');
 
-      if (bowl.hasBroth) brothEl.classList.remove('hidden');
+      if (STATE.currentDish.hasBroth) brothEl.classList.remove('hidden');
       else brothEl.classList.add('hidden');
 
-      ingsEl.innerHTML = '';
-      bowl.toppings.forEach(topKey => {
-        const item = ALL_ITEMS[topKey];
-        const span = document.createElement('div');
-        span.className = 'drop-item float-broth p-0.5 rounded-full flex items-center justify-center';
-        span.innerHTML = item.svg;
-        ingsEl.appendChild(span);
-      });
+      if (STATE.currentDish.base === 'bun') noodleEl.textContent = '🍜';
+      else if (STATE.currentDish.base === 'banh_da') noodleEl.textContent = '🥢';
+      else noodleEl.textContent = '';
 
-      let badgesHTML = `<span class="text-[9px] text-stone-500 font-bold">Khay có:</span>`;
-      badgesHTML += `<span class="text-[9px] font-black ${shiftState.containerType === 'hotpot' ? 'bg-red-950 text-red-300 border-red-600' : (shiftState.containerType === 'box' ? 'bg-orange-950 text-orange-300 border-orange-700' : 'bg-blue-950 text-blue-300 border-blue-700')} px-1 py-0.2 rounded border">${containerLabel}</span>`;
-      badgesHTML += `<span class="text-[9px] font-black bg-stone-800 text-stone-200 px-1 py-0.2 rounded border border-stone-700">${ALL_ITEMS[bowl.base].name}</span>`;
-      if (bowl.hasBroth) {
-        badgesHTML += `<span class="text-[9px] font-black bg-orange-950 text-orange-300 px-1 py-0.2 rounded border border-orange-700">Nước Dùng</span>`;
-      }
-      if (bowl.hasShrimpPaste) {
-        badgesHTML += `<span class="text-[9px] font-black bg-purple-950 text-purple-300 px-1 py-0.2 rounded border border-purple-700">Mắm Tôm</span>`;
-      }
-      if (bowl.drink) {
-        const d = DRINKS_DATA[bowl.drink];
-        badgesHTML += `<span class="text-[9px] font-black ${d.badgeClass} px-1 py-0.2 rounded border">${d.name} ${d.icon}</span>`;
-      }
-      bowl.toppings.forEach(tKey => {
-        badgesHTML += `<span class="text-[9px] font-black bg-amber-950 text-amber-300 px-1 py-0.2 rounded border border-amber-700">${ALL_ITEMS[tKey].name}</span>`;
+      topsEl.innerHTML = '';
+      STATE.currentDish.toppings.forEach(tKey => {
+        const span = document.createElement('span');
+        span.className = 'drop-item text-xl food-shadow';
+        span.textContent = TOPPING_ICONS[tKey] || '✨';
+        topsEl.appendChild(span);
       });
-      badgesContainer.innerHTML = badgesHTML;
     }
 
-    /* ĐI CHỢ */
-    let tempCart = {};
-    function renderMarketTab() {
-      const list = document.getElementById('market-items-list');
-      list.innerHTML = '';
-      tempCart = {};
+    /* GIAO MÓN */
+    function serveCurrentDish() {
+      const cust = STATE.tables[STATE.selectedTableIdx];
+      if (!cust) { showToast('Bàn này không có khách để giao!'); Sound.buzz(); return; }
+      if (!STATE.currentDish.container) { showToast('Chưa nấu món nào trên thớt!'); Sound.buzz(); return; }
 
-      const weather = WEATHER_TYPES.find(w => w.id === savedState.currentWeatherId) || WEATHER_TYPES[0];
-      document.getElementById('market-weather-notice').textContent = `${weather.icon} ${weather.title}: ${weather.desc}`;
+      const dish = STATE.currentDish;
 
-      let discount = 1.0;
-      if (savedState.upgrades.truckDelivery) discount = 0.80;
-      else if (savedState.upgrades.bikeDelivery) discount = 0.90;
+      // Kiểm tra loại tô
+      if (cust.isBox && dish.container !== 'box') {
+        showToast('Khách gọi đơn mang đi, phải dùng Hộp về 🥡!'); Sound.buzz(); return;
+      }
+      if (!cust.isBox && dish.container !== 'bowl') {
+        showToast('Khách ăn tại quán phải múc vào Tô sứ 🥣!'); Sound.buzz(); return;
+      }
 
-      for (let k in ALL_ITEMS) {
-        const it = ALL_ITEMS[k];
-        tempCart[k] = 0;
-        
-        let priceMod = 1.0;
-        if (k === 'rieu_cua') priceMod = weather.crabMod;
-        if (k === 'rau_song') priceMod = weather.vegMod;
+      // Kiểm tra sợi & nước dùng
+      if (dish.base !== cust.base) {
+        showToast(`Khách gọi ${cust.base === 'bun' ? 'Bún' : 'Bánh đa'}, bạn làm nhầm sợi rồi!`); Sound.buzz(); return;
+      }
+      if (!dish.hasBroth) { showToast('Quên chưa chan Nước cua vào tô kìa!'); Sound.buzz(); return; }
 
-        const actualPrice = Math.round(it.basePrice * discount * priceMod);
-        const row = document.createElement('div');
-        row.className = `flex justify-between items-center p-2 rounded-2xl border ${
-          k === 'clean_bowls' ? 'bg-amber-950/40 border-amber-500/60' : 'bg-stone-900/80 border-stone-700'
-        }`;
-        row.innerHTML = `
-          <div class="flex items-center gap-2">
-            ${it.svg}
-            <div>
-              <div class="font-extrabold text-xs text-stone-200">${it.name} ${k === 'clean_bowls' ? '✨' : ''}</div>
-              <div class="text-[10px] text-stone-400">Kho: <b>${savedState.inventory[k]}</b> • Giá: <b class="text-amber-400">${formatMoney(actualPrice)}</b></div>
-            </div>
+      // Kiểm tra đồ uống & gia vị nếu khách đòi
+      if (cust.needDrink && !dish.hasDrink) { showToast('Khách có gọi thêm Trà đá!'); Sound.buzz(); return; }
+      if (cust.needShrimp && !dish.hasShrimpPaste) { showToast('Khách dặn thêm Mắm tôm!'); Sound.buzz(); return; }
+
+      // Kiểm tra toppings
+      for (let req of cust.tops) {
+        if (!dish.toppings.includes(req)) {
+          showToast(`Tô còn thiếu: ${TOPPING_NAMES[req]}!`); Sound.buzz(); return;
+        }
+      }
+
+      // Giao đúng đơn!
+      Sound.coin();
+      STATE.cash += cust.price;
+      STATE.todaySales += cust.price;
+      if (dish.container === 'bowl') STATE.inventory.clean_bowls++;
+
+      showToast(`+${cust.price.toLocaleString('vi-VN')}đ! ${cust.name} khen nức nở.`);
+      STATE.tables[STATE.selectedTableIdx] = null;
+      trashDish();
+      renderTables();
+      renderOrderBalloon();
+      updateHUD();
+    }
+
+    /* SINH KHÁCH MỚI */
+    function spawnCustomer() {
+      if (STATE.isPaused) return;
+      const emptyIdx = STATE.tables.findIndex(t => t === null);
+      if (emptyIdx !== -1) {
+        const tmpl = CUSTOMER_TEMPLATES[Math.floor(Math.random() * CUSTOMER_TEMPLATES.length)];
+        STATE.tables[emptyIdx] = {
+          ...tmpl,
+          patience: 40,
+          maxPatience: 40
+        };
+        renderTables();
+        if (STATE.selectedTableIdx === emptyIdx) renderOrderBalloon();
+      }
+    }
+
+    /* TIỆN ÍCH MODAL: ĐI CHỢ, THUÊ NGƯỜI, HỤI, HEO */
+    function openModal(type) {
+      const container = document.getElementById('modal-container');
+      const title = document.getElementById('modal-title');
+      const content = document.getElementById('modal-content');
+      container.classList.remove('hidden');
+
+      if (type === 'market') {
+        title.textContent = '🛒 Chợ Đầu Mối Cua Cá';
+        content.innerHTML = `
+          <div class="p-2 bg-game-card rounded-xl border border-game mb-2">
+            <b>Tô bát sứ sạch:</b> Đang có ${STATE.inventory.clean_bowls} cái.
+            <button onclick="buyMarket('clean_bowls', 10, 10000)" class="mt-1 w-full bg-amber-600 text-white font-bold py-1.5 rounded-lg active:scale-95">Mua 10 tô (10.000đ)</button>
           </div>
-          <div class="flex items-center gap-1.5">
-            <button onclick="changeCart('${k}', -5)" class="w-6 h-6 bg-stone-700 text-stone-200 font-black rounded-lg active:scale-90 text-sm">-</button>
-            <span id="cart-qty-${k}" class="font-mono font-bold text-xs w-6 text-center text-white">0</span>
-            <button onclick="changeCart('${k}', 5)" class="w-6 h-6 bg-amber-500 text-stone-950 font-black rounded-lg active:scale-90 text-sm">+</button>
+          <div class="p-2 bg-game-card rounded-xl border border-game mb-2">
+            <b>Gạch riêu cua đồng:</b> Đang có ${STATE.inventory.rieu_cua} phần.
+            <button onclick="buyMarket('rieu_cua', 10, 40000)" class="mt-1 w-full bg-amber-600 text-white font-bold py-1.5 rounded-lg active:scale-95">Mua 10 phần Cua (40.000đ)</button>
+          </div>
+          <div class="p-2 bg-game-card rounded-xl border border-game">
+            <b>Bắp bò hoa tươi:</b> Đang có ${STATE.inventory.bap_bo} lạng.
+            <button onclick="buyMarket('bap_bo', 10, 60000)" class="mt-1 w-full bg-amber-600 text-white font-bold py-1.5 rounded-lg active:scale-95">Mua 10 lạng Bò (60.000đ)</button>
           </div>
         `;
-        list.appendChild(row);
-      }
-      calcMarketBill();
-    }
-
-    function changeCart(key, delta) {
-      tempCart[key] = Math.max(0, (tempCart[key] || 0) + delta);
-      document.getElementById(`cart-qty-${key}`).textContent = tempCart[key];
-      calcMarketBill();
-    }
-
-    function calcMarketBill() {
-      let total = 0;
-      const weather = WEATHER_TYPES.find(w => w.id === savedState.currentWeatherId) || WEATHER_TYPES[0];
-      let discount = 1.0;
-      if (savedState.upgrades.truckDelivery) discount = 0.80;
-      else if (savedState.upgrades.bikeDelivery) discount = 0.90;
-
-      for (let k in tempCart) {
-        let priceMod = 1.0;
-        if (k === 'rieu_cua') priceMod = weather.crabMod;
-        if (k === 'rau_song') priceMod = weather.vegMod;
-        total += tempCart[k] * Math.round(ALL_ITEMS[k].basePrice * discount * priceMod);
-      }
-      document.getElementById('market-bill').textContent = formatMoney(total);
-      return total;
-    }
-
-    function checkoutMarket() {
-      const bill = calcMarketBill();
-      if (bill > savedState.cash) { showToast('Không đủ tiền mặt trong ví!'); Sound.buzz(); return; }
-      savedState.cash -= bill;
-      savedState.todayMarketCost += bill;
-      for (let k in tempCart) savedState.inventory[k] += tempCart[k];
-      Sound.coin();
-      persistGame();
-      updateHUD();
-      renderQuickPantry();
-      renderMarketTab();
-      showToast('Đã nhập hàng thành công vào kho!');
-    }
-
-    function takeHuiLoan() {
-      if (savedState.hasHuiLoan) {
-        showToast('Bạn đang gánh khoản hụi 2.000.000đ rồi, hãy trả hết đã!');
-        return;
-      }
-      savedState.hasHuiLoan = true;
-      savedState.cash += 2000000;
-      Sound.coin();
-      persistGame();
-      updateHUD();
-      renderShopTab();
-      showToast('🤝 Hốt hụi thành công! Nhận ngay 2.000.000đ vào ví.');
-    }
-
-    /* TIỆM NÂNG CẤP & CƠ NGƠI */
-    let currentShopFilter = 'all';
-    function filterShop(type) {
-      currentShopFilter = type;
-      document.querySelectorAll('.shop-filter-btn').forEach(btn => {
-        btn.classList.remove('bg-amber-700', 'text-white');
-        btn.classList.add('bg-stone-800', 'text-stone-400');
-      });
-      document.getElementById(`filter-${type}`).classList.add('bg-amber-700', 'text-white');
-      renderShopTab();
-    }
-
-    function getFullUpgradesTree() {
-      return [
-        { id: 'boughtHouseUltimate', reqDay: 15, cat: 'place', icon: '🏛️', name: 'Mua Đứt Nhà Mặt Phố Hàng Bè', desc: 'Trở thành Nhà Hàng 5 Sao di sản Phố Cổ, nhân đôi x2 tiền tip vĩnh viễn!', cost: 200000000, owned: savedState.boughtHouseUltimate },
-        { id: 'staffGuard', reqDay: 4, cat: 'staff', icon: '👮', name: 'Bác Tư (Bảo Vệ Dắt Xe)', desc: 'Mở rộng đón 4 khách cùng lúc, +8s kiên nhẫn.', cost: 350000, owned: savedState.upgrades.staffGuard },
-        { id: 'staffChefSix', reqDay: 6, cat: 'staff', icon: '👨‍🍳', name: 'Bác Sáu (Bếp Phó Đứng Chảo)', desc: 'Tự động xào chiên và gắp sẵn 1 topping mặn vào tô.', cost: 450000, owned: savedState.upgrades.staffChefSix },
-        { id: 'staffBusser', reqDay: 1, cat: 'staff', icon: '👧', name: 'Bé Na (Dọn Bàn & Rửa Bát)', desc: 'Tự dọn bàn khách ăn xong và rửa bát cất lại kho sạch sẽ.', cost: 180000, owned: savedState.upgrades.staffBusser },
-        { id: 'staffTea', reqDay: 2, cat: 'staff', icon: '👱‍♂️', name: 'Chú Ba (Rót Trà Đá Tự Động)', desc: 'Tự động rót sẵn cốc trà đá để sẵn lên khay cho bạn.', cost: 220000, owned: savedState.upgrades.staffTea },
-        { id: 'staffShipper', reqDay: 3, cat: 'staff', icon: '🛵', name: 'Anh Shipper Ruột (Giao Đơn App)', desc: 'Tự đóng nắp hộp và giao ngay đơn online khi bạn nấu xong.', cost: 260000, owned: savedState.upgrades.staffShipper },
-        { id: 'staffNoodle', reqDay: 4, cat: 'staff', icon: '👦', name: 'Cu Tí (Bốc Sẵn Tô & Bún)', desc: 'Tự động lấy tô sứ & bún tươi ra khay cho bạn.', cost: 300000, owned: savedState.upgrades.staffNoodle },
-
-        { id: 'fanLevel', reqDay: 1, cat: 'place', icon: '💨', name: `Quạt Treo Tường [Cấp ${savedState.upgrades.fanLevel}/3]`, desc: '+4s thời gian khách kiên nhẫn chờ.', cost: 120000 * (savedState.upgrades.fanLevel + 1), maxed: savedState.upgrades.fanLevel >= 3 },
-        { id: 'electricPotLevel', reqDay: 1, cat: 'kitchen', icon: '🍲', name: `Nồi Nước Inox [Cấp ${savedState.upgrades.electricPotLevel}/2]`, desc: 'Nước ngọt thơm, +2.000đ tiền tip/tô.', cost: 150000 * (savedState.upgrades.electricPotLevel + 1), maxed: savedState.upgrades.electricPotLevel >= 2 },
-        { id: 'crabMold', reqDay: 4, cat: 'kitchen', icon: '🦀', name: 'Khuôn Ép Gạch Cua Hoa', desc: 'Miếng gạch cua đẹp mắt, +4.000đ tiền tip.', cost: 250000, owned: savedState.upgrades.crabMold },
-        { id: 'staffBroth', reqDay: 8, cat: 'staff', icon: '🚰', name: 'Vòi Chan Nước Tự Động', desc: 'Chọn sợi là tự động xả ngập nước dùng riêu cua.', cost: 280000, owned: savedState.upgrades.staffBroth },
-        { id: 'truckDelivery', reqDay: 25, cat: 'kitchen', icon: '🚚', name: 'Xe Tải Chở Cua Cà Mau', desc: 'Giảm vĩnh viễn 20% giá nguyên liệu chợ.', cost: 650000, owned: savedState.upgrades.truckDelivery }
-      ];
-    }
-
-    function renderShopTab() {
-      const list = document.getElementById('shop-items-list');
-      list.innerHTML = '';
-
-      const huiBtn = document.getElementById('btn-hui-action');
-      if (savedState.hasHuiLoan) {
-        huiBtn.textContent = 'ĐANG VAY';
-        huiBtn.className = 'bg-stone-700 text-stone-400 font-black text-xs px-3 py-1.5 rounded-xl cursor-not-allowed';
-      } else {
-        huiBtn.textContent = 'HỐT HỤI';
-        huiBtn.className = 'bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-black text-xs px-3 py-1.5 rounded-xl shadow active:scale-95';
-      }
-
-      const catalog = getFullUpgradesTree();
-      const filtered = currentShopFilter === 'all' ? catalog : catalog.filter(x => x.cat === currentShopFilter);
-
-      filtered.forEach(u => {
-        const item = document.createElement('div');
-        const isUnlocked = savedState.day >= u.reqDay;
-        const isBought = u.owned || u.maxed;
-
-        item.className = `flex justify-between items-center p-2 rounded-2xl border ${
-          !isUnlocked ? 'bg-stone-900/60 border-stone-800 opacity-50' : (u.id === 'boughtHouseUltimate' ? 'bg-gradient-to-r from-amber-950 to-red-950 border-2 border-yellow-400 shadow-lg' : 'bg-stone-900/90 border-stone-700')
-        }`;
-
-        let actionBtn = '';
-        if (!isUnlocked) {
-          actionBtn = `<span class="bg-stone-700 text-stone-400 font-extrabold text-[10px] px-2.5 py-1 rounded-lg">Mở N.${u.reqDay}</span>`;
-        } else if (isBought) {
-          actionBtn = '<span class="text-emerald-400 font-extrabold text-xs">ĐÃ CÓ ✓</span>';
-        } else {
-          actionBtn = `<button onclick="buyShopItem('${u.id}', ${u.cost}, ${u.reqDay})" class="bg-yellow-500 hover:bg-yellow-400 text-stone-950 font-black text-xs px-3 py-1.5 rounded-xl shadow active:scale-95">MUA</button>`;
-        }
-
-        item.innerHTML = `
-          <div class="flex items-center gap-2">
-            <span class="text-2xl">${isUnlocked ? u.icon : '🔒'}</span>
-            <div class="text-left">
-              <div class="font-extrabold text-xs sm:text-sm text-stone-200">${u.name}</div>
-              <div class="text-[10px] text-stone-400 leading-tight">${u.desc}</div>
-              ${isUnlocked && !isBought ? `<div class="text-[10px] text-amber-400 font-black mt-0.5">Giá: ${formatMoney(u.cost)}</div>` : ''}
-            </div>
-          </div>
-          <div>${actionBtn}</div>
-        `;
-        list.appendChild(item);
-      });
-      updateHUD();
-    }
-
-    function buyShopItem(id, cost, reqDay) {
-      if (savedState.day < reqDay) { showToast(`Chưa đạt Level (Ngày ${reqDay})!`); return; }
-      if (savedState.cash < cost) { showToast('Không đủ tiền vốn!'); Sound.buzz(); return; }
-      savedState.cash -= cost;
-
-      if (id === 'boughtHouseUltimate') {
-        savedState.boughtHouseUltimate = true;
-        Sound.pig();
-        showToast('🏛️ CHÚC MỪNG! BẠN ĐÃ MUA ĐỨT CĂN NHÀ MẶT PHỐ HÀNG BÈ 200 TRIỆU!');
-      } else if (id === 'fanLevel') savedState.upgrades.fanLevel++;
-      else if (id === 'electricPotLevel') savedState.upgrades.electricPotLevel++;
-      else if (id === 'fridgeLevel') savedState.upgrades.fridgeLevel++;
-      else savedState.upgrades[id] = true;
-
-      Sound.coin();
-      persistGame();
-      updateHUD();
-      renderShopTab();
-      triggerAutoKitchen();
-    }
-
-    /* HŨ HEO TIẾT KIỆM */
-    function renderPiggyAndAchievements() {
-      const currentTier = PIGGY_TIERS[savedState.piggyTier - 1] || PIGGY_TIERS[PIGGY_TIERS.length - 1];
-
-      document.getElementById('current-tier-name').textContent = currentTier.name;
-      document.getElementById('tier-piggy-badge').textContent = currentTier.icon;
-      document.getElementById('piggy-vault-val').textContent = formatMoney(savedState.piggyBank);
-      document.getElementById('tier-goal-title').textContent = `${currentTier.goalName}:`;
-      document.getElementById('tier-goal-val').textContent = formatMoney(currentTier.target);
-
-      const pct = Math.min(100, (savedState.piggyBank / currentTier.target) * 100);
-      document.getElementById('piggy-progress').style.width = `${pct}%`;
-
-      if (savedState.piggyBank >= currentTier.target && savedState.piggyTier < PIGGY_TIERS.length) {
-        savedState.piggyTier++;
-        showToast(`🎉 CHÚC MỪNG! Hũ heo đã tiến hóa lên ${PIGGY_TIERS[savedState.piggyTier - 1].name}!`);
-        Sound.pig();
-      }
-
-      updateAchievementsState();
-      const container = document.getElementById('achievements-container');
-      container.innerHTML = '';
-
-      let unlockedCount = 0;
-
-      ACHIEVEMENTS.forEach(ach => {
-        let currentVal = 0;
-        if (ach.id === 'first_serve') currentVal = savedState.stats.totalServed;
-        else if (ach.id === 'vip_lover') currentVal = savedState.stats.totalVipServed;
-        else if (ach.id === 'hotpot_master') currentVal = savedState.stats.totalHotpotServed;
-        else if (ach.id === 'online_master') currentVal = savedState.stats.totalOnlineServed;
-        else if (ach.id === 'drink_master') currentVal = savedState.stats.totalDrinksServed;
-        else if (ach.id === 'reach_day_15') currentVal = savedState.day;
-        else if (ach.id === 'fever_hero') currentVal = savedState.stats.maxCombo;
-        else if (ach.id === 'buy_house_ultimate') currentVal = savedState.boughtHouseUltimate ? 200000000 : savedState.cash;
-
-        const isCompleted = currentVal >= ach.target;
-        const isClaimed = !!savedState.claimedBadges[ach.id];
-
-        if (isCompleted) unlockedCount++;
-
-        const card = document.createElement('div');
-        card.className = `p-2 rounded-2xl border flex items-center justify-between transition ${
-          isClaimed ? 'bg-stone-900/60 border-stone-800' : (isCompleted ? 'bg-stone-800 border-yellow-500/80 shadow-md' : 'bg-stone-900/40 border-stone-800 opacity-60')
-        }`;
-
-        const progressPct = Math.min(100, (currentVal / ach.target) * 100);
-
-        let actionArea = '';
-        if (isClaimed) {
-          actionArea = '<span class="text-xs font-black text-amber-400">ĐÃ NHẬN ✓</span>';
-        } else if (isCompleted) {
-          actionArea = `<button onclick="claimBadgeReward('${ach.id}', ${ach.reward})" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black text-xs px-2.5 py-1 rounded-lg shadow animate-bounce">NHẬN ${formatMoney(ach.reward)}</button>`;
-        } else {
-          actionArea = `<span class="text-[10px] font-bold text-stone-400">${currentVal}/${ach.target}</span>`;
-        }
-
-        card.innerHTML = `
-          <div class="flex items-center gap-2">
-            <span class="text-2xl">${ach.icon}</span>
-            <div class="text-left">
-              <div class="font-extrabold text-xs text-stone-200">${ach.name}</div>
-              <div class="text-[10px] text-stone-400 leading-tight">${ach.desc}</div>
-              <div class="w-24 bg-stone-700 h-1.5 rounded-full overflow-hidden mt-1">
-                <div class="bg-amber-400 h-full" style="width: ${progressPct}%"></div>
+      } else if (type === 'shop') {
+        title.textContent = '👥 Thuê Nhân Sự Phụ Quán';
+        content.innerHTML = `
+          <div class="p-2.5 bg-game-card rounded-xl border border-game">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-2xl">👧</span>
+              <div>
+                <b>Bé Na (Rửa Bát & Dọn Bàn)</b>
+                <div class="text-[10px] text-stone-400">Tự động rửa sạch bát cất vào kho.</div>
               </div>
             </div>
-          </div>
-          <div>${actionArea}</div>
-        `;
-        container.appendChild(card);
-      });
-
-      document.getElementById('badge-count-text').textContent = `${unlockedCount}/${ACHIEVEMENTS.length}`;
-    }
-
-    function updateAchievementsState() {
-      ACHIEVEMENTS.forEach(ach => {
-        let currentVal = 0;
-        if (ach.id === 'first_serve') currentVal = savedState.stats.totalServed;
-        else if (ach.id === 'vip_lover') currentVal = savedState.stats.totalVipServed;
-        else if (ach.id === 'hotpot_master') currentVal = savedState.stats.totalHotpotServed;
-        else if (ach.id === 'online_master') currentVal = savedState.stats.totalOnlineServed;
-        else if (ach.id === 'drink_master') currentVal = savedState.stats.totalDrinksServed;
-        else if (ach.id === 'reach_day_15') currentVal = savedState.day;
-        else if (ach.id === 'fever_hero') currentVal = savedState.stats.maxCombo;
-        else if (ach.id === 'buy_house_ultimate') currentVal = savedState.boughtHouseUltimate ? 200000000 : savedState.cash;
-
-        if (currentVal >= ach.target && !savedState.unlockedBadges[ach.id]) {
-          savedState.unlockedBadges[ach.id] = true;
-          showToast(`🏆 Danh hiệu mới: ${ach.name}!`);
-          Sound.coin();
-        }
-      });
-      persistGame();
-    }
-
-    function claimBadgeReward(badgeId, reward) {
-      if (savedState.claimedBadges[badgeId]) return;
-      savedState.claimedBadges[badgeId] = true;
-      savedState.cash += reward;
-      Sound.coin();
-      persistGame();
-      updateHUD();
-      renderPiggyAndAchievements();
-      showToast(`+${formatMoney(reward)} Thưởng danh hiệu đã vào ví!`);
-    }
-
-    function smashPiggy() {
-      if (savedState.piggyBank <= 0) { showToast('Heo đất rỗng!'); return; }
-      savedState.cash += savedState.piggyBank;
-      savedState.piggyBank = 0;
-      Sound.coin();
-      persistGame();
-      updateHUD();
-      renderPiggyAndAchievements();
-      showToast('Đã đập heo lấy tiền vốn!');
-    }
-
-    function getMaxAllowedCustomers() {
-      if (savedState.upgrades.staffGuard) return 4;
-      if (savedState.day <= 3) return 2; 
-      return 3; 
-    }
-
-    function spawnCustomer() {
-      if (shiftState.isPaused) return;
-
-      const maxAllowed = getMaxAllowedCustomers();
-      const currentActiveCount = shiftState.customers.filter(c => c !== null).length;
-      if (currentActiveCount >= maxAllowed) return;
-
-      const emptyIdx = shiftState.customers.slice(0, maxAllowed).findIndex(c => c === null);
-
-      if (emptyIdx !== -1) {
-        const roll = Math.random();
-        let customerObj = null;
-
-        // 1. FOOD REVIEWER / TIKTOKER (15% tỷ lệ)
-        if (roll < 0.15) {
-          Sound.cameraFlash();
-          showToast('📸 FOOD REVIEWER TIKTOKER ĐẾN QUÁN! Phục vụ chuẩn để nhận 5 sao!');
-          customerObj = {
-            name: 'Food Reviewer VIP',
-            avatar: '🌟',
-            isVIP: true,
-            isOnline: false,
-            isHotpot: false,
-            base: 'bun',
-            toppings: ['rieu_cua', 'dau_ran', 'bap_bo', 'suon_sun'],
-            wantsDrink: 'kumquat',
-            wantsShrimpPaste: true,
-            price: 120000,
-            patience: 35,
-            maxPatience: 35,
-            riddleHint: '⭐ YÊU CẦU: Bún Riêu Thập Cẩm Bò Sụn + Trà Tắc + Mắm Tôm!',
-            isEating: false
-          };
-        }
-        // 2. ĐẠI TIỆC NỒI LẨU RIÊU CUA ĐỒNG QUÊ (15% tỷ lệ)
-        else if (roll < 0.30) {
-          showToast('🍲 BÀN ĐẶT NỒI LẨU RIÊU CUA VIP! Hãy lấy "Lẩu" trên khay!');
-          customerObj = {
-            name: 'Gia Đình Đặt Lẩu',
-            avatar: '👨‍👩‍👧‍👦',
-            isVIP: false,
-            isOnline: false,
-            isHotpot: true,
-            base: 'bun',
-            toppings: ['rieu_cua', 'dau_ran', 'bap_bo', 'suon_sun', 'moc_nam', 'rau_song', 'quay'],
-            wantsDrink: 'soda',
-            wantsShrimpPaste: false,
-            price: 220000,
-            patience: 45,
-            maxPatience: 45,
-            riddleHint: '🍲 LẨU RIÊU CUA ĐỒNG: Gạch Cua, Bò, Sụn, Mọc, Rau, Quẩy + Lon Xá Xị!',
-            isEating: false
-          };
-        }
-        // 3. ĐƠN ĐỐ MẸO ẨN DỤ (20% tỷ lệ)
-        else if (roll < 0.50) {
-          const riddleType = Math.floor(Math.random() * 3);
-          if (riddleType === 0) {
-            customerObj = {
-              name: 'Khách Đố Mẹo 1',
-              avatar: '🧙‍♂️',
-              isVIP: false,
-              isOnline: false,
-              isHotpot: false,
-              base: 'bun',
-              toppings: ['dau_ran', 'bap_bo', 'rau_song'],
-              wantsDrink: 'tea',
-              wantsShrimpPaste: false,
-              price: 45000,
-              patience: 35,
-              maxPatience: 35,
-              riddleHint: '💡 "Bát không chân đi dưới nước" (Bún + Đậu + Bò + Rau, KHÔNG Cua, KHÔNG Ốc)!',
-              isEating: false
-            };
-          } else if (riddleType === 1) {
-            customerObj = {
-              name: 'Khách Đố Mẹo 2',
-              avatar: '🧑‍🦰',
-              isVIP: false,
-              isOnline: false,
-              isHotpot: false,
-              base: 'banh_da',
-              toppings: ['rieu_cua', 'bap_bo', 'tiet_luoc'],
-              wantsDrink: 'soda',
-              wantsShrimpPaste: false,
-              price: 52000,
-              patience: 35,
-              maxPatience: 35,
-              riddleHint: '💡 "Đỏ cả nước lẫn cái" (Bánh đa đỏ + Riêu + Bắp bò + Tiết luộc + Xá xị)!',
-              isEating: false
-            };
-          } else {
-            customerObj = {
-              name: 'Bà Cụ Ăn Chay',
-              avatar: '👵',
-              isVIP: false,
-              isOnline: false,
-              isHotpot: false,
-              base: 'bun',
-              toppings: ['dau_ran', 'rau_song', 'quay'],
-              wantsDrink: 'soya',
-              wantsShrimpPaste: false,
-              price: 38000,
-              patience: 40,
-              maxPatience: 40,
-              riddleHint: '💡 "Bát chay thanh tịnh" (Bún + Đậu + Rau + Quẩy + Sữa Đậu, KHÔNG THỊT/CUA)!',
-              isEating: false
-            };
-          }
-        }
-        // 4. KHÁCH THƯỜNG HOẶC ĐƠN APP ONLINE
-        else {
-          const isOnlineOrder = Math.random() < 0.35;
-          const noodles = ['bun'];
-          if (savedState.day >= 4) noodles.push('banh_da');
-          const chosenBase = noodles[Math.floor(Math.random() * noodles.length)];
-
-          const availTops = [];
-          for (let k in ALL_ITEMS) {
-            if (k !== 'clean_bowls' && ALL_ITEMS[k].type !== 'noodle' && savedState.day >= ALL_ITEMS[k].unlockDay) {
-              availTops.push(k);
-            }
-          }
-
-          const count = Math.min(availTops.length, Math.floor(Math.random() * 3) + 2);
-          const chosenTops = new Set();
-          while (chosenTops.size < count) {
-            chosenTops.add(availTops[Math.floor(Math.random() * availTops.length)]);
-          }
-
-          let wantsDrink = null;
-          if (Math.random() < 0.45) {
-            const drinkKeys = ['tea', 'kumquat', 'soya', 'soda'];
-            wantsDrink = drinkKeys[Math.floor(Math.random() * drinkKeys.length)];
-          }
-
-          let totalPrice = 25000 + (chosenTops.size * 7000);
-          if (isOnlineOrder) totalPrice += 15000;
-          if (wantsDrink) totalPrice += DRINKS_DATA[wantsDrink].price;
-
-          customerObj = {
-            name: isOnlineOrder ? 'ShopeeFood #902' : 'Khách Phố Cổ',
-            avatar: isOnlineOrder ? '🛵' : '👨‍💼',
-            isVIP: false,
-            isOnline: isOnlineOrder,
-            isHotpot: false,
-            base: chosenBase,
-            toppings: Array.from(chosenTops),
-            wantsDrink: wantsDrink,
-            wantsShrimpPaste: Math.random() < 0.25,
-            price: totalPrice,
-            patience: isOnlineOrder ? 25 : 40,
-            maxPatience: isOnlineOrder ? 25 : 40,
-            riddleHint: null,
-            isEating: false
-          };
-        }
-
-        if (savedState.boughtHouseUltimate) {
-          customerObj.price = Math.round(customerObj.price * 1.5);
-        }
-
-        shiftState.customers[emptyIdx] = customerObj;
-        renderCustomers();
-      }
-    }
-
-    function renderCustomers() {
-      const track = document.getElementById('customers-track');
-      track.innerHTML = '';
-
-      const maxAllowed = getMaxAllowedCustomers();
-
-      shiftState.customers.slice(0, maxAllowed).forEach((c, idx) => {
-        if (!c) {
-          const emptySlot = document.createElement('div');
-          emptySlot.className = 'bg-stone-900/40 rounded-2xl border border-dashed border-stone-800 flex flex-col items-center justify-center p-2 text-stone-600 text-[10px] font-bold';
-          emptySlot.innerHTML = `Bàn ${idx+1}<br>Trống`;
-          track.appendChild(emptySlot);
-          return;
-        }
-
-        const card = document.createElement('div');
-        
-        if (c.isEating) {
-          card.className = 'bg-amber-950/80 border-2 border-amber-400 shadow-xl rounded-2xl p-2 flex flex-col justify-center items-center text-center slurping-eating';
-          card.innerHTML = `
-            <div class="text-2xl">${c.avatar}</div>
-            <div class="text-[10px] font-black text-yellow-300">Húp xì xụp...</div>
-            <div class="text-[9px] text-pink-300 font-bold">Ngon tuyệt cú mèo! ❤️</div>
-          `;
-          track.appendChild(card);
-          return;
-        }
-
-        card.onclick = () => serveCustomerDirect(idx);
-        
-        let borderStyle = 'border-2 border-yellow-500 bg-stone-900';
-        if (c.isVIP) borderStyle = 'border-2 border-yellow-300 bg-gradient-to-b from-yellow-950/80 to-stone-900 vip-card-sparkle';
-        else if (c.isHotpot) borderStyle = 'border-2 border-red-500 bg-red-950/50';
-        else if (c.isOnline) borderStyle = 'border-2 border-orange-500 bg-orange-950/40';
-
-        card.className = `hover:bg-stone-800 ${borderStyle} shadow-xl rounded-2xl p-1.5 flex flex-col justify-between cursor-pointer active:scale-95 transition`;
-
-        const topsBadges = c.toppings.map(tKey => {
-          return `<span class="text-[7px] bg-stone-800 px-1 py-0.2 rounded text-amber-200 border border-stone-700 pointer-events-none">${ALL_ITEMS[tKey].name}</span>`;
-        }).join('');
-
-        let extraBadges = '';
-        if (c.isVIP) extraBadges += `<span class="text-[7px] bg-yellow-400 text-stone-950 px-1 rounded font-black">🌟 VIP REVIEWER</span>`;
-        if (c.isHotpot) extraBadges += `<span class="text-[7px] bg-red-600 text-white px-1 rounded font-black">🍲 NỒI LẨU VIP</span>`;
-        if (c.isOnline) extraBadges += `<span class="text-[7px] bg-orange-600 text-white px-1 rounded font-black">HỘP VỀ</span>`;
-        if (c.wantsDrink) {
-          const d = DRINKS_DATA[c.wantsDrink];
-          extraBadges += `<span class="text-[7px] ${d.badgeClass} px-1 rounded font-black">+ ${d.icon}</span>`;
-        }
-        if (c.wantsShrimpPaste) extraBadges += `<span class="text-[7px] bg-purple-950 text-purple-300 px-1 rounded border border-purple-600 font-black">+ Mắm</span>`;
-
-        card.innerHTML = `
-          <div class="pointer-events-none">
-            <div class="flex items-center justify-between mb-0.5">
-              <span class="text-base">${c.avatar}</span>
-              <span class="text-[8px] font-black text-amber-300 bg-amber-950 px-1 rounded border border-amber-500/40">${formatMoney(c.price)}</span>
-            </div>
-            <div class="bg-black/70 rounded p-1 text-xs font-bold border border-stone-800">
-              ${c.riddleHint ? `<div class="text-[7px] text-yellow-300 font-extrabold mb-0.5 leading-tight">${c.riddleHint}</div>` : `<div class="text-red-400 font-black text-[8px] uppercase mb-0.5">${ALL_ITEMS[c.base].name}</div><div class="flex flex-wrap gap-0.5">${topsBadges}</div>`}
-              ${extraBadges ? `<div class="flex flex-wrap gap-0.5 border-t border-stone-800 pt-0.5 mt-0.5">${extraBadges}</div>` : ''}
-            </div>
-          </div>
-          <div class="w-full bg-stone-800 h-1 rounded-full overflow-hidden mt-1 pointer-events-none">
-            <div class="${c.isOnline ? 'bg-orange-500' : (c.isVIP ? 'bg-yellow-400' : 'bg-emerald-500')} h-full transition-all duration-300 rounded-full" style="width: ${(c.patience/c.maxPatience)*100}%"></div>
+            <button onclick="hireStaff('Na', 180000)" class="w-full bg-yellow-500 text-stone-950 font-black py-1.5 rounded-lg active:scale-95 mt-1">Thuê (180.000đ)</button>
           </div>
         `;
-        track.appendChild(card);
-      });
-    }
-
-    function serveCustomerDirect(idx) {
-      if (shiftState.isPaused) { showToast('Bấm TIẾP TỤC để bán hàng!'); return; }
-      if (!shiftState.hasContainer) { showToast('Bạn chưa lấy vật chứa ra khay!'); Sound.buzz(); return; }
-      
-      const c = shiftState.customers[idx];
-      if (!c || c.isEating) return;
-
-      const dish = shiftState.currentDish;
-
-      if (c.isHotpot && shiftState.containerType !== 'hotpot') {
-        Sound.buzz();
-        showToast('Khách gọi Nồi Lẩu Riêu Cua, phải lấy "Lẩu 🍲" trên khay!');
-        return;
-      }
-      if (c.isOnline && shiftState.containerType !== 'box') {
-        Sound.buzz();
-        showToast('Đơn Shipper phải đóng bằng "Hộp Về 🥡"!');
-        return;
-      }
-      if (!c.isHotpot && !c.isOnline && shiftState.containerType !== 'bowl') {
-        Sound.buzz();
-        showToast('Khách ăn tại quán phải múc vào "Tô Sứ 🥣"!');
-        return;
-      }
-      
-      if (!dish.base) { Sound.buzz(); showToast('Tô chưa có sợi bún hoặc bánh đa!'); return; }
-      if (dish.base !== c.base) {
-        Sound.buzz();
-        showToast(`Khách muốn ăn ${ALL_ITEMS[c.base].name}, tô bạn lại là ${ALL_ITEMS[dish.base].name}!`);
-        return;
-      }
-      if (!dish.hasBroth) { Sound.buzz(); showToast('Bạn quên chưa chan nước dùng vào tô!'); return; }
-
-      if (c.wantsDrink && dish.drink !== c.wantsDrink) {
-        Sound.buzz();
-        showToast(`Khách gọi thêm: ${DRINKS_DATA[c.wantsDrink].name}!`);
-        return;
-      }
-      if (c.wantsShrimpPaste && !dish.hasShrimpPaste) {
-        Sound.buzz();
-        showToast('Khách dặn thêm một thìa Mắm Tôm!');
-        return;
-      }
-
-      const missingToppings = [];
-      c.toppings.forEach(reqKey => {
-        if (!dish.toppings.includes(reqKey)) missingToppings.push(ALL_ITEMS[reqKey].name);
-      });
-
-      if (missingToppings.length > 0) {
-        Sound.buzz();
-        showToast(`Tô còn thiếu: ${missingToppings.join(', ')}!`);
-        return;
-      }
-
-      const isOnline = c.isOnline;
-      const isBowl = shiftState.containerType === 'bowl';
-      const isHotpot = c.isHotpot;
-      const isVIP = c.isVIP;
-
-      let earnedCash = c.price;
-      if (shiftState.feverTime > 0) earnedCash = Math.round(earnedCash * 1.5);
-
-      shiftState.hasContainer = false;
-      shiftState.containerType = null;
-      shiftState.currentDish = { base: null, hasBroth: false, toppings: [], drink: null, hasShrimpPaste: false };
-      ['tea', 'kumquat', 'soya', 'soda'].forEach(dk => {
-        const el = document.getElementById(`drink-check-${dk}`);
-        if (el) el.classList.add('hidden');
-      });
-      updateBowlUI();
-
-      if (isVIP) {
-        Sound.cameraFlash();
-        showToast('📸 FOOD REVIEWER CHẤM 5 SAO! QUÁN LÊN XU HƯỚNG TIKTOK!');
-        savedState.stats.totalVipServed++;
-      }
-      if (isHotpot) {
-        savedState.stats.totalHotpotServed++;
-      }
-
-      if (!isOnline) {
-        Sound.slurp();
-        c.isEating = true;
-        renderCustomers();
-
-        setTimeout(() => {
-          Sound.coin();
-          savedState.cash += earnedCash;
-          shiftState.todaySales += earnedCash;
-          savedState.stats.totalServed++;
-          if (c.wantsDrink) savedState.stats.totalDrinksServed++;
-          
-          handleComboSuccess();
-          if (isBowl) savedState.inventory.clean_bowls++;
-          shiftState.customers[idx] = null;
-
-          renderCustomers();
-          updateHUD();
-          updateAchievementsState();
-          triggerAutoKitchen();
-          showToast(`+${formatMoney(earnedCash)} Thu tiền từ ${c.name}!`);
-        }, 1500);
-      } else {
-        Sound.coin();
-        savedState.cash += earnedCash;
-        shiftState.todaySales += earnedCash;
-        savedState.stats.totalServed++;
-        savedState.stats.totalOnlineServed++;
-        if (c.wantsDrink) savedState.stats.totalDrinksServed++;
-        
-        handleComboSuccess();
-        shiftState.customers[idx] = null;
-
-        renderCustomers();
-        updateHUD();
-        updateAchievementsState();
-        triggerAutoKitchen();
-        showToast(`🛵 +${formatMoney(earnedCash)} Shipper đã lấy đơn đi giao!`);
+      } else if (type === 'hui') {
+        title.textContent = '🤝 Hốt Hụi Phường Chợ';
+        content.innerHTML = `
+          <p class="text-stone-300 mb-3">Bốc ngay một bát họ <b>2.000.000đ</b> tiền mặt để mở rộng tiệm bún!</p>
+          <button onclick="takeHui()" class="w-full bg-yellow-500 text-stone-950 font-black py-2.5 rounded-xl active:scale-95">HỐT HỤI 2.000.000đ</button>
+        `;
+      } else if (type === 'piggy') {
+        title.textContent = '🐷 Nuôi Heo Mua Nhà Phố Cổ';
+        content.innerHTML = `
+          <div class="text-center p-3 bg-game-card rounded-2xl border border-game">
+            <div class="text-3xl mb-1">🏛️</div>
+            <p class="text-amber-300 font-bold mb-1">Mục tiêu: Mua nhà Hàng Bè (200.000.000đ)</p>
+            <div class="text-xs text-stone-300">Đã tích lũy: <b class="text-pink-400">${STATE.piggyBank.toLocaleString('vi-VN')}đ</b></div>
+          </div>
+        `;
       }
     }
 
-    function handleComboSuccess() {
-      shiftState.combo++;
-      if (shiftState.combo > savedState.stats.maxCombo) savedState.stats.maxCombo = shiftState.combo;
-
-      if (shiftState.combo >= 3 && shiftState.feverTime <= 0) {
-        shiftState.feverTime = 20;
-        Sound.fever();
-        showToast('🔥🔥🔥 GIỜ BỐC LỬA! DOANH THU x1.5 TRONG 20S!');
-        document.getElementById('game-app').classList.add('fever-active');
-        document.getElementById('fever-banner').classList.remove('hidden');
-      }
-    }
-
-    function scareCat() {
-      Sound.meow();
-      shiftState.catActive = false;
-      document.getElementById('cat-event-box').classList.add('hidden');
-      showToast('🐱 Mèo mướp đã giật mình chạy mất!');
-    }
-
-    function tapGasCylinder() {
-      Sound.plop();
-      shiftState.gasClicks--;
-      document.getElementById('gas-clicks-left').textContent = shiftState.gasClicks;
-      if (shiftState.gasClicks <= 0) {
-        shiftState.gasOut = false;
-        document.getElementById('gas-event-box').classList.add('hidden');
-        document.getElementById('pot-steam').classList.remove('hidden');
-        showToast('🔥 Bếp gas đã bật lại!');
-      }
-    }
-
-    function checkRandomKitchenEvents() {
-      if (shiftState.isPaused) return;
-
-      if (!shiftState.catActive && Math.random() < 0.04) {
-        shiftState.catActive = true;
-        document.getElementById('cat-event-box').classList.remove('hidden');
-        Sound.meow();
-        setTimeout(() => {
-          if (shiftState.catActive) {
-            shiftState.catActive = false;
-            document.getElementById('cat-event-box').classList.add('hidden');
-            if (savedState.inventory.dau_ran > 0) savedState.inventory.dau_ran--;
-            renderQuickPantry();
-            showToast('🙀 Mèo mướp đã tha mất 1 miếng Đậu Rán!');
-          }
-        }, 5000);
-      }
-
-      if (!shiftState.gasOut && Math.random() < 0.025) {
-        shiftState.gasOut = true;
-        shiftState.gasClicks = 2;
-        document.getElementById('gas-clicks-left').textContent = '2';
-        document.getElementById('gas-event-box').classList.remove('hidden');
-        document.getElementById('pot-steam').classList.add('hidden');
-        Sound.buzz();
-      }
-    }
-
-    function checkAutoStaffShipper() {
-      if (!savedState.upgrades.staffShipper || shiftState.isPaused) return;
-      if (!shiftState.hasContainer || shiftState.containerType !== 'box') return;
-
-      const onlineIdx = shiftState.customers.findIndex(c => c && c.isOnline && !c.isEating);
-      if (onlineIdx !== -1) {
-        serveCustomerDirect(onlineIdx);
-        showToast('🛵 Anh Shipper Ruột đã tự gói và giao đơn online!');
-      }
-    }
-
-    function checkAutoBusser() {
-      if (!savedState.upgrades.staffBusser || shiftState.isPaused) return;
-      shiftState.customers.forEach((c, idx) => {
-        if (c && !c.isEating && c.patience <= 5) {
-          savedState.cash += Math.round(c.price * 0.9);
-          shiftState.todaySales += Math.round(c.price * 0.9);
-          savedState.stats.totalServed++;
-          if (!c.isOnline && !c.isHotpot) savedState.inventory.clean_bowls++;
-          shiftState.customers[idx] = null;
-          Sound.coin();
-          renderCustomers();
-          updateHUD();
-          updateAchievementsState();
-          showToast(`👧 Bé Na đã dọn bàn cho ${c.name}!`);
-        }
-      });
-    }
-
-    /* SỔ THU CHI & LÃI QUA ĐÊM */
-    function showLedgerModal() {
-      togglePauseGame(true);
-
-      const wages = (savedState.upgrades.staffBusser ? 30000 : 0) + 
-                    (savedState.upgrades.staffTea ? 35000 : 0) +
-                    (savedState.upgrades.staffShipper ? 40000 : 0) +
-                    (savedState.upgrades.staffNoodle ? 45000 : 0) +
-                    (savedState.upgrades.staffGuard ? 40000 : 0) +
-                    (savedState.upgrades.staffChefSix ? 50000 : 0);
-
-      const huiCost = savedState.hasHuiLoan ? 50000 : 0;
-      const huiRow = document.getElementById('ledger-hui-row');
-      if (savedState.hasHuiLoan) huiRow.classList.remove('hidden');
-      else huiRow.classList.add('hidden');
-
-      const interest = Math.floor(savedState.piggyBank * 0.02);
-      savedState.piggyBank += interest;
-
-      const net = shiftState.todaySales - savedState.todayMarketCost - wages - huiCost;
-
-      document.getElementById('ledger-title').textContent = `SỔ THU CHI NGÀY ${savedState.day}`;
-      document.getElementById('final-money').textContent = `+${formatMoney(shiftState.todaySales)}`;
-      document.getElementById('final-cost').textContent = `-${formatMoney(savedState.todayMarketCost)}`;
-      document.getElementById('final-wage').textContent = `-${formatMoney(wages)}`;
-      document.getElementById('final-interest').textContent = `+${formatMoney(interest)}`;
-
-      const netEl = document.getElementById('final-net');
-      netEl.textContent = `${net >= 0 ? '+' : ''}${formatMoney(net)}`;
-      netEl.className = net >= 0 ? 'text-emerald-400 font-black' : 'text-red-400 font-black';
-
-      const slider = document.getElementById('piggy-slider');
-      const updateSliderVal = () => {
-        const pct = parseInt(slider.value);
-        document.getElementById('piggy-save-pct').textContent = `${pct}%`;
-        const saveVal = Math.max(0, Math.floor(net * (pct / 100)));
-        document.getElementById('piggy-save-val').textContent = formatMoney(saveVal);
-      };
-      slider.oninput = updateSliderVal;
-      updateSliderVal();
-
-      document.getElementById('modal-ledger').classList.remove('hidden');
-    }
-
-    function confirmLedgerAndNextDay() {
-      const slider = document.getElementById('piggy-slider');
-      const pct = parseInt(slider.value);
-      const wages = (savedState.upgrades.staffBusser ? 30000 : 0) + (savedState.upgrades.staffTea ? 35000 : 0);
-      const huiCost = savedState.hasHuiLoan ? 50000 : 0;
-      const net = Math.max(0, shiftState.todaySales - savedState.todayMarketCost - wages - huiCost);
-      const toPig = Math.floor(net * (pct / 100));
-
-      if (toPig > 0 && savedState.cash >= toPig) {
-        savedState.cash -= toPig;
-        savedState.piggyBank += toPig;
-        Sound.pig();
-      }
-
-      const keepRate = savedState.upgrades.fridgeLevel === 0 ? 0.4 : (savedState.upgrades.fridgeLevel === 1 ? 0.7 : 1.0);
-      for (let k in savedState.inventory) {
-        if (k !== 'clean_bowls') {
-          savedState.inventory[k] = Math.floor(savedState.inventory[k] * keepRate);
-        }
-      }
-
-      savedState.day++;
-      savedState.todayMarketCost = 0;
-      shiftState.timeLeft = 180;
-      shiftState.todaySales = 0;
-      shiftState.missedCount = 0;
-      shiftState.combo = 0;
-      shiftState.feverTime = 0;
-      shiftState.gasOut = false;
-      shiftState.catActive = false;
-      shiftState.customers = [null, null, null, null];
-      trashBowl();
-
-      const randomWeather = WEATHER_TYPES[Math.floor(Math.random() * WEATHER_TYPES.length)];
-      savedState.currentWeatherId = randomWeather.id;
-
-      document.getElementById('game-app').classList.remove('fever-active');
-      document.getElementById('fever-banner').classList.add('hidden');
-      document.getElementById('cat-event-box').classList.add('hidden');
-      document.getElementById('gas-event-box').classList.add('hidden');
-
-      persistGame();
+    function buyMarket(k, qty, cost) {
+      if (STATE.cash < cost) { showToast('Không đủ tiền mặt!'); Sound.buzz(); return; }
+      STATE.cash -= cost;
+      STATE.inventory[k] += qty;
+      Sound.coin();
       updateHUD();
-      updateAchievementsState();
-      document.getElementById('modal-ledger').classList.add('hidden');
-      switchTab('dashboard');
-      showToast(`Chào mừng đến Ngày ${savedState.day}!`);
+      openModal('market');
+      showToast('Đã nhập hàng vào kho thành công!');
     }
 
-    /* KHỞI ĐỘNG */
+    function takeHui() {
+      STATE.cash += 2000000;
+      Sound.coin();
+      updateHUD();
+      closeModal();
+      showToast('Đã hốt hụi thành công +2.000.000đ vào ví!');
+    }
+
+    function hireStaff(name, cost) {
+      if (STATE.cash < cost) { showToast('Không đủ tiền thuê!'); Sound.buzz(); return; }
+      STATE.cash -= cost;
+      Sound.coin();
+      updateHUD();
+      closeModal();
+      showToast(`Đã thuê ${name} về phụ tiệm bún!`);
+    }
+
+    function closeModal() {
+      document.getElementById('modal-container').classList.add('hidden');
+    }
+
+    /* KHỞI ĐỘNG VÒNG LẶP GAME */
     window.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('click', () => Sound.init(), { once: true });
-      loadGame();
       updateHUD();
-      renderQuickPantry();
-      renderCustomers();
-      renderDashboard();
-      updateBowlUI();
+      renderTables();
+      renderOrderBalloon();
+      updatePrepMat();
 
-      switchTab('dashboard');
-
+      // Đếm ngược ca bán (1s)
       setInterval(() => {
-        const kitchenVisible = !document.getElementById('view-kitchen').classList.contains('hidden');
-        if (kitchenVisible && !shiftState.isPaused) {
-          if (shiftState.timeLeft > 0) {
-            shiftState.timeLeft--;
-            if (shiftState.feverTime > 0) {
-              shiftState.feverTime--;
-              document.getElementById('fever-timer').textContent = shiftState.feverTime;
-              if (shiftState.feverTime <= 0) {
-                document.getElementById('game-app').classList.remove('fever-active');
-                document.getElementById('fever-banner').classList.add('hidden');
-                showToast('Hết giờ bốc lửa Fever Mode!');
-              }
-            }
-            updateHUD();
-          } else {
-            showLedgerModal();
-          }
+        if (!STATE.isPaused && STATE.timeLeft > 0) {
+          STATE.timeLeft--;
+          updateHUD();
         }
       }, 1000);
 
+      // Sinh khách định kỳ (4s)
       setInterval(() => {
-        const kitchenVisible = !document.getElementById('view-kitchen').classList.contains('hidden');
-        if (kitchenVisible && !shiftState.isPaused) spawnCustomer();
-      }, savedState.currentWeatherId === 'rainy' ? 2600 : 3600);
+        spawnCustomer();
+      }, 4000);
 
+      // Giảm độ kiên nhẫn của khách (500ms)
       setInterval(() => {
-        const kitchenVisible = !document.getElementById('view-kitchen').classList.contains('hidden');
-        if (kitchenVisible && !shiftState.isPaused) {
-          const decay = 0.45;
-          shiftState.customers.forEach((c, idx) => {
-            if (c && !c.isEating) {
-              c.patience -= decay;
-              if (c.patience <= 0) {
-                shiftState.customers[idx] = null;
-                shiftState.missedCount++;
-                shiftState.combo = 0;
-                updateHUD();
-                renderCustomers();
-                showToast(`Đơn của ${c.name} đã bị hủy!`);
-                if (shiftState.missedCount >= 3) {
-                  showToast('Đã có 3 khách/đơn bị hủy! Đóng cửa ca sớm.');
-                  showLedgerModal();
-                }
-              }
+        if (STATE.isPaused) return;
+        for (let i = 0; i < 3; i++) {
+          const c = STATE.tables[i];
+          if (c) {
+            c.patience -= 0.5;
+            if (c.patience <= 0) {
+              STATE.tables[i] = null;
+              showToast(`Khách ở bàn ${i+1} đợi lâu quá nên đã bỏ về!`);
+              renderTables();
+              if (STATE.selectedTableIdx === i) renderOrderBalloon();
             }
-          });
-          checkAutoBusser();
-          checkAutoStaffShipper();
-          checkRandomKitchenEvents();
+          }
         }
+        if (STATE.tables[STATE.selectedTableIdx]) renderOrderBalloon();
       }, 500);
-
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden && !shiftState.isPaused) togglePauseGame(true);
-      });
     });
   </script>
 </body>
